@@ -33,10 +33,32 @@ create policy "Public can read published posts"
   on posts for select
   using (published = true);
 
--- No insert/update/delete policy is created for the anon role, so the
--- public key cannot write. Publish posts from the Supabase Table Editor,
--- or write them using your service_role key from a trusted server/script —
--- never expose the service_role key in frontend code.
+-- Writes are restricted to one signed-in admin account (checked by email,
+-- server-side, via Supabase Auth) — not by anything in the frontend code.
+-- Create this user once in Supabase: Authentication → Users → Add user
+--   email:    ahamedjishfaan@gmail.com
+--   password: (set it there — do not store it in this file or in the site)
+
+drop policy if exists "Admin can insert posts" on posts;
+create policy "Admin can insert posts"
+  on posts for insert
+  with check (auth.jwt() ->> 'email' = 'ahamedjishfaan@gmail.com');
+
+drop policy if exists "Admin can update posts" on posts;
+create policy "Admin can update posts"
+  on posts for update
+  using (auth.jwt() ->> 'email' = 'ahamedjishfaan@gmail.com')
+  with check (auth.jwt() ->> 'email' = 'ahamedjishfaan@gmail.com');
+
+drop policy if exists "Admin can delete posts" on posts;
+create policy "Admin can delete posts"
+  on posts for delete
+  using (auth.jwt() ->> 'email' = 'ahamedjishfaan@gmail.com');
+
+drop policy if exists "Admin can read all posts" on posts;
+create policy "Admin can read all posts"
+  on posts for select
+  using (auth.jwt() ->> 'email' = 'ahamedjishfaan@gmail.com');
 
 -- 3. Optional: newsletter subscribers table (for the footer signup form)
 create table if not exists subscribers (
