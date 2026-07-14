@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="pageTitle">BeingTechy — Article</title>
+<meta name="description" id="pageDesc" content="An article from BeingTechy.">
+
+<meta name="google-adsense-account" content="ca-pub-6780480728242580">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6780480728242580" crossorigin="anonymous"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:#14171C; --surface:#1B1F26; --surface-2:#20252D; --line:#2B313B;
+    --text:#EDEAE2; --text-muted:#8B92A0; --accent:#E8A33D; --signal:#4FB0C6;
+    --radius:4px; --max:1180px; --article-max:700px;
+    --font-display:'Fraunces', Georgia, serif;
+    --font-body:'Inter', -apple-system, sans-serif;
+    --font-mono:'JetBrains Mono', ui-monospace, monospace;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{ background:var(--bg); color:var(--text); font-family:var(--font-body); line-height:1.6; }
+  a{ color:inherit; text-decoration:none; }
+  img{ max-width:100%; display:block; }
+  .wrap{ max-width:var(--max); margin:0 auto; padding:0 28px; }
+  .dot{ display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--signal); }
+  .dot.pulse{ animation:pulse 2.2s ease-in-out infinite; }
+  @keyframes pulse{ 0%,100%{box-shadow:0 0 0 0 rgba(79,176,198,.55);} 50%{box-shadow:0 0 0 5px rgba(79,176,198,0);} }
+
+  header{ position:sticky; top:0; z-index:40; background:rgba(20,23,28,.86); backdrop-filter:blur(10px); border-bottom:1px solid var(--line); }
+  .nav{ display:flex; align-items:center; justify-content:space-between; padding:18px 0; }
+  .logo{ font-family:var(--font-mono); font-weight:500; font-size:16px; display:flex; align-items:center; gap:8px; text-transform:lowercase; }
+  .logo b{ color:var(--accent); font-weight:600; }
+  .back{ font-family:var(--font-mono); font-size:12px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.08em; }
+  .back:hover{ color:var(--accent); }
+
+  article{ max-width:var(--article-max); margin:0 auto; padding:56px 0 40px; }
+  .meta{ font-family:var(--font-mono); font-size:12px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.06em; display:flex; align-items:center; gap:8px; margin-bottom:20px; }
+  .meta .tag{ color:var(--accent); }
+  h1{ font-family:var(--font-display); font-weight:500; font-size:clamp(30px,4.6vw,46px); line-height:1.1; letter-spacing:-.01em; margin-bottom:22px; }
+  .byline{ display:flex; justify-content:space-between; align-items:center; padding:18px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); font-family:var(--font-mono); font-size:12.5px; color:var(--text-muted); margin-bottom:36px; }
+  .cover{ width:100%; aspect-ratio:16/9; border-radius:var(--radius); overflow:hidden; background:var(--surface); border:1px solid var(--line); margin-bottom:36px; }
+  .cover img{ width:100%; height:100%; object-fit:cover; }
+
+  .content{ font-size:17.5px; color:#D9D6CC; }
+  .content p{ margin-bottom:22px; }
+  .content h2{ font-family:var(--font-display); font-size:28px; font-weight:500; margin:40px 0 16px; color:var(--text); }
+  .content h3{ font-family:var(--font-display); font-size:22px; font-weight:500; margin:32px 0 14px; color:var(--text); }
+  .content a{ color:var(--signal); text-decoration:underline; text-underline-offset:3px; }
+  .content code{ font-family:var(--font-mono); font-size:.9em; background:var(--surface-2); padding:2px 6px; border-radius:3px; }
+  .content pre{ background:var(--surface-2); border:1px solid var(--line); border-radius:var(--radius); padding:18px; overflow-x:auto; margin:22px 0; }
+  .content pre code{ background:none; padding:0; }
+  .content blockquote{ border-left:3px solid var(--accent); padding-left:18px; color:var(--text-muted); margin:22px 0; font-style:italic; }
+  .content ul, .content ol{ margin:0 0 22px 22px; }
+  .content li{ margin-bottom:8px; }
+
+  .ad-slot{ margin:36px 0; padding:14px; border:1px dashed var(--line); border-radius:var(--radius); text-align:center; }
+  .ad-slot::before{ content:'ADVERTISEMENT'; display:block; font-family:var(--font-mono); font-size:10px; letter-spacing:.14em; color:var(--text-muted); margin-bottom:8px; }
+
+  .tags{ display:flex; gap:8px; margin-top:36px; flex-wrap:wrap; }
+  .tags a{ font-family:var(--font-mono); font-size:11.5px; padding:6px 12px; border:1px solid var(--line); border-radius:100px; color:var(--text-muted); }
+  .tags a:hover{ color:var(--accent); border-color:var(--accent); }
+
+  .related{ max-width:var(--article-max); margin:0 auto; padding:0 0 60px; }
+  .related h4{ font-family:var(--font-mono); font-size:12px; text-transform:uppercase; letter-spacing:.1em; color:var(--text-muted); margin-bottom:18px; display:flex; align-items:center; gap:12px; }
+  .related h4::after{ content:''; flex:1; height:1px; background:var(--line); }
+  .related-item{ display:block; padding:16px 0; border-top:1px solid var(--line); }
+  .related-item:last-child{ border-bottom:1px solid var(--line); }
+  .related-item .rtitle{ font-family:var(--font-display); font-size:17px; margin-bottom:4px; }
+  .related-item .rmeta{ font-family:var(--font-mono); font-size:11px; color:var(--text-muted); }
+
+  .state{ max-width:var(--article-max); margin:0 auto; padding:80px 28px; text-align:center; color:var(--text-muted); }
+  .state h4{ font-family:var(--font-display); font-size:24px; color:var(--text); margin-bottom:10px; font-weight:500; }
+
+  footer{ padding:32px 0; border-top:1px solid var(--line); text-align:center; font-family:var(--font-mono); font-size:11px; color:var(--text-muted); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <div class="logo"><span class="dot pulse"></span>being<b>techy</b></div>
+    <a class="back" href="index.html">← All posts</a>
+  </div>
+</header>
+
+<main id="main">
+  <div class="state" id="loadingState">
+    <div class="dot pulse" style="margin:0 auto 16px;"></div>
+    <h4>Loading article…</h4>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">© <span id="year"></span> beingtechy.org</div>
+</footer>
+
+<script>
+document.getElementById('year').textContent = new Date().getFullYear();
+
+/* Same Supabase config as index.html — keep both in sync, or move this
+   into a shared /js/supabase-config.js file and include it on every page. */
+const SUPABASE_URL = 'https://exymxyranahspqddgevv.supabase.co';
+const SUPABASE_ANON_KEY = 'YOUR-PUBLIC-ANON-KEY'; // paste your anon public key here
+
+const supabaseClient = (SUPABASE_URL.includes('YOUR-PROJECT-REF'))
+  ? null
+  : window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+const params = new URLSearchParams(window.location.search);
+const slug = params.get('slug');
+const main = document.getElementById('main');
+
+function timeAgo(dateStr){
+  const diff = (Date.now() - new Date(dateStr).getTime()) / 1000;
+  if (diff < 3600) return Math.max(1, Math.floor(diff/60)) + 'm ago';
+  if (diff < 86400) return Math.floor(diff/3600) + 'h ago';
+  if (diff < 604800) return Math.floor(diff/86400) + 'd ago';
+  return new Date(dateStr).toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'});
+}
+
+function renderPost(post, related){
+  document.getElementById('pageTitle').textContent = post.title + ' — BeingTechy';
+  document.getElementById('pageDesc').setAttribute('content', post.excerpt || '');
+
+  main.innerHTML = `
+    <article>
+      <div class="meta"><span class="tag">${post.category || 'general'}</span><span>·</span><span>${timeAgo(post.created_at)}</span></div>
+      <h1>${post.title}</h1>
+      <div class="byline">
+        <span>By ${post.author || 'BeingTechy Staff'}</span>
+        <span>${post.read_time ? post.read_time + ' min read' : ''}</span>
+      </div>
+      ${post.cover_image ? `<div class="cover"><img src="${post.cover_image}" alt=""></div>` : ''}
+
+      <div class="ad-slot">
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6780480728242580" data-ad-slot="0000000002" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      </div>
+
+      <div class="content">${post.content || '<p>' + (post.excerpt || '') + '</p>'}</div>
+
+      <div class="ad-slot">
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6780480728242580" data-ad-slot="0000000003" data-ad-format="auto" data-full-width-responsive="true"></ins>
+      </div>
+
+      ${post.tags && post.tags.length ? `<div class="tags">${post.tags.map(t => `<a href="index.html#grid">#${t}</a>`).join('')}</div>` : ''}
+    </article>
+
+    <div class="related">
+      <h4>More from BeingTechy</h4>
+      ${related.map(r => `
+        <a class="related-item" href="post.html?slug=${encodeURIComponent(r.slug)}">
+          <div class="rtitle">${r.title}</div>
+          <div class="rmeta">${(r.category || 'general')} · ${timeAgo(r.created_at)}</div>
+        </a>
+      `).join('') || '<p style="color:var(--text-muted); font-size:14px;">No other posts yet.</p>'}
+    </div>
+  `;
+
+  try{
+    document.querySelectorAll('.adsbygoogle').forEach(() => (window.adsbygoogle = window.adsbygoogle || []).push({}));
+  }catch(e){ console.warn('AdSense not yet available:', e); }
+}
+
+function renderMissing(message){
+  main.innerHTML = `<div class="state"><h4>Post not found</h4><p>${message}</p><p style="margin-top:18px;"><a href="index.html" style="color:var(--accent);">← Back to all posts</a></p></div>`;
+}
+
+async function loadPost(){
+  if (!slug){ renderMissing('No post slug was given in the URL.'); return; }
+
+  if (!supabaseClient){
+    // Demo mode — shown until Supabase is connected.
+    renderPost({
+      title:'Connect Supabase to load real articles',
+      slug:'demo-1',
+      excerpt:'This is placeholder content.',
+      category:'dev',
+      author:'BeingTechy Staff',
+      created_at:new Date().toISOString(),
+      read_time:3,
+      content:'<p>Set <code>SUPABASE_URL</code> and <code>SUPABASE_ANON_KEY</code> at the top of the script in both <code>index.html</code> and <code>post.html</code>. Once connected, this page fetches the row from the <code>posts</code> table whose <code>slug</code> matches the URL, e.g. <code>post.html?slug=my-article</code>.</p><p>The <code>content</code> column can hold HTML directly (as rendered here) or Markdown you convert to HTML client-side.</p>',
+      tags:['supabase','setup']
+    }, []);
+    return;
+  }
+
+  const { data: post, error } = await supabaseClient
+    .from('posts')
+    .select('*')
+    .eq('slug', slug)
+    .eq('published', true)
+    .single();
+
+  if (error || !post){
+    renderMissing(error ? error.message : 'This post doesn\'t exist or isn\'t published yet.');
+    return;
+  }
+
+  const { data: related } = await supabaseClient
+    .from('posts')
+    .select('title, slug, category, created_at')
+    .eq('published', true)
+    .neq('slug', slug)
+    .order('created_at', { ascending:false })
+    .limit(3);
+
+  renderPost(post, related || []);
+}
+
+loadPost();
+</script>
+
+</body>
+</html>

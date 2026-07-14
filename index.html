@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BeingTechy — Signal from the tech world</title>
+<meta name="description" content="BeingTechy covers software, hardware, and the people building both. Straight signal, no noise.">
+
+<!-- ============================================================
+     GOOGLE ADSENSE — site verification + auto ads script
+     ============================================================ -->
+<meta name="google-adsense-account" content="ca-pub-6780480728242580">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6780480728242580" crossorigin="anonymous"></script>
+
+<!-- ============================================================
+     SUPABASE CLIENT (CDN build — no bundler needed)
+     ============================================================ -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:#14171C;
+    --surface:#1B1F26;
+    --surface-2:#20252D;
+    --line:#2B313B;
+    --text:#EDEAE2;
+    --text-muted:#8B92A0;
+    --accent:#E8A33D;
+    --accent-dim:#8A672A;
+    --signal:#4FB0C6;
+    --radius:4px;
+    --max:1180px;
+    --font-display:'Fraunces', Georgia, serif;
+    --font-body:'Inter', -apple-system, sans-serif;
+    --font-mono:'JetBrains Mono', ui-monospace, monospace;
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--font-body);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit; text-decoration:none;}
+  img{max-width:100%; display:block;}
+  ::selection{background:var(--accent); color:#14171C;}
+
+  .wrap{max-width:var(--max); margin:0 auto; padding:0 28px;}
+
+  /* --- background signal grid (signature texture) --- */
+  .signal-field{
+    position:fixed; inset:0; z-index:-1; opacity:.55;
+    background-image:
+      radial-gradient(circle at 1px 1px, rgba(232,163,61,.10) 1px, transparent 1px);
+    background-size:26px 26px;
+    mask-image:linear-gradient(180deg, rgba(0,0,0,.9) 0%, transparent 60%);
+  }
+
+  /* --- status dot: recurring signature motif, means something (live/recent) --- */
+  .dot{
+    display:inline-block; width:6px; height:6px; border-radius:50%;
+    background:var(--signal); flex:none;
+  }
+  .dot.pulse{ animation:pulse 2.2s ease-in-out infinite; }
+  @keyframes pulse{
+    0%,100%{ box-shadow:0 0 0 0 rgba(79,176,198,.55); }
+    50%{ box-shadow:0 0 0 5px rgba(79,176,198,0); }
+  }
+
+  /* ============ HEADER ============ */
+  header{
+    position:sticky; top:0; z-index:40;
+    background:rgba(20,23,28,.86);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 0;
+  }
+  .logo{
+    font-family:var(--font-mono); font-weight:500; font-size:16px;
+    letter-spacing:.02em; display:flex; align-items:center; gap:8px;
+    text-transform:lowercase;
+  }
+  .logo b{ color:var(--accent); font-weight:600; }
+  nav.links{ display:flex; gap:28px; }
+  nav.links a{
+    font-family:var(--font-mono); font-size:12.5px; color:var(--text-muted);
+    text-transform:uppercase; letter-spacing:.08em; transition:color .15s;
+  }
+  nav.links a:hover{ color:var(--accent); }
+  @media (max-width:720px){ nav.links{ display:none; } }
+
+  /* ============ HERO ============ */
+  .hero{ padding:64px 0 40px; border-bottom:1px solid var(--line); }
+  .eyebrow{
+    font-family:var(--font-mono); font-size:12px; color:var(--signal);
+    text-transform:uppercase; letter-spacing:.12em;
+    display:flex; align-items:center; gap:8px; margin-bottom:18px;
+  }
+  .hero h1{
+    font-family:var(--font-display); font-weight:500; font-size:clamp(36px,5.4vw,64px);
+    line-height:1.04; letter-spacing:-.01em; max-width:16ch;
+  }
+  .hero p.sub{
+    margin-top:18px; max-width:52ch; color:var(--text-muted); font-size:17px;
+  }
+
+  /* ============ AD SLOTS ============ */
+  .ad-slot{
+    margin:40px 0; padding:14px; border:1px dashed var(--line); border-radius:var(--radius);
+    text-align:center; position:relative;
+  }
+  .ad-slot::before{
+    content:'ADVERTISEMENT';
+    display:block; font-family:var(--font-mono); font-size:10px; letter-spacing:.14em;
+    color:var(--text-muted); margin-bottom:8px;
+  }
+  .ad-slot ins{ min-height:90px; }
+
+  /* ============ SECTION LABEL ============ */
+  .section-label{
+    display:flex; align-items:center; gap:12px; margin:56px 0 24px;
+    font-family:var(--font-mono); font-size:12px; text-transform:uppercase;
+    letter-spacing:.1em; color:var(--text-muted);
+  }
+  .section-label::after{ content:''; flex:1; height:1px; background:var(--line); }
+
+  /* ============ FILTER BAR ============ */
+  .filters{ display:flex; gap:10px; flex-wrap:wrap; margin-bottom:8px; }
+  .filter-btn{
+    font-family:var(--font-mono); font-size:12px; padding:7px 14px;
+    border:1px solid var(--line); border-radius:100px; color:var(--text-muted);
+    background:transparent; cursor:pointer; transition:all .15s; text-transform:lowercase;
+  }
+  .filter-btn:hover{ color:var(--text); border-color:var(--text-muted); }
+  .filter-btn.active{ color:var(--bg); background:var(--accent); border-color:var(--accent); }
+
+  /* ============ POST GRID ============ */
+  .grid{
+    display:grid; grid-template-columns:repeat(3,1fr); gap:1px;
+    background:var(--line); border:1px solid var(--line); margin-top:24px;
+  }
+  @media (max-width:900px){ .grid{ grid-template-columns:repeat(2,1fr); } }
+  @media (max-width:620px){ .grid{ grid-template-columns:1fr; } }
+
+  .card{
+    background:var(--surface); padding:26px; display:flex; flex-direction:column;
+    transition:background .15s;
+  }
+  .card:hover{ background:var(--surface-2); }
+  .card .thumb{
+    width:100%; aspect-ratio:16/10; border-radius:var(--radius); overflow:hidden;
+    margin-bottom:16px; background:var(--surface-2); border:1px solid var(--line);
+  }
+  .card .thumb img{ width:100%; height:100%; object-fit:cover; }
+  .card .meta{
+    font-family:var(--font-mono); font-size:11px; color:var(--text-muted);
+    text-transform:uppercase; letter-spacing:.06em; display:flex; align-items:center;
+    gap:7px; margin-bottom:10px;
+  }
+  .card .meta .tag{ color:var(--accent); }
+  .card h3{
+    font-family:var(--font-display); font-weight:500; font-size:20px; line-height:1.25;
+    margin-bottom:10px;
+  }
+  .card p.excerpt{
+    color:var(--text-muted); font-size:14.5px; line-height:1.6; flex:1;
+  }
+  .card .byline{
+    margin-top:16px; padding-top:14px; border-top:1px solid var(--line);
+    font-family:var(--font-mono); font-size:11.5px; color:var(--text-muted);
+    display:flex; justify-content:space-between;
+  }
+
+  .card.skeleton .thumb, .card.skeleton h3, .card.skeleton p{
+    background:linear-gradient(90deg, var(--surface-2) 25%, #262c35 37%, var(--surface-2) 63%);
+    background-size:400% 100%; animation:shimmer 1.4s ease infinite; border-radius:var(--radius);
+    color:transparent;
+  }
+  .card.skeleton h3{ height:20px; }
+  .card.skeleton p{ height:14px; margin-top:8px; }
+  @keyframes shimmer{ 0%{background-position:100% 0;} 100%{background-position:-100% 0;} }
+
+  .empty-state{
+    grid-column:1/-1; padding:60px 20px; text-align:center; color:var(--text-muted);
+  }
+  .empty-state .dot{ margin-bottom:14px; }
+  .empty-state h4{ font-family:var(--font-display); font-size:22px; color:var(--text); margin-bottom:8px; font-weight:500; }
+  .empty-state code{
+    display:inline-block; margin-top:14px; font-family:var(--font-mono); font-size:12px;
+    background:var(--surface-2); padding:10px 14px; border-radius:var(--radius); border:1px solid var(--line);
+  }
+
+  /* ============ NEWSLETTER STRIP ============ */
+  .strip{
+    margin-top:64px; padding:40px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+    display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap;
+  }
+  .strip h4{ font-family:var(--font-display); font-size:22px; font-weight:500; }
+  .strip p{ color:var(--text-muted); font-size:14px; margin-top:4px; }
+  .strip form{ display:flex; gap:10px; }
+  .strip input{
+    background:var(--surface); border:1px solid var(--line); color:var(--text);
+    padding:11px 14px; border-radius:var(--radius); font-family:var(--font-body); font-size:14px;
+    min-width:220px;
+  }
+  .strip button{
+    background:var(--accent); color:#14171C; border:none; padding:11px 20px;
+    border-radius:var(--radius); font-weight:600; font-size:14px; cursor:pointer;
+    font-family:var(--font-body);
+  }
+
+  /* ============ FOOTER ============ */
+  footer{ padding:48px 0 40px; }
+  .foot-grid{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:24px; }
+  footer .logo{ margin-bottom:8px; }
+  footer p.tag{ color:var(--text-muted); font-size:13px; max-width:34ch; }
+  footer .cols{ display:flex; gap:56px; flex-wrap:wrap; }
+  footer .cols h5{
+    font-family:var(--font-mono); font-size:11px; text-transform:uppercase; letter-spacing:.1em;
+    color:var(--text-muted); margin-bottom:14px;
+  }
+  footer .cols a{ display:block; font-size:13.5px; color:var(--text); margin-bottom:10px; }
+  footer .cols a:hover{ color:var(--accent); }
+  .foot-bottom{
+    margin-top:40px; padding-top:20px; border-top:1px solid var(--line);
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;
+    font-family:var(--font-mono); font-size:11px; color:var(--text-muted);
+  }
+</style>
+</head>
+<body>
+
+<div class="signal-field"></div>
+
+<header>
+  <div class="wrap nav">
+    <div class="logo"><span class="dot pulse"></span>being<b>techy</b></div>
+    <nav class="links">
+      <a href="index.html">Latest</a>
+      <a href="#grid" data-filter="ai">AI</a>
+      <a href="#grid" data-filter="hardware">Hardware</a>
+      <a href="#grid" data-filter="dev">Dev</a>
+      <a href="#grid" data-filter="security">Security</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="hero">
+    <div class="eyebrow"><span class="dot pulse"></span>Live feed — updated straight from Supabase</div>
+    <h1>Signal from the tech world, no noise.</h1>
+    <p class="sub">BeingTechy tracks the tools, chips, and code shaping what's next — written for people who build things, not just read about them.</p>
+  </section>
+
+  <!-- Ad slot: top banner, sits below the hero, above content -->
+  <div class="ad-slot">
+    <ins class="adsbygoogle"
+      style="display:block"
+      data-ad-client="ca-pub-6780480728242580"
+      data-ad-slot="0000000000"
+      data-ad-format="auto"
+      data-full-width-responsive="true"></ins>
+  </div>
+
+  <div id="grid">
+    <div class="section-label">Latest posts</div>
+    <div class="filters" id="filterBar">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="ai">AI</button>
+      <button class="filter-btn" data-filter="hardware">Hardware</button>
+      <button class="filter-btn" data-filter="dev">Dev</button>
+      <button class="filter-btn" data-filter="security">Security</button>
+    </div>
+
+    <div class="grid" id="postGrid">
+      <!-- Skeleton cards shown while Supabase loads; JS replaces this content -->
+      <div class="card skeleton"><div class="thumb"></div><h3>Loading headline text</h3><p>Loading excerpt line one and a bit more filler text</p></div>
+      <div class="card skeleton"><div class="thumb"></div><h3>Loading headline text</h3><p>Loading excerpt line one and a bit more filler text</p></div>
+      <div class="card skeleton"><div class="thumb"></div><h3>Loading headline text</h3><p>Loading excerpt line one and a bit more filler text</p></div>
+    </div>
+  </div>
+
+  <!-- Ad slot: in-feed, sits under the first row of posts -->
+  <div class="ad-slot">
+    <ins class="adsbygoogle"
+      style="display:block"
+      data-ad-client="ca-pub-6780480728242580"
+      data-ad-slot="0000000001"
+      data-ad-format="fluid"
+      data-ad-layout-key="-6t+ed+2i-1n-4w"></ins>
+  </div>
+
+  <section class="strip">
+    <div>
+      <h4>Get the signal in your inbox</h4>
+      <p>One email a week. No spam, just what mattered.</p>
+    </div>
+    <form id="subscribeForm">
+      <input type="email" placeholder="you@domain.com" required>
+      <button type="submit">Subscribe</button>
+    </form>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="logo"><span class="dot pulse"></span>being<b>techy</b></div>
+        <p class="tag">Independent tech coverage — software, hardware, and the people building both.</p>
+      </div>
+      <div class="cols">
+        <div>
+          <h5>Sections</h5>
+          <a href="#grid" data-filter="ai">AI</a>
+          <a href="#grid" data-filter="hardware">Hardware</a>
+          <a href="#grid" data-filter="dev">Dev</a>
+          <a href="#grid" data-filter="security">Security</a>
+        </div>
+        <div>
+          <h5>Site</h5>
+          <a href="#">About</a>
+          <a href="#">Contact</a>
+          <a href="#">Privacy policy</a>
+        </div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="year"></span> beingtechy.org</span>
+      <span>Built on Supabase</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+document.getElementById('year').textContent = new Date().getFullYear();
+
+/* ============================================================
+   SUPABASE CONFIG — replace these two values with your project's
+   own URL and public anon key (Project Settings → API in Supabase).
+   The anon key is safe to expose in frontend code; it only allows
+   what your Row Level Security policies permit (see README).
+   ============================================================ */
+const SUPABASE_URL = 'https://exymxyranahspqddgevv.supabase.co';
+const SUPABASE_ANON_KEY = 'YOUR-PUBLIC-ANON-KEY'; // paste your anon public key here
+
+const supabaseClient = (SUPABASE_URL.includes('YOUR-PROJECT-REF'))
+  ? null
+  : window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+const postGrid = document.getElementById('postGrid');
+let allPosts = [];
+let activeFilter = 'all';
+
+function timeAgo(dateStr){
+  const diff = (Date.now() - new Date(dateStr).getTime()) / 1000;
+  if (diff < 3600) return Math.max(1, Math.floor(diff/60)) + 'm ago';
+  if (diff < 86400) return Math.floor(diff/3600) + 'h ago';
+  if (diff < 604800) return Math.floor(diff/86400) + 'd ago';
+  return new Date(dateStr).toLocaleDateString('en-US', {month:'short', day:'numeric'});
+}
+
+function isRecent(dateStr){
+  return (Date.now() - new Date(dateStr).getTime()) < 1000*60*60*24*3; // < 3 days
+}
+
+function renderPosts(posts){
+  if (!posts.length){
+    postGrid.innerHTML = `
+      <div class="empty-state">
+        <div class="dot pulse"></div>
+        <h4>No posts yet</h4>
+        <p>Once you add rows to the <b>posts</b> table in Supabase, they'll show up here automatically.</p>
+        <code>insert into posts (title, slug, excerpt, category, published) values (...)</code>
+      </div>`;
+    return;
+  }
+  postGrid.innerHTML = posts.map(post => `
+    <a class="card" href="post.html?slug=${encodeURIComponent(post.slug)}">
+      <div class="thumb">
+        ${post.cover_image ? `<img src="${post.cover_image}" alt="" loading="lazy">` : ''}
+      </div>
+      <div class="meta">
+        ${isRecent(post.created_at) ? '<span class="dot pulse"></span>' : ''}
+        <span class="tag">${(post.category || 'general')}</span>
+        <span>·</span>
+        <span>${timeAgo(post.created_at)}</span>
+      </div>
+      <h3>${post.title}</h3>
+      <p class="excerpt">${post.excerpt || ''}</p>
+      <div class="byline">
+        <span>${post.author || 'BeingTechy Staff'}</span>
+        <span>${post.read_time ? post.read_time + ' min read' : ''}</span>
+      </div>
+    </a>
+  `).join('');
+}
+
+function applyFilter(){
+  const filtered = activeFilter === 'all'
+    ? allPosts
+    : allPosts.filter(p => (p.category || '').toLowerCase() === activeFilter);
+  renderPosts(filtered);
+}
+
+async function loadPosts(){
+  if (!supabaseClient){
+    // No Supabase connected yet — show placeholder demo posts so the template is visible.
+    allPosts = DEMO_POSTS;
+    applyFilter();
+    return;
+  }
+  const { data, error } = await supabaseClient
+    .from('posts')
+    .select('*')
+    .eq('published', true)
+    .order('created_at', { ascending: false });
+
+  if (error){
+    console.error('Supabase error:', error);
+    postGrid.innerHTML = `<div class="empty-state"><h4>Couldn't load posts</h4><p>${error.message}</p></div>`;
+    return;
+  }
+  allPosts = data;
+  applyFilter();
+}
+
+// Demo content shown only when SUPABASE_URL hasn't been configured yet.
+const DEMO_POSTS = [
+  { slug:'demo-1', title:'Connect Supabase to see real posts here', excerpt:'This card is placeholder content. Fill in SUPABASE_URL and SUPABASE_ANON_KEY at the top of the script, then add rows to your posts table.', category:'dev', author:'BeingTechy Staff', created_at:new Date().toISOString(), read_time:3, cover_image:'' },
+  { slug:'demo-2', title:'Row Level Security keeps writes locked down', excerpt:'The anon key used here is read-only by policy — see README.md for the exact SQL to run.', category:'security', author:'BeingTechy Staff', created_at:new Date().toISOString(), read_time:4, cover_image:'' },
+  { slug:'demo-3', title:'Posts are sorted newest first, automatically', excerpt:'Ordering, filtering by category, and the "recent" signal dot all come from the created_at column.', category:'ai', author:'BeingTechy Staff', created_at:new Date().toISOString(), read_time:2, cover_image:'' }
+];
+
+document.querySelectorAll('[data-filter]').forEach(el => {
+  el.addEventListener('click', (e) => {
+    const f = el.getAttribute('data-filter');
+    if (!f) return;
+    e.preventDefault();
+    activeFilter = f;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.filter === f));
+    applyFilter();
+    document.getElementById('grid').scrollIntoView({behavior:'smooth', block:'start'});
+  });
+});
+
+document.getElementById('subscribeForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  // Hook this up to a Supabase "subscribers" table or your email provider of choice.
+  alert('Wire this form up to a Supabase table or your email provider — see README.md');
+  this.reset();
+});
+
+loadPosts();
+
+// AdSense: push each ad unit once the DOM is ready
+try{
+  document.querySelectorAll('.adsbygoogle').forEach(() => {
+    (window.adsbygoogle = window.adsbygoogle || []).push({});
+  });
+}catch(e){ console.warn('AdSense not yet available:', e); }
+</script>
+
+</body>
+</html>
