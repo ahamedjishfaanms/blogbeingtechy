@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BeingTechy — Admin</title>
+<meta name="robots" content="noindex, nofollow">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:#14171C; --surface:#1B1F26; --surface-2:#20252D; --line:#2B313B;
+    --text:#EDEAE2; --text-muted:#8B92A0; --accent:#E8A33D; --signal:#4FB0C6;
+    --danger:#D9654E; --radius:4px; --max:960px;
+    --font-display:'Fraunces', Georgia, serif;
+    --font-body:'Inter', -apple-system, sans-serif;
+    --font-mono:'JetBrains Mono', ui-monospace, monospace;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{ background:var(--bg); color:var(--text); font-family:var(--font-body); line-height:1.6; }
+  a{ color:inherit; }
+  .wrap{ max-width:var(--max); margin:0 auto; padding:0 24px; }
+  .dot{ display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--signal); }
+  .dot.pulse{ animation:pulse 2.2s ease-in-out infinite; }
+  @keyframes pulse{ 0%,100%{box-shadow:0 0 0 0 rgba(79,176,198,.55);} 50%{box-shadow:0 0 0 5px rgba(79,176,198,0);} }
+
+  header{ border-bottom:1px solid var(--line); padding:18px 0; }
+  .nav{ display:flex; align-items:center; justify-content:space-between; }
+  .logo{ font-family:var(--font-mono); font-weight:500; font-size:16px; display:flex; align-items:center; gap:8px; }
+  .logo b{ color:var(--accent); font-weight:600; }
+  .logo span.tag{ color:var(--text-muted); font-size:11px; text-transform:uppercase; letter-spacing:.1em; margin-left:6px; }
+  #logoutBtn{ font-family:var(--font-mono); font-size:12px; color:var(--text-muted); background:none; border:1px solid var(--line); padding:8px 14px; border-radius:var(--radius); cursor:pointer; text-transform:uppercase; letter-spacing:.06em; }
+  #logoutBtn:hover{ color:var(--danger); border-color:var(--danger); }
+
+  /* ---- login ---- */
+  #loginScreen{ max-width:380px; margin:120px auto; padding:0 24px; }
+  #loginScreen h1{ font-family:var(--font-display); font-weight:500; font-size:28px; margin-bottom:8px; }
+  #loginScreen p.sub{ color:var(--text-muted); font-size:14px; margin-bottom:32px; }
+  label{ font-family:var(--font-mono); font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--text-muted); display:block; margin-bottom:8px; }
+  input, textarea, select{
+    width:100%; background:var(--surface); border:1px solid var(--line); color:var(--text);
+    padding:12px 14px; border-radius:var(--radius); font-family:var(--font-body); font-size:14.5px;
+    margin-bottom:18px;
+  }
+  input:focus, textarea:focus, select:focus{ outline:none; border-color:var(--accent); }
+  button.primary{
+    background:var(--accent); color:#14171C; border:none; padding:12px 20px; border-radius:var(--radius);
+    font-weight:600; font-size:14px; cursor:pointer; font-family:var(--font-body); width:100%;
+  }
+  button.primary:hover{ opacity:.92; }
+  #loginError{ color:var(--danger); font-size:13px; margin-top:14px; display:none; font-family:var(--font-mono); }
+
+  /* ---- dashboard ---- */
+  #dashboard{ display:none; }
+  main{ padding:40px 0 80px; }
+  .toolbar{ display:flex; justify-content:space-between; align-items:center; margin-bottom:28px; flex-wrap:wrap; gap:14px; }
+  .toolbar h2{ font-family:var(--font-display); font-weight:500; font-size:26px; }
+  #newPostBtn{ background:var(--signal); color:#0E1418; border:none; padding:11px 18px; border-radius:var(--radius); font-weight:600; font-size:13.5px; cursor:pointer; font-family:var(--font-body); }
+
+  table{ width:100%; border-collapse:collapse; border:1px solid var(--line); }
+  thead th{
+    font-family:var(--font-mono); font-size:11px; text-transform:uppercase; letter-spacing:.06em;
+    color:var(--text-muted); text-align:left; padding:12px 14px; border-bottom:1px solid var(--line); background:var(--surface);
+  }
+  tbody td{ padding:14px; border-bottom:1px solid var(--line); font-size:14px; vertical-align:middle; }
+  tbody tr:hover{ background:var(--surface); }
+  td.title{ font-family:var(--font-display); font-size:15.5px; max-width:280px; }
+  .status-badge{ font-family:var(--font-mono); font-size:10.5px; padding:4px 9px; border-radius:100px; text-transform:uppercase; letter-spacing:.04em; }
+  .status-badge.published{ background:rgba(79,176,198,.15); color:var(--signal); }
+  .status-badge.draft{ background:rgba(139,146,160,.15); color:var(--text-muted); }
+  .row-actions{ display:flex; gap:8px; }
+  .row-actions button{
+    font-family:var(--font-mono); font-size:11.5px; background:none; border:1px solid var(--line);
+    color:var(--text-muted); padding:6px 11px; border-radius:var(--radius); cursor:pointer;
+  }
+  .row-actions button:hover{ color:var(--text); border-color:var(--text-muted); }
+  .row-actions button.delete:hover{ color:var(--danger); border-color:var(--danger); }
+
+  #emptyMsg{ padding:60px 20px; text-align:center; color:var(--text-muted); }
+
+  /* ---- modal / editor ---- */
+  #editorOverlay{
+    display:none; position:fixed; inset:0; background:rgba(10,12,15,.7);
+    z-index:100; align-items:flex-start; justify-content:center; padding:40px 20px; overflow-y:auto;
+  }
+  #editorPanel{
+    background:var(--bg); border:1px solid var(--line); border-radius:6px; max-width:680px; width:100%;
+    padding:32px; margin-bottom:40px;
+  }
+  #editorPanel h3{ font-family:var(--font-display); font-weight:500; font-size:22px; margin-bottom:22px; }
+  .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:0 16px; }
+  textarea{ min-height:160px; resize:vertical; font-family:var(--font-mono); font-size:13px; }
+  .editor-actions{ display:flex; gap:10px; justify-content:flex-end; margin-top:10px; }
+  .editor-actions button.cancel{ background:none; border:1px solid var(--line); color:var(--text-muted); padding:11px 18px; border-radius:var(--radius); cursor:pointer; font-family:var(--font-body); font-size:14px; }
+  .checkbox-row{ display:flex; align-items:center; gap:10px; margin-bottom:20px; }
+  .checkbox-row input{ width:auto; margin:0; }
+  .checkbox-row label{ margin:0; }
+  #formMsg{ font-family:var(--font-mono); font-size:12.5px; margin-bottom:14px; display:none; }
+  #formMsg.error{ color:var(--danger); display:block; }
+  #formMsg.ok{ color:var(--signal); display:block; }
+
+  @media(max-width:640px){ .grid2{ grid-template-columns:1fr; } table{ font-size:13px; } td.title{ max-width:140px; } }
+</style>
+</head>
+<body>
+
+<!-- ============ LOGIN ============ -->
+<div id="loginScreen">
+  <div class="logo" style="margin-bottom:36px;"><span class="dot pulse"></span>being<b>techy</b><span class="tag">admin</span></div>
+  <h1>Sign in</h1>
+  <p class="sub">Manage posts for beingtechy.org</p>
+  <form id="loginForm">
+    <label for="email">Email</label>
+    <input type="email" id="email" autocomplete="username" required>
+    <label for="password">Password</label>
+    <input type="password" id="password" autocomplete="current-password" required>
+    <button class="primary" type="submit">Sign in</button>
+    <div id="loginError"></div>
+  </form>
+</div>
+
+<!-- ============ DASHBOARD ============ -->
+<div id="dashboard">
+  <header>
+    <div class="wrap nav">
+      <div class="logo"><span class="dot pulse"></span>being<b>techy</b><span class="tag">admin</span></div>
+      <button id="logoutBtn">Sign out</button>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="toolbar">
+      <h2>Posts</h2>
+      <button id="newPostBtn">+ New post</button>
+    </div>
+
+    <table id="postsTable">
+      <thead>
+        <tr><th>Title</th><th>Category</th><th>Status</th><th>Created</th><th></th></tr>
+      </thead>
+      <tbody id="postsBody"></tbody>
+    </table>
+    <div id="emptyMsg" style="display:none;">No posts yet. Click "New post" to add one.</div>
+  </main>
+</div>
+
+<!-- ============ EDITOR MODAL ============ -->
+<div id="editorOverlay">
+  <div id="editorPanel">
+    <h3 id="editorTitle">New post</h3>
+    <div id="formMsg"></div>
+    <form id="postForm">
+      <input type="hidden" id="postId">
+
+      <label for="title">Title</label>
+      <input type="text" id="title" required>
+
+      <label for="slug">Slug (URL-safe, unique)</label>
+      <input type="text" id="slug" placeholder="my-post-title" required>
+
+      <div class="grid2">
+        <div>
+          <label for="category">Category</label>
+          <select id="category">
+            <option value="ai">AI</option>
+            <option value="hardware">Hardware</option>
+            <option value="dev">Dev</option>
+            <option value="security">Security</option>
+            <option value="general">General</option>
+          </select>
+        </div>
+        <div>
+          <label for="readTime">Read time (minutes)</label>
+          <input type="number" id="readTime" value="3" min="1">
+        </div>
+      </div>
+
+      <label for="author">Author</label>
+      <input type="text" id="author" value="BeingTechy Staff">
+
+      <label for="coverImage">Cover image URL (optional)</label>
+      <input type="text" id="coverImage" placeholder="https://...">
+
+      <label for="tags">Tags (comma-separated)</label>
+      <input type="text" id="tags" placeholder="ai, security, opinion">
+
+      <label for="excerpt">Excerpt</label>
+      <textarea id="excerpt" style="min-height:70px; font-family:var(--font-body); font-size:14.5px;" required></textarea>
+
+      <label for="content">Content (HTML)</label>
+      <textarea id="content" placeholder="<p>Your article...</p>"></textarea>
+
+      <div class="checkbox-row">
+        <input type="checkbox" id="published">
+        <label for="published" style="text-transform:none; font-size:14px; color:var(--text);">Published (visible on the live site)</label>
+      </div>
+
+      <div class="editor-actions">
+        <button type="button" class="cancel" id="cancelBtn">Cancel</button>
+        <button type="submit" class="primary" style="width:auto;">Save post</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   SUPABASE CONFIG — same project as index.html / post.html
+   ============================================================ */
+const SUPABASE_URL = 'https://exymxyranahspqddgevv.supabase.co';
+const SUPABASE_ANON_KEY = 'YOUR-PUBLIC-ANON-KEY'; // paste your anon public key here
+
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+const loginScreen = document.getElementById('loginScreen');
+const dashboard = document.getElementById('dashboard');
+const postsBody = document.getElementById('postsBody');
+const emptyMsg = document.getElementById('emptyMsg');
+const editorOverlay = document.getElementById('editorOverlay');
+const formMsg = document.getElementById('formMsg');
+
+/* ---------- AUTH ---------- */
+
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+  const errBox = document.getElementById('loginError');
+  errBox.style.display = 'none';
+
+  const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+  if (error){
+    errBox.textContent = error.message;
+    errBox.style.display = 'block';
+    return;
+  }
+  showDashboard();
+});
+
+document.getElementById('logoutBtn').addEventListener('click', async () => {
+  await supabaseClient.auth.signOut();
+  location.reload();
+});
+
+async function checkSession(){
+  const { data: { session } } = await supabaseClient.auth.getSession();
+  if (session){ showDashboard(); }
+  else { loginScreen.style.display = 'block'; dashboard.style.display = 'none'; }
+}
+
+function showDashboard(){
+  loginScreen.style.display = 'none';
+  dashboard.style.display = 'block';
+  loadPosts();
+}
+
+/* ---------- LOAD POSTS ---------- */
+
+async function loadPosts(){
+  const { data, error } = await supabaseClient
+    .from('posts')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error){
+    postsBody.innerHTML = '';
+    emptyMsg.style.display = 'block';
+    emptyMsg.textContent = 'Could not load posts: ' + error.message;
+    return;
+  }
+
+  if (!data.length){
+    postsBody.innerHTML = '';
+    emptyMsg.style.display = 'block';
+    emptyMsg.textContent = 'No posts yet. Click "New post" to add one.';
+    return;
+  }
+
+  emptyMsg.style.display = 'none';
+  postsBody.innerHTML = data.map(p => `
+    <tr>
+      <td class="title">${escapeHtml(p.title)}</td>
+      <td style="color:var(--text-muted); font-family:var(--font-mono); font-size:12px; text-transform:uppercase;">${p.category || 'general'}</td>
+      <td><span class="status-badge ${p.published ? 'published' : 'draft'}">${p.published ? 'Published' : 'Draft'}</span></td>
+      <td style="color:var(--text-muted); font-size:12.5px;">${new Date(p.created_at).toLocaleDateString()}</td>
+      <td>
+        <div class="row-actions">
+          <button onclick="editPost('${p.id}')">Edit</button>
+          <button class="delete" onclick="deletePost('${p.id}', '${escapeHtml(p.title).replace(/'/g,"\\'")}')">Delete</button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+
+  window._postsCache = data;
+}
+
+function escapeHtml(str){
+  return (str || '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+
+/* ---------- CREATE / EDIT ---------- */
+
+document.getElementById('newPostBtn').addEventListener('click', () => openEditor(null));
+document.getElementById('cancelBtn').addEventListener('click', closeEditor);
+
+function openEditor(post){
+  document.getElementById('editorTitle').textContent = post ? 'Edit post' : 'New post';
+  document.getElementById('postId').value = post ? post.id : '';
+  document.getElementById('title').value = post ? post.title : '';
+  document.getElementById('slug').value = post ? post.slug : '';
+  document.getElementById('category').value = post ? (post.category || 'general') : 'ai';
+  document.getElementById('readTime').value = post ? (post.read_time || 3) : 3;
+  document.getElementById('author').value = post ? (post.author || 'BeingTechy Staff') : 'BeingTechy Staff';
+  document.getElementById('coverImage').value = post ? (post.cover_image || '') : '';
+  document.getElementById('tags').value = post && post.tags ? post.tags.join(', ') : '';
+  document.getElementById('excerpt').value = post ? (post.excerpt || '') : '';
+  document.getElementById('content').value = post ? (post.content || '') : '';
+  document.getElementById('published').checked = post ? !!post.published : false;
+  formMsg.style.display = 'none';
+  editorOverlay.style.display = 'flex';
+}
+
+function closeEditor(){
+  editorOverlay.style.display = 'none';
+}
+
+window.editPost = function(id){
+  const post = (window._postsCache || []).find(p => p.id === id);
+  if (post) openEditor(post);
+};
+
+document.getElementById('postForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  formMsg.style.display = 'none';
+
+  const id = document.getElementById('postId').value;
+  const payload = {
+    title: document.getElementById('title').value.trim(),
+    slug: document.getElementById('slug').value.trim(),
+    category: document.getElementById('category').value,
+    read_time: parseInt(document.getElementById('readTime').value, 10) || 3,
+    author: document.getElementById('author').value.trim() || 'BeingTechy Staff',
+    cover_image: document.getElementById('coverImage').value.trim() || null,
+    tags: document.getElementById('tags').value.split(',').map(t => t.trim()).filter(Boolean),
+    excerpt: document.getElementById('excerpt').value.trim(),
+    content: document.getElementById('content').value,
+    published: document.getElementById('published').checked
+  };
+
+  let error;
+  if (id){
+    ({ error } = await supabaseClient.from('posts').update(payload).eq('id', id));
+  } else {
+    ({ error } = await supabaseClient.from('posts').insert(payload));
+  }
+
+  if (error){
+    formMsg.className = 'error';
+    formMsg.textContent = error.message;
+    formMsg.style.display = 'block';
+    return;
+  }
+
+  closeEditor();
+  loadPosts();
+});
+
+/* ---------- DELETE ---------- */
+
+window.deletePost = async function(id, title){
+  if (!confirm(`Delete "${title}"? This can't be undone.`)) return;
+  const { error } = await supabaseClient.from('posts').delete().eq('id', id);
+  if (error){ alert('Could not delete: ' + error.message); return; }
+  loadPosts();
+};
+
+checkSession();
+</script>
+
+</body>
+</html>
