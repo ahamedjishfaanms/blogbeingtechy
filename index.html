@@ -600,7 +600,17 @@ document.getElementById('subscribeForm').addEventListener('submit', function(e){
   this.reset();
 });
 
+/* Logs one row to the page_views table for the Analytics tab in admin.html.
+   Write-only from the visitor's side (see supabase-setup.sql) — fails silently
+   if Supabase isn't connected yet or the insert doesn't go through. */
+async function logPageView(){
+  if (!supabaseClient) return;
+  try{ await supabaseClient.from('page_views').insert({ path: 'home' }); }
+  catch(e){ /* analytics should never break the page */ }
+}
+
 loadPosts();
+logPageView();
 
 // AdSense: push each ad unit once the DOM is ready
 try{
