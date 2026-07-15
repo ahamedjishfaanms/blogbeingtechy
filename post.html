@@ -212,6 +212,16 @@ async function loadPost(){
     .limit(3);
 
   renderPost(post, related || []);
+  logPageView(slug);
+}
+
+/* Logs one row to the page_views table for the Analytics tab in admin.html.
+   Write-only from the visitor's side (see supabase-setup.sql) — fails silently
+   if Supabase isn't connected yet or the insert doesn't go through. */
+async function logPageView(postSlug){
+  if (!supabaseClient) return;
+  try{ await supabaseClient.from('page_views').insert({ path: 'post', slug: postSlug }); }
+  catch(e){ /* analytics should never break the page */ }
 }
 
 loadPost();
