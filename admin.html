@@ -104,7 +104,79 @@
   #formMsg.error{ color:var(--danger); display:block; }
   #formMsg.ok{ color:var(--signal); display:block; }
 
-  @media(max-width:640px){ .grid2{ grid-template-columns:1fr; } table{ font-size:13px; } td.title{ max-width:140px; } }
+  /* ---- tabs ---- */
+  .tabs{ display:flex; gap:6px; border-bottom:1px solid var(--line); margin-bottom:28px; }
+  .tab-btn{
+    font-family:var(--font-mono); font-size:12.5px; text-transform:uppercase; letter-spacing:.06em;
+    background:none; border:none; color:var(--text-muted); padding:12px 4px; margin-right:22px;
+    cursor:pointer; position:relative; top:1px;
+  }
+  .tab-btn.active{ color:var(--text); border-bottom:2px solid var(--accent); }
+
+  /* ---- analytics ---- */
+  .stat-grid{ display:grid; grid-template-columns:repeat(4, 1fr); gap:14px; margin-bottom:28px; }
+  .stat-card{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:18px; }
+  .stat-card .num{ font-family:var(--font-display); font-size:30px; font-weight:500; margin-bottom:4px; }
+  .stat-card .lbl{ font-family:var(--font-mono); font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--text-muted); }
+  .panel-block{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:20px; margin-bottom:24px; }
+  .panel-block h4{ font-family:var(--font-mono); font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--text-muted); margin-bottom:18px; }
+  .bar-chart{ display:flex; align-items:flex-end; gap:6px; height:140px; }
+  .bar-chart .bar-col{ flex:1; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; height:100%; gap:6px; min-width:0; }
+  .bar-chart .bar{ width:100%; background:var(--signal); border-radius:2px 2px 0 0; min-height:2px; }
+  .bar-chart .bar-day{ font-family:var(--font-mono); font-size:9.5px; color:var(--text-muted); white-space:nowrap; }
+  .top-posts-row{ display:flex; justify-content:space-between; align-items:center; padding:11px 0; border-top:1px solid var(--line); font-size:13.5px; gap:12px; }
+  .top-posts-row:first-child{ border-top:none; }
+  .top-posts-row .tp-title{ font-family:var(--font-display); font-size:14.5px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .top-posts-row .tp-count{ font-family:var(--font-mono); color:var(--signal); font-size:12.5px; flex-shrink:0; }
+  #analyticsEmpty{ padding:40px 20px; text-align:center; color:var(--text-muted); }
+
+  /* ================= MOBILE ================= */
+  @media(max-width:640px){
+    .grid2{ grid-template-columns:1fr; }
+    .wrap{ padding:0 16px; }
+
+    input, textarea, select, button.primary, button.cancel, #newPostBtn{ font-size:16px; } /* prevents iOS auto-zoom */
+
+    .toolbar{ margin-bottom:20px; }
+    .toolbar h2{ font-size:22px; }
+    #newPostBtn{ width:100%; padding:13px 18px; }
+
+    .stat-grid{ grid-template-columns:repeat(2, 1fr); gap:10px; }
+    .stat-card{ padding:14px; }
+    .stat-card .num{ font-size:24px; }
+
+    /* stacked "card" table */
+    table, thead, tbody, th, td, tr{ display:block; }
+    thead{ display:none; }
+    table{ border:none; }
+    tbody tr{
+      border:1px solid var(--line); border-radius:var(--radius); margin-bottom:12px; padding:6px 14px; background:var(--surface);
+    }
+    tbody tr:hover{ background:var(--surface); }
+    tbody td{ display:flex; justify-content:space-between; align-items:center; gap:12px; padding:10px 0; border-bottom:1px solid var(--line); text-align:right; max-width:none; }
+    tbody td:last-child{ border-bottom:none; }
+    tbody td::before{
+      content:attr(data-label); font-family:var(--font-mono); font-size:10.5px; text-transform:uppercase;
+      letter-spacing:.06em; color:var(--text-muted); text-align:left;
+    }
+    td.title{ max-width:none; text-align:right; }
+    .row-actions{ justify-content:flex-end; width:100%; }
+    .row-actions button{ min-height:40px; padding:8px 14px; }
+
+    /* full-screen editor modal on mobile */
+    #editorOverlay{ padding:0; }
+    #editorPanel{ max-width:none; width:100%; min-height:100%; border-radius:0; margin-bottom:0; padding:22px 18px 40px; }
+    .editor-actions{ flex-direction:column-reverse; }
+    .editor-actions button{ width:100%; padding:13px 18px; }
+
+    .bar-chart{ height:110px; }
+    .bar-chart .bar-day{ font-size:8.5px; }
+  }
+
+  @media(max-width:400px){
+    .stat-grid{ grid-template-columns:1fr 1fr; }
+    .logo span.tag{ display:none; }
+  }
 </style>
 </head>
 <body>
@@ -134,18 +206,62 @@
   </header>
 
   <main class="wrap">
-    <div class="toolbar">
-      <h2>Posts</h2>
-      <button id="newPostBtn">+ New post</button>
+    <div class="tabs">
+      <button class="tab-btn active" id="tabPostsBtn" data-tab="posts">Posts</button>
+      <button class="tab-btn" id="tabAnalyticsBtn" data-tab="analytics">Analytics</button>
     </div>
 
-    <table id="postsTable">
-      <thead>
-        <tr><th>Title</th><th>Category</th><th>Status</th><th>Created</th><th></th></tr>
-      </thead>
-      <tbody id="postsBody"></tbody>
-    </table>
-    <div id="emptyMsg" style="display:none;">No posts yet. Click "New post" to add one.</div>
+    <!-- ===== POSTS PANEL ===== -->
+    <div id="postsPanel">
+      <div class="toolbar">
+        <h2>Posts</h2>
+        <button id="newPostBtn">+ New post</button>
+      </div>
+
+      <table id="postsTable">
+        <thead>
+          <tr><th>Title</th><th>Category</th><th>Status</th><th>Created</th><th></th></tr>
+        </thead>
+        <tbody id="postsBody"></tbody>
+      </table>
+      <div id="emptyMsg" style="display:none;">No posts yet. Click "New post" to add one.</div>
+    </div>
+
+    <!-- ===== ANALYTICS PANEL ===== -->
+    <div id="analyticsPanel" style="display:none;">
+      <div class="toolbar">
+        <h2>Analytics</h2>
+        <button id="refreshAnalyticsBtn" style="background:none; border:1px solid var(--line); color:var(--text-muted); padding:11px 16px; border-radius:var(--radius); font-family:var(--font-mono); font-size:12.5px; cursor:pointer;">↻ Refresh</button>
+      </div>
+
+      <div id="analyticsBody">
+        <div class="stat-grid">
+          <div class="stat-card"><div class="num" id="statToday">–</div><div class="lbl">Views today</div></div>
+          <div class="stat-card"><div class="num" id="stat7d">–</div><div class="lbl">Last 7 days</div></div>
+          <div class="stat-card"><div class="num" id="stat30d">–</div><div class="lbl">Last 30 days</div></div>
+          <div class="stat-card"><div class="num" id="statTotal">–</div><div class="lbl">All-time views</div></div>
+        </div>
+
+        <div class="panel-block">
+          <h4>Daily views — last 14 days</h4>
+          <div class="bar-chart" id="dailyChart"></div>
+        </div>
+
+        <div class="panel-block">
+          <h4>Top posts by views</h4>
+          <div id="topPosts"></div>
+        </div>
+
+        <div class="panel-block">
+          <h4>Home page views</h4>
+          <div class="top-posts-row" style="border-top:none;">
+            <span class="tp-title">Homepage (index.html)</span>
+            <span class="tp-count" id="homeViews">0 views</span>
+          </div>
+        </div>
+      </div>
+      <div id="analyticsEmpty" style="display:none;">No page views recorded yet. Views are logged automatically once visitors open your live site.</div>
+    </div>
   </main>
 </div>
 
@@ -256,6 +372,7 @@ async function checkSession(){
 function showDashboard(){
   loginScreen.style.display = 'none';
   dashboard.style.display = 'block';
+  switchTab('posts');
   loadPosts();
 }
 
@@ -284,11 +401,11 @@ async function loadPosts(){
   emptyMsg.style.display = 'none';
   postsBody.innerHTML = data.map(p => `
     <tr>
-      <td class="title">${escapeHtml(p.title)}</td>
-      <td style="color:var(--text-muted); font-family:var(--font-mono); font-size:12px; text-transform:uppercase;">${p.category || 'general'}</td>
-      <td><span class="status-badge ${p.published ? 'published' : 'draft'}">${p.published ? 'Published' : 'Draft'}</span></td>
-      <td style="color:var(--text-muted); font-size:12.5px;">${new Date(p.created_at).toLocaleDateString()}</td>
-      <td>
+      <td class="title" data-label="Title">${escapeHtml(p.title)}</td>
+      <td data-label="Category" style="color:var(--text-muted); font-family:var(--font-mono); font-size:12px; text-transform:uppercase;">${p.category || 'general'}</td>
+      <td data-label="Status"><span class="status-badge ${p.published ? 'published' : 'draft'}">${p.published ? 'Published' : 'Draft'}</span></td>
+      <td data-label="Created" style="color:var(--text-muted); font-size:12.5px;">${new Date(p.created_at).toLocaleDateString()}</td>
+      <td data-label="">
         <div class="row-actions">
           <button onclick="editPost('${p.id}')">Edit</button>
           <button class="delete" onclick="deletePost('${p.id}', '${escapeHtml(p.title).replace(/'/g,"\\'")}')">Delete</button>
@@ -379,6 +496,111 @@ window.deletePost = async function(id, title){
   if (error){ alert('Could not delete: ' + error.message); return; }
   loadPosts();
 };
+
+/* ---------- TABS ---------- */
+
+let analyticsLoaded = false;
+
+document.getElementById('tabPostsBtn').addEventListener('click', () => switchTab('posts'));
+document.getElementById('tabAnalyticsBtn').addEventListener('click', () => switchTab('analytics'));
+document.getElementById('refreshAnalyticsBtn').addEventListener('click', loadAnalytics);
+
+function switchTab(tab){
+  document.getElementById('tabPostsBtn').classList.toggle('active', tab === 'posts');
+  document.getElementById('tabAnalyticsBtn').classList.toggle('active', tab === 'analytics');
+  document.getElementById('postsPanel').style.display = tab === 'posts' ? 'block' : 'none';
+  document.getElementById('analyticsPanel').style.display = tab === 'analytics' ? 'block' : 'none';
+  if (tab === 'analytics' && !analyticsLoaded) loadAnalytics();
+}
+
+/* ---------- ANALYTICS ----------
+   Reads the page_views table (see supabase-setup.sql). Rows are written
+   by index.html and post.html on every real visit; only the signed-in
+   admin account can read them back, thanks to the RLS policy on that table. */
+
+async function loadAnalytics(){
+  const body = document.getElementById('analyticsBody');
+  const empty = document.getElementById('analyticsEmpty');
+  const refreshBtn = document.getElementById('refreshAnalyticsBtn');
+  refreshBtn.disabled = true;
+  refreshBtn.textContent = '↻ Loading…';
+
+  const since = new Date(Date.now() - 90 * 24 * 60 * 60 * 1000).toISOString();
+  const { data, error } = await supabaseClient
+    .from('page_views')
+    .select('path, slug, created_at')
+    .gte('created_at', since)
+    .order('created_at', { ascending: false });
+
+  refreshBtn.disabled = false;
+  refreshBtn.textContent = '↻ Refresh';
+  analyticsLoaded = true;
+
+  if (error){
+    body.style.display = 'none';
+    empty.style.display = 'block';
+    empty.textContent = 'Could not load analytics: ' + error.message;
+    return;
+  }
+
+  if (!data.length){
+    body.style.display = 'none';
+    empty.style.display = 'block';
+    empty.textContent = 'No page views recorded yet. Views are logged automatically once visitors open your live site.';
+    return;
+  }
+
+  body.style.display = 'block';
+  empty.style.display = 'none';
+
+  const DAY = 86400000;
+  const now = Date.now();
+  const startOfToday = new Date(); startOfToday.setHours(0, 0, 0, 0);
+
+  const todayCount = data.filter(v => new Date(v.created_at) >= startOfToday).length;
+  const c7 = data.filter(v => now - new Date(v.created_at).getTime() < 7 * DAY).length;
+  const c30 = data.filter(v => now - new Date(v.created_at).getTime() < 30 * DAY).length;
+
+  document.getElementById('statToday').textContent = todayCount;
+  document.getElementById('stat7d').textContent = c7;
+  document.getElementById('stat30d').textContent = c30;
+  document.getElementById('statTotal').textContent = data.length + '+'; // last 90 days
+
+  const homeCount = data.filter(v => v.path === 'home').length;
+  document.getElementById('homeViews').textContent = homeCount + (homeCount === 1 ? ' view' : ' views');
+
+  // Daily chart — last 14 days
+  const days = [];
+  for (let i = 13; i >= 0; i--){
+    const d = new Date(); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() - i);
+    days.push(d);
+  }
+  const dayCounts = days.map(d => {
+    const next = new Date(d.getTime() + DAY);
+    return data.filter(v => { const t = new Date(v.created_at); return t >= d && t < next; }).length;
+  });
+  const maxCount = Math.max(1, ...dayCounts);
+  document.getElementById('dailyChart').innerHTML = days.map((d, i) => `
+    <div class="bar-col" title="${dayCounts[i]} view${dayCounts[i] === 1 ? '' : 's'} on ${d.toLocaleDateString()}">
+      <div class="bar" style="height:${Math.max(2, Math.round((dayCounts[i] / maxCount) * 100))}%"></div>
+      <div class="bar-day">${d.getDate()}</div>
+    </div>
+  `).join('');
+
+  // Top posts by views
+  const postCounts = {};
+  data.forEach(v => { if (v.path === 'post' && v.slug) postCounts[v.slug] = (postCounts[v.slug] || 0) + 1; });
+  const sorted = Object.entries(postCounts).sort((a, b) => b[1] - a[1]).slice(0, 8);
+  const postsCache = window._postsCache || [];
+  const topPostsEl = document.getElementById('topPosts');
+  topPostsEl.innerHTML = sorted.length
+    ? sorted.map(([slug, count]) => {
+        const match = postsCache.find(p => p.slug === slug);
+        const title = match ? escapeHtml(match.title) : slug;
+        return `<div class="top-posts-row"><span class="tp-title">${title}</span><span class="tp-count">${count} ${count === 1 ? 'view' : 'views'}</span></div>`;
+      }).join('')
+    : '<p style="color:var(--text-muted); font-size:13.5px;">No post views yet.</p>';
+}
 
 checkSession();
 </script>
