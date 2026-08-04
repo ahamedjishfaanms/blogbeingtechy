@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact Us — BeingTechy</title>
+<meta name="description" content="Get in touch with BeingTechy — email, physical address, and social channels.">
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%2314171C'/%3E%3Ccircle cx='32' cy='32' r='7' fill='%23E8A33D'/%3E%3Ccircle cx='32' cy='32' r='16' fill='none' stroke='%234FB0C6' stroke-width='3' stroke-dasharray='4 6'/%3E%3C/svg%3E">
+
+<meta name="google-adsense-account" content="ca-pub-6780480728242580">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6780480728242580" crossorigin="anonymous"></script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:#14171C; --surface:#1B1F26; --surface-2:#20252D; --line:#2B313B;
+    --text:#EDEAE2; --text-muted:#8B92A0; --accent:#E8A33D; --signal:#4FB0C6;
+    --radius:4px; --max:1180px; --article-max:700px;
+    --font-display:'Fraunces', Georgia, serif;
+    --font-body:'Inter', -apple-system, sans-serif;
+    --font-mono:'JetBrains Mono', ui-monospace, monospace;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{ background:var(--bg); color:var(--text); font-family:var(--font-body); line-height:1.6; }
+  a{ color:inherit; text-decoration:none; }
+  img{ max-width:100%; display:block; }
+  .wrap{ max-width:var(--max); margin:0 auto; padding:0 28px; }
+  .dot{ display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--signal); }
+  .dot.pulse{ animation:pulse 2.2s ease-in-out infinite; }
+  @keyframes pulse{ 0%,100%{box-shadow:0 0 0 0 rgba(79,176,198,.55);} 50%{box-shadow:0 0 0 5px rgba(79,176,198,0);} }
+
+  header{ position:sticky; top:0; z-index:40; background:rgba(20,23,28,.86); backdrop-filter:blur(10px); border-bottom:1px solid var(--line); }
+  .nav{ display:flex; align-items:center; justify-content:space-between; padding:18px 0; }
+  .logo{ font-family:var(--font-mono); font-weight:500; font-size:16px; display:flex; align-items:center; gap:8px; text-transform:lowercase; }
+  .logo b{ color:var(--accent); font-weight:600; }
+  .back{ font-family:var(--font-mono); font-size:12px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.08em; }
+  .back:hover{ color:var(--accent); }
+
+  article{ max-width:var(--article-max); margin:0 auto; padding:56px 0 40px; }
+  .meta{ font-family:var(--font-mono); font-size:12px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.06em; display:flex; align-items:center; gap:8px; margin-bottom:20px; }
+  .meta .tag{ color:var(--accent); }
+  h1{ font-family:var(--font-display); font-weight:500; font-size:clamp(30px,4.6vw,46px); line-height:1.1; letter-spacing:-.01em; margin-bottom:22px; }
+  .lede{ font-family:var(--font-display); font-size:20px; color:var(--text-muted); line-height:1.5; padding-bottom:32px; margin-bottom:36px; border-bottom:1px solid var(--line); }
+
+  .contact-grid{ display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:40px; }
+  .contact-card{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:24px; }
+  .contact-card .lbl{ font-family:var(--font-mono); font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--text-muted); margin-bottom:10px; display:flex; align-items:center; gap:8px; }
+  .contact-card .lbl svg{ width:14px; height:14px; stroke:var(--signal); }
+  .contact-card .val{ font-family:var(--font-display); font-size:17px; line-height:1.5; }
+  .contact-card a.val{ color:var(--signal); text-decoration:underline; text-underline-offset:3px; }
+
+  form.contact-form{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:28px; }
+  .field{ margin-bottom:18px; }
+  .field label{ display:block; font-family:var(--font-mono); font-size:11.5px; text-transform:uppercase; letter-spacing:.06em; color:var(--text-muted); margin-bottom:8px; }
+  .field input, .field textarea{
+    width:100%; background:var(--surface-2); border:1px solid var(--line); border-radius:var(--radius);
+    color:var(--text); padding:12px 14px; font-family:var(--font-body); font-size:14.5px;
+  }
+  .field textarea{ resize:vertical; min-height:120px; }
+  .field input:focus, .field textarea:focus{ outline:none; border-color:var(--signal); }
+  form.contact-form button{
+    background:var(--accent); color:#14171C; border:none; font-family:var(--font-mono); font-weight:600;
+    font-size:13px; padding:13px 24px; border-radius:var(--radius); cursor:pointer; width:100%;
+  }
+  form.contact-form button:hover{ opacity:.9; }
+  .form-note{ font-size:12.5px; color:var(--text-muted); margin-top:12px; text-align:center; }
+
+  .ad-slot{ margin:36px 0; padding:14px; border:1px dashed var(--line); border-radius:var(--radius); text-align:center; }
+  .ad-slot::before{ content:'ADVERTISEMENT'; display:block; font-family:var(--font-mono); font-size:10px; letter-spacing:.14em; color:var(--text-muted); margin-bottom:8px; }
+
+  footer{ padding:32px 0; border-top:1px solid var(--line); text-align:center; font-family:var(--font-mono); font-size:11px; color:var(--text-muted); }
+  footer a{ color:var(--text-muted); }
+  footer a:hover{ color:var(--accent); }
+  .foot-links{ margin-top:8px; display:flex; gap:16px; justify-content:center; }
+
+  @media(max-width:640px){
+    .contact-grid{ grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <div class="logo"><span class="dot pulse"></span>being<b>techy</b></div>
+    <a class="back" href="index.html">← All posts</a>
+  </div>
+</header>
+
+<main>
+  <article>
+    <div class="meta"><span class="tag">Contact</span><span>·</span><span>BeingTechy</span></div>
+    <h1>Get in touch</h1>
+    <p class="lede">Corrections, tips, partnership questions, or just feedback — here's how to reach us.</p>
+
+    <div class="contact-grid">
+      <div class="contact-card">
+        <div class="lbl">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+          Email
+        </div>
+        <a class="val" href="mailto:hello@beingtechy.org">hello@beingtechy.org</a>
+      </div>
+      <div class="contact-card">
+        <div class="lbl">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+          Address
+        </div>
+        <div class="val">
+          Being Techy<br>
+          Building No. 46, Gardens Metro Station<br>
+          Dubai, United Arab Emirates
+        </div>
+      </div>
+    </div>
+
+    <form class="contact-form" id="contactForm">
+      <div class="field">
+        <label for="cName">Name</label>
+        <input type="text" id="cName" required>
+      </div>
+      <div class="field">
+        <label for="cEmail">Email</label>
+        <input type="email" id="cEmail" required>
+      </div>
+      <div class="field">
+        <label for="cSubject">Subject</label>
+        <input type="text" id="cSubject" required>
+      </div>
+      <div class="field">
+        <label for="cMessage">Message</label>
+        <textarea id="cMessage" required></textarea>
+      </div>
+      <button type="submit">Send message</button>
+      <p class="form-note">Opens your email app with this message pre-filled, addressed to hello@beingtechy.org.</p>
+    </form>
+
+    <div class="ad-slot">
+      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6780480728242580" data-ad-slot="0000000005" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    </div>
+  </article>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>© <span id="year"></span> beingtechy.org</div>
+    <div class="foot-links">
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="privacy.html">Privacy Policy</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+document.getElementById('year').textContent = new Date().getFullYear();
+try{ (window.adsbygoogle = window.adsbygoogle || []).push({}); }catch(e){}
+
+document.getElementById('contactForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  const name = document.getElementById('cName').value;
+  const email = document.getElementById('cEmail').value;
+  const subject = document.getElementById('cSubject').value;
+  const message = document.getElementById('cMessage').value;
+
+  const body = `Name: ${name}\nEmail: ${email}\n\n${message}`;
+  window.location.href = `mailto:hello@beingtechy.org?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+});
+</script>
+
+</body>
+</html>
