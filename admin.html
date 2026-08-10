@@ -152,6 +152,13 @@
   .top-posts-row:first-child{ border-top:none; }
   .top-posts-row .tp-title{ font-family:var(--font-display); font-size:14.5px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .top-posts-row .tp-count{ font-family:var(--font-mono); color:var(--signal); font-size:12.5px; flex-shrink:0; }
+  .country-row{ padding:10px 0; border-top:1px solid var(--line); }
+  .country-row:first-child{ border-top:none; }
+  .country-row-top{ display:flex; justify-content:space-between; font-size:13.5px; margin-bottom:6px; }
+  .country-row-top .cr-name{ font-family:var(--font-display); font-size:14.5px; }
+  .country-row-top .cr-count{ font-family:var(--font-mono); color:var(--signal); font-size:12.5px; flex-shrink:0; }
+  .country-row-bar{ height:4px; border-radius:2px; background:var(--line); overflow:hidden; }
+  .country-row-bar-fill{ height:100%; background:var(--signal); border-radius:2px; }
   #analyticsEmpty{ padding:40px 20px; text-align:center; color:var(--text-muted); }
 
   /* ---- team ---- */
@@ -165,9 +172,23 @@
   .team-card .tc-linkedin{ display:inline-flex; align-items:center; gap:6px; font-size:12.5px; color:var(--signal); text-decoration:underline; text-underline-offset:3px; margin-bottom:12px; }
   .team-card .tc-role-row{ display:flex; align-items:center; gap:8px; }
   .team-card select.role-select{ margin:0; padding:8px 10px; font-size:12.5px; }
+  .tc-message-btn{
+    font-family:var(--font-mono); font-size:11px; background:none; border:1px solid var(--line);
+    color:var(--text-muted); padding:7px 12px; border-radius:var(--radius); cursor:pointer;
+  }
+  .tc-message-btn:hover{ color:var(--signal); border-color:var(--signal); }
   #teamEmpty{ padding:40px 20px; text-align:center; color:var(--text-muted); }
 
   /* ---- chat ---- */
+  .dm-switcher{ display:flex; gap:8px; overflow-x:auto; margin-bottom:14px; padding-bottom:2px; }
+  .dm-pill{
+    font-family:var(--font-mono); font-size:12px; padding:8px 14px; border-radius:100px;
+    border:1px solid var(--line); background:none; color:var(--text-muted); cursor:pointer;
+    white-space:nowrap; display:flex; align-items:center; gap:7px; flex:none; transition:all .15s;
+  }
+  .dm-pill:hover{ color:var(--text); }
+  .dm-pill.active{ color:var(--text); border-color:var(--accent); background:var(--surface); }
+  .dm-pill .online-dot{ position:static; }
   .chat-shell{ display:flex; flex-direction:column; height:560px; border:1px solid var(--line); border-radius:var(--radius); background:var(--surface); overflow:hidden; }
   .chat-messages{ flex:1; overflow-y:auto; padding:20px; display:flex; flex-direction:column; gap:14px; }
   .chat-msg{ display:flex; gap:10px; max-width:80%; }
@@ -309,10 +330,11 @@
     <div id="chatPanel" class="tab-panel" style="display:none;">
       <div class="toolbar">
         <div>
-          <h2>Team chat</h2>
-          <p class="sub">A shared room for everyone with admin access — leads, admins, and authors.</p>
+          <h2>Chat</h2>
+          <p class="sub">The shared team room, plus 1:1 messages with anyone on the team.</p>
         </div>
       </div>
+      <div class="dm-switcher" id="dmSwitcher"></div>
       <div class="chat-shell">
         <div class="chat-messages" id="chatMessages"><div class="chat-empty">Loading messages…</div></div>
         <form class="chat-input-row" id="chatForm">
@@ -345,6 +367,11 @@
         <div class="panel-block">
           <h4>Top posts by views</h4>
           <div id="topPosts"></div>
+        </div>
+
+        <div class="panel-block">
+          <h4>Views by country</h4>
+          <div id="countryViews"></div>
         </div>
 
         <div class="panel-block">
@@ -477,8 +504,6 @@ let teamCache = [];          // all profiles
 let postsCache = [];
 let presenceChannel = null;
 let onlineIds = new Set();
-let chatChannel = null;
-let chatLoaded = false;
 
 const ROLE_LABEL = { lead_admin: 'Lead Admin', admin: 'Admin', author: 'Author' };
 const DEFAULT_AVATAR = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"%3E%3Crect width="64" height="64" rx="32" fill="%2320252D"/%3E%3Ccircle cx="32" cy="25" r="12" fill="%238B92A0"/%3E%3Cellipse cx="32" cy="56" rx="20" ry="16" fill="%238B92A0"/%3E%3C/svg%3E';
@@ -539,11 +564,45 @@ async function bootDashboard(){
   renderHeaderIdentity();
   applyRoleVisibility();
   setupPresence();
+  startLastSeenHeartbeat();
 
   loginScreen.style.display = 'none';
   dashboard.style.display = 'block';
   switchTab('posts');
   loadPosts();
+}
+
+/* ---------- LAST SEEN ----------
+   Presence (above) only tells us who's online RIGHT NOW. To show
+   "Last seen 2h ago" for people who aren't, each signed-in tab pings its
+   own last_seen_at every so often — on load, on a timer, and whenever the
+   tab becomes visible again. This only ever writes your own row, which the
+   "Profile update rules" policy already allows. */
+let lastSeenTimer = null;
+
+function pingLastSeen(){
+  if (!currentUser) return;
+  supabaseClient.from('profiles').update({ last_seen_at: new Date().toISOString() }).eq('id', currentUser.id)
+    .then(() => {}, () => {});
+}
+
+function startLastSeenHeartbeat(){
+  pingLastSeen();
+  if (lastSeenTimer) clearInterval(lastSeenTimer);
+  lastSeenTimer = setInterval(pingLastSeen, 60000);
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') pingLastSeen();
+  });
+}
+
+function timeAgo(dateStr){
+  if (!dateStr) return null;
+  const diff = (Date.now() - new Date(dateStr).getTime()) / 1000;
+  if (diff < 60) return 'just now';
+  if (diff < 3600) return Math.floor(diff / 60) + 'm ago';
+  if (diff < 86400) return Math.floor(diff / 3600) + 'h ago';
+  if (diff < 604800) return Math.floor(diff / 86400) + 'd ago';
+  return new Date(dateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 }
 
 function renderHeaderIdentity(){
@@ -569,6 +628,7 @@ function setupPresence(){
       const state = presenceChannel.presenceState();
       onlineIds = new Set(Object.keys(state));
       renderTeam();
+      if (document.getElementById('dmSwitcher').innerHTML) renderDmSwitcher();
     })
     .subscribe(async (status) => {
       if (status === 'SUBSCRIBED'){
@@ -804,12 +864,18 @@ function renderTeam(){
           </span>
           <div>
             <div class="tc-name">${escapeHtml(member.display_name || member.email)}${isSelf ? ' (you)' : ''}</div>
-            <div class="tc-status"><span class="online-dot ${isOnline ? 'online' : ''}"></span>${isOnline ? 'Online now' : 'Offline'}</div>
+            <div class="tc-status">
+              <span class="online-dot ${isOnline ? 'online' : ''}"></span>
+              ${isOnline ? 'Online now' : (member.last_seen_at ? 'Last seen ' + timeAgo(member.last_seen_at) : 'Offline')}
+            </div>
           </div>
         </div>
         <div class="tc-email">${escapeHtml(member.email)}</div>
         ${member.linkedin_url ? `<a class="tc-linkedin" href="${escapeHtml(member.linkedin_url)}" target="_blank" rel="noopener">↗ LinkedIn profile</a><br>` : ''}
-        ${roleControlHtml}
+        <div class="tc-role-row" style="justify-content:space-between;">
+          ${roleControlHtml}
+          ${!isSelf ? `<button class="tc-message-btn" type="button" onclick="openDmWith('${member.id}')">Message</button>` : ''}
+        </div>
       </div>
     `;
   }).join('');
@@ -825,34 +891,78 @@ window.changeRole = async function(memberId, newRole){
   loadTeam();
 };
 
-/* ---------- CHAT ---------- */
+/* ---------- CHAT (team room + 1:1 direct messages) ---------- */
+
+let currentChatTarget = { type: 'team' };   // { type:'team' } or { type:'dm', userId }
+let messagingChannel = null;
 
 async function loadChat(){
-  if (chatLoaded) return;
-  chatLoaded = true;
-
-  const chatMessagesEl = document.getElementById('chatMessages');
-  chatMessagesEl.innerHTML = '<div class="chat-empty">Loading messages…</div>';
-
-  // Make sure we have the team roster to resolve names/avatars for messages.
+  // Make sure we have the team roster to resolve names/avatars/pills.
   if (!teamCache.length){
     const { data } = await supabaseClient.from('profiles').select('*');
     if (data) teamCache = data;
   }
+  renderDmSwitcher();
+  await loadChatThread();
+  ensureMessagingSubscription();
+}
 
-  const { data, error } = await supabaseClient
-    .from('chat_messages')
-    .select('*')
-    .order('created_at', { ascending: true })
-    .limit(100);
+function renderDmSwitcher(){
+  const switcherEl = document.getElementById('dmSwitcher');
+  const teamActive = currentChatTarget.type === 'team';
+  let html = `<button class="dm-pill ${teamActive ? 'active' : ''}" data-type="team" type="button">💬 Team chat</button>`;
+  html += teamCache
+    .filter(m => m.id !== currentUser.id)
+    .map(m => {
+      const active = currentChatTarget.type === 'dm' && currentChatTarget.userId === m.id;
+      const isOnline = onlineIds.has(m.id);
+      return `
+        <button class="dm-pill ${active ? 'active' : ''}" data-type="dm" data-user="${m.id}" type="button">
+          <span class="online-dot ${isOnline ? 'online' : ''}"></span>${escapeHtml(m.display_name || m.email)}
+        </button>`;
+    }).join('');
+  switcherEl.innerHTML = html;
+}
 
-  if (error){
-    chatMessagesEl.innerHTML = `<div class="chat-empty">Could not load chat: ${escapeHtml(error.message)}</div>`;
-    return;
+document.getElementById('dmSwitcher').addEventListener('click', (e) => {
+  const btn = e.target.closest('.dm-pill');
+  if (!btn) return;
+  currentChatTarget = btn.dataset.type === 'team' ? { type: 'team' } : { type: 'dm', userId: btn.dataset.user };
+  renderDmSwitcher();
+  loadChatThread();
+});
+
+window.openDmWith = function(userId){
+  currentChatTarget = { type: 'dm', userId };
+  switchTab('chat');
+};
+
+async function loadChatThread(){
+  const chatMessagesEl = document.getElementById('chatMessages');
+  chatMessagesEl.innerHTML = '<div class="chat-empty">Loading messages…</div>';
+
+  let data, error;
+  if (currentChatTarget.type === 'team'){
+    ({ data, error } = await supabaseClient
+      .from('chat_messages')
+      .select('*')
+      .order('created_at', { ascending: true })
+      .limit(100));
+  } else {
+    const otherId = currentChatTarget.userId;
+    ({ data, error } = await supabaseClient
+      .from('direct_messages')
+      .select('*')
+      .or(`and(sender_id.eq.${currentUser.id},recipient_id.eq.${otherId}),and(sender_id.eq.${otherId},recipient_id.eq.${currentUser.id})`)
+      .order('created_at', { ascending: true })
+      .limit(100));
   }
 
+  if (error){
+    chatMessagesEl.innerHTML = `<div class="chat-empty">Could not load messages: ${escapeHtml(error.message)}</div>`;
+    return;
+  }
   renderChatMessages(data || []);
-  subscribeChat();
 }
 
 function memberById(id){
@@ -862,60 +972,62 @@ function memberById(id){
 function renderChatMessages(messages){
   const chatMessagesEl = document.getElementById('chatMessages');
   if (!messages.length){
-    chatMessagesEl.innerHTML = '<div class="chat-empty">No messages yet — say hello 👋</div>';
+    chatMessagesEl.innerHTML = currentChatTarget.type === 'team'
+      ? '<div class="chat-empty">No messages yet — say hello 👋</div>'
+      : '<div class="chat-empty">No messages yet — this is the start of your conversation.</div>';
     return;
   }
-  chatMessagesEl.innerHTML = messages.map(m => {
-    const sender = memberById(m.sender_id);
-    const name = sender ? (sender.display_name || sender.email) : 'Former teammate';
-    const avatar = sender ? avatarSrc(sender.avatar_url) : DEFAULT_AVATAR;
-    const own = m.sender_id === currentUser.id;
-    const time = new Date(m.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    return `
-      <div class="chat-msg ${own ? 'own' : ''}">
-        <img class="avatar" src="${avatar}" alt="">
-        <div>
-          <div class="meta-line"><span>${escapeHtml(name)}</span><span>${time}</span></div>
-          <div class="bubble">${escapeHtml(m.message)}</div>
-        </div>
-      </div>
-    `;
-  }).join('');
+  chatMessagesEl.innerHTML = messages.map(chatMessageHtml).join('');
   chatMessagesEl.scrollTop = chatMessagesEl.scrollHeight;
 }
 
-function subscribeChat(){
-  if (chatChannel) return;
-  chatChannel = supabaseClient
-    .channel('chat-room')
-    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'chat_messages' }, (payload) => {
-      appendChatMessage(payload.new);
-    })
-    .subscribe();
+function chatMessageHtml(m){
+  const sender = memberById(m.sender_id);
+  const name = sender ? (sender.display_name || sender.email) : 'Former teammate';
+  const avatar = sender ? avatarSrc(sender.avatar_url) : DEFAULT_AVATAR;
+  const own = m.sender_id === currentUser.id;
+  const time = new Date(m.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  return `
+    <div class="chat-msg ${own ? 'own' : ''}">
+      <img class="avatar" src="${avatar}" alt="">
+      <div>
+        <div class="meta-line"><span>${escapeHtml(name)}</span><span>${time}</span></div>
+        <div class="bubble">${escapeHtml(m.message)}</div>
+      </div>
+    </div>
+  `;
 }
 
 function appendChatMessage(m){
   const chatMessagesEl = document.getElementById('chatMessages');
   const emptyState = chatMessagesEl.querySelector('.chat-empty');
   if (emptyState) chatMessagesEl.innerHTML = '';
-
-  const sender = memberById(m.sender_id);
-  const name = sender ? (sender.display_name || sender.email) : 'Former teammate';
-  const avatar = sender ? avatarSrc(sender.avatar_url) : DEFAULT_AVATAR;
-  const own = m.sender_id === currentUser.id;
-  const time = new Date(m.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-  const div = document.createElement('div');
-  div.className = `chat-msg ${own ? 'own' : ''}`;
-  div.innerHTML = `
-    <img class="avatar" src="${avatar}" alt="">
-    <div>
-      <div class="meta-line"><span>${escapeHtml(name)}</span><span>${time}</span></div>
-      <div class="bubble">${escapeHtml(m.message)}</div>
-    </div>
-  `;
-  chatMessagesEl.appendChild(div);
+  chatMessagesEl.insertAdjacentHTML('beforeend', chatMessageHtml(m));
   chatMessagesEl.scrollTop = chatMessagesEl.scrollHeight;
+}
+
+// One persistent realtime channel, listening to both tables. Whichever
+// conversation is open decides what actually gets rendered when a row
+// comes in — this way switching conversations never needs a re-subscribe.
+function ensureMessagingSubscription(){
+  if (messagingChannel) return;
+  messagingChannel = supabaseClient
+    .channel('messaging')
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'chat_messages' }, (payload) => {
+      if (currentChatTarget.type === 'team') appendChatMessage(payload.new);
+    })
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'direct_messages' }, (payload) => {
+      const m = payload.new;
+      const isMine = m.sender_id === currentUser.id || m.recipient_id === currentUser.id;
+      if (!isMine) return;
+      if (currentChatTarget.type !== 'dm') return;
+      const other = currentChatTarget.userId;
+      const belongsToOpenThread =
+        (m.sender_id === other && m.recipient_id === currentUser.id) ||
+        (m.sender_id === currentUser.id && m.recipient_id === other);
+      if (belongsToOpenThread) appendChatMessage(m);
+    })
+    .subscribe();
 }
 
 document.getElementById('chatForm').addEventListener('submit', async (e) => {
@@ -926,9 +1038,17 @@ document.getElementById('chatForm').addEventListener('submit', async (e) => {
 
   const sendBtn = document.getElementById('chatSendBtn');
   sendBtn.disabled = true;
-  const { error } = await supabaseClient.from('chat_messages').insert({ sender_id: currentUser.id, message: text });
-  sendBtn.disabled = false;
 
+  let error;
+  if (currentChatTarget.type === 'team'){
+    ({ error } = await supabaseClient.from('chat_messages').insert({ sender_id: currentUser.id, message: text }));
+  } else {
+    ({ error } = await supabaseClient.from('direct_messages').insert({
+      sender_id: currentUser.id, recipient_id: currentChatTarget.userId, message: text
+    }));
+  }
+
+  sendBtn.disabled = false;
   if (error){ alert('Message could not be sent: ' + error.message); return; }
   input.value = '';
   input.focus();
@@ -1049,7 +1169,7 @@ async function loadAnalytics(){
   const since = new Date(Date.now() - 90 * 24 * 60 * 60 * 1000).toISOString();
   const { data, error } = await supabaseClient
     .from('page_views')
-    .select('path, slug, created_at')
+    .select('path, slug, country, created_at')
     .gte('created_at', since)
     .order('created_at', { ascending: false });
 
@@ -1119,6 +1239,26 @@ async function loadAnalytics(){
         return `<div class="top-posts-row"><span class="tp-title">${title}</span><span class="tp-count">${count} ${count === 1 ? 'view' : 'views'}</span></div>`;
       }).join('')
     : '<p style="color:var(--text-muted); font-size:13.5px;">No post views yet.</p>';
+
+  const countryCounts = {};
+  data.forEach(v => {
+    const c = (v.country || '').trim();
+    if (c) countryCounts[c] = (countryCounts[c] || 0) + 1;
+  });
+  const countrySorted = Object.entries(countryCounts).sort((a, b) => b[1] - a[1]).slice(0, 10);
+  const countryMax = countrySorted.length ? countrySorted[0][1] : 1;
+  const countryViewsEl = document.getElementById('countryViews');
+  countryViewsEl.innerHTML = countrySorted.length
+    ? countrySorted.map(([country, count]) => `
+        <div class="country-row">
+          <div class="country-row-top">
+            <span class="cr-name">${escapeHtml(country)}</span>
+            <span class="cr-count">${count} ${count === 1 ? 'view' : 'views'}</span>
+          </div>
+          <div class="country-row-bar"><div class="country-row-bar-fill" style="width:${Math.max(3, Math.round((count / countryMax) * 100))}%"></div></div>
+        </div>
+      `).join('')
+    : '<p style="color:var(--text-muted); font-size:13.5px;">No country data yet — this fills in automatically as new page views come in.</p>';
 }
 
 checkSession();
