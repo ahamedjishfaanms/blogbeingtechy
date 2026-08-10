@@ -829,12 +829,30 @@ document.getElementById('subscribeForm').addEventListener('submit', function(e){
   this.reset();
 });
 
+/* Best-effort visitor country lookup, via a free no-key IP geolocation API.
+   Cached per browser tab so we don't call it on every page view. Fails
+   silently — a page view is still logged even if this comes back empty. */
+async function getVisitorCountry(){
+  try{
+    const cached = sessionStorage.getItem('bt-country');
+    if (cached) return cached;
+    const res = await fetch('https://ipwho.is/');
+    const geo = await res.json();
+    const country = (geo && geo.success !== false && geo.country) ? geo.country : null;
+    if (country) sessionStorage.setItem('bt-country', country);
+    return country;
+  }catch(e){ return null; }
+}
+
 /* Logs one row to the page_views table for the Analytics tab in admin.html.
    Write-only from the visitor's side (see supabase-setup.sql) — fails silently
    if Supabase isn't connected yet or the insert doesn't go through. */
 async function logPageView(){
   if (!supabaseClient) return;
-  try{ await supabaseClient.from('page_views').insert({ path: 'home' }); }
+  try{
+    const country = await getVisitorCountry();
+    await supabaseClient.from('page_views').insert({ path: 'home', country });
+  }
   catch(e){ /* analytics should never break the page */ }
 }
 
