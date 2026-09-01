@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy — BeingTechy</title>
+<meta name="description" content="BeingTechy's privacy policy — what data we collect, how cookies and advertising work on this site, and your choices.">
+
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%2314171C'/%3E%3Ccircle cx='32' cy='32' r='7' fill='%23E8A33D'/%3E%3Ccircle cx='32' cy='32' r='16' fill='none' stroke='%234FB0C6' stroke-width='3' stroke-dasharray='4 6'/%3E%3C/svg%3E">
+
+<meta name="google-adsense-account" content="ca-pub-6780480728242580">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6780480728242580" crossorigin="anonymous"></script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:#14171C; --surface:#1B1F26; --surface-2:#20252D; --line:#2B313B;
+    --text:#EDEAE2; --text-muted:#8B92A0; --accent:#E8A33D; --signal:#4FB0C6;
+    --radius:4px; --max:1180px; --article-max:720px;
+    --font-display:'Fraunces', Georgia, serif;
+    --font-body:'Inter', -apple-system, sans-serif;
+    --font-mono:'JetBrains Mono', ui-monospace, monospace;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{ background:var(--bg); color:var(--text); font-family:var(--font-body); line-height:1.6; }
+  a{ color:inherit; text-decoration:none; }
+  .wrap{ max-width:var(--max); margin:0 auto; padding:0 28px; }
+  .dot{ display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--signal); }
+  .dot.pulse{ animation:pulse 2.2s ease-in-out infinite; }
+  @keyframes pulse{ 0%,100%{box-shadow:0 0 0 0 rgba(79,176,198,.55);} 50%{box-shadow:0 0 0 5px rgba(79,176,198,0);} }
+
+  header{ position:sticky; top:0; z-index:40; background:rgba(20,23,28,.86); backdrop-filter:blur(10px); border-bottom:1px solid var(--line); }
+  .nav{ display:flex; align-items:center; justify-content:space-between; padding:18px 0; }
+  .logo{ font-family:var(--font-mono); font-weight:500; font-size:16px; display:flex; align-items:center; gap:8px; text-transform:lowercase; }
+  .logo b{ color:var(--accent); font-weight:600; }
+  .back{ font-family:var(--font-mono); font-size:12px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.08em; }
+  .back:hover{ color:var(--accent); }
+
+  article{ max-width:var(--article-max); margin:0 auto; padding:56px 0 60px; }
+  .meta{ font-family:var(--font-mono); font-size:12px; color:var(--text-muted); text-transform:uppercase; letter-spacing:.06em; display:flex; align-items:center; gap:8px; margin-bottom:20px; }
+  .meta .tag{ color:var(--accent); }
+  h1{ font-family:var(--font-display); font-weight:500; font-size:clamp(28px,4.2vw,40px); line-height:1.1; letter-spacing:-.01em; margin-bottom:14px; }
+  .updated{ font-family:var(--font-mono); font-size:12.5px; color:var(--text-muted); padding-bottom:28px; margin-bottom:32px; border-bottom:1px solid var(--line); }
+
+  .toc{ background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:20px 24px; margin-bottom:40px; }
+  .toc div.lbl{ font-family:var(--font-mono); font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:var(--text-muted); margin-bottom:12px; }
+  .toc a{ display:block; font-size:14px; color:var(--signal); padding:5px 0; }
+  .toc a:hover{ text-decoration:underline; }
+
+  .content{ font-size:16.5px; color:#D9D6CC; }
+  .content p{ margin-bottom:18px; }
+  .content h2{ font-family:var(--font-display); font-size:23px; font-weight:500; margin:38px 0 14px; color:var(--text); scroll-margin-top:90px; }
+  .content h3{ font-family:var(--font-display); font-size:18px; font-weight:500; margin:26px 0 10px; color:var(--text); }
+  .content a{ color:var(--signal); text-decoration:underline; text-underline-offset:3px; }
+  .content ul{ margin:0 0 18px 22px; }
+  .content li{ margin-bottom:7px; }
+  .content table{ width:100%; border-collapse:collapse; margin:14px 0 22px; font-size:14.5px; }
+  .content th, .content td{ text-align:left; padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top; }
+  .content th{ font-family:var(--font-mono); font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--text-muted); }
+
+  .callout{ background:var(--surface); border:1px solid var(--line); border-left:3px solid var(--signal); border-radius:var(--radius); padding:16px 20px; margin:20px 0; font-size:14.5px; color:var(--text-muted); }
+
+  .ad-slot{ margin:36px 0; padding:14px; border:1px dashed var(--line); border-radius:var(--radius); text-align:center; }
+  .ad-slot::before{ content:'ADVERTISEMENT'; display:block; font-family:var(--font-mono); font-size:10px; letter-spacing:.14em; color:var(--text-muted); margin-bottom:8px; }
+
+  footer{ padding:32px 0; border-top:1px solid var(--line); text-align:center; font-family:var(--font-mono); font-size:11px; color:var(--text-muted); }
+  footer a{ color:var(--text-muted); }
+  footer a:hover{ color:var(--accent); }
+  .foot-links{ margin-top:8px; display:flex; gap:16px; justify-content:center; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <div class="logo"><span class="dot pulse"></span>being<b>techy</b></div>
+    <a class="back" href="index.html">← All posts</a>
+  </div>
+</header>
+
+<main>
+  <article>
+    <div class="meta"><span class="tag">Legal</span><span>·</span><span>BeingTechy</span></div>
+    <h1>Privacy Policy</h1>
+    <p class="updated">Last updated: August 4, 2026</p>
+
+    <div class="toc">
+      <div class="lbl">On this page</div>
+      <a href="#overview">Overview</a>
+      <a href="#collect">Information we collect</a>
+      <a href="#cookies">Cookies &amp; similar technologies</a>
+      <a href="#adsense">Advertising &amp; Google AdSense</a>
+      <a href="#use">How we use information</a>
+      <a href="#sharing">How information is shared</a>
+      <a href="#choices">Your choices</a>
+      <a href="#children">Children's privacy</a>
+      <a href="#links">Third-party links</a>
+      <a href="#changes">Changes to this policy</a>
+      <a href="#contact">Contact us</a>
+    </div>
+
+    <div class="content">
+      <h2 id="overview">Overview</h2>
+      <p>This Privacy Policy explains how BeingTechy ("BeingTechy," "we," "us," or "our") collects, uses, and shares information when you visit beingtechy.org (the "Site"). By using the Site, you agree to the practices described here. If you don't agree, please don't use the Site.</p>
+
+      <h2 id="collect">Information we collect</h2>
+      <p>We keep the data we collect to a minimum. Depending on how you use the Site, we may collect:</p>
+      <table>
+        <tr><th>What</th><th>When</th><th>Why</th></tr>
+        <tr><td>Page views (page visited, post viewed, timestamp)</td><td>Automatically, on every page load</td><td>Basic traffic analytics — e.g. which posts are being read</td></tr>
+        <tr><td>Email address</td><td>Only if you submit the newsletter or contact form</td><td>To send you updates or to reply to your message</td></tr>
+        <tr><td>Cookies from Google AdSense</td><td>Automatically, while ads are loading</td><td>To serve and measure advertising — see the section below</td></tr>
+      </table>
+      <p>We do not require account creation to read the Site, and we do not knowingly collect sensitive personal information such as financial details, government ID numbers, or health data.</p>
+
+      <h2 id="cookies">Cookies &amp; similar technologies</h2>
+      <p>A cookie is a small file stored on your device that lets a site remember information about your visit. The Site itself uses minimal first-party data (see the table above); most cookies you'll encounter here are placed by our advertising partner, Google, as described next.</p>
+
+      <h2 id="adsense">Advertising &amp; Google AdSense</h2>
+      <p>BeingTechy is supported in part by display advertising served through <strong>Google AdSense</strong>. As part of running that program, Google and its advertising partners use cookies and similar technologies to serve ads based on your prior visits to this and other websites.</p>
+      <ul>
+        <li>Google uses advertising cookies (including the DoubleClick DART cookie) to serve ads based on your visits to this site and other sites on the internet.</li>
+        <li>You can opt out of personalized advertising by visiting <a href="https://adssettings.google.com" target="_blank" rel="noopener">Google Ads Settings</a>.</li>
+        <li>Third-party vendors, including Google, may also use cookies to serve ads based on your past visits to this website.</li>
+        <li>You can learn more about how Google uses data when you use our partners' sites or apps at <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">policies.google.com/technologies/partner-sites</a>.</li>
+        <li>Alternatively, you can opt out of some third-party vendors' use of cookies for personalized advertising by visiting <a href="https://optout.aboutads.info" target="_blank" rel="noopener">aboutads.info/choices</a>.</li>
+      </ul>
+      <div class="callout">We don't control the cookies AdSense sets, and we don't have access to the ad-targeting data Google collects. Google's own privacy policy governs that data — see <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">policies.google.com/privacy</a>.</div>
+
+      <h2 id="use">How we use information</h2>
+      <p>We use the information described above to operate and improve the Site — understanding which articles are useful, keeping the Site running reliably, responding to messages sent through the contact form, and sending newsletter updates to people who opt in. We do not sell personal information.</p>
+
+      <h2 id="sharing">How information is shared</h2>
+      <p>We share information only with the service providers that help us run the Site:</p>
+      <ul>
+        <li><strong>Supabase</strong> — our database provider, which stores post content, page-view counts, and newsletter/contact submissions.</li>
+        <li><strong>Google AdSense</strong> — our advertising provider, as described above.</li>
+      </ul>
+      <p>We do not otherwise share, rent, or sell your personal information to third parties, except where required by law.</p>
+
+      <h2 id="choices">Your choices</h2>
+      <p>You can control cookies through your browser settings, including blocking or deleting them — though doing so may affect how ads and some site features behave. You can opt out of personalized Google ads at any time using the links in the AdSense section above. If you'd like us to delete an email address you've submitted through our newsletter or contact form, just reach out using the details below.</p>
+
+      <h2 id="children">Children's privacy</h2>
+      <p>The Site is intended for a general, adult audience and is not directed at children under 13 (or the relevant age of digital consent in your region). We do not knowingly collect personal information from children. If you believe a child has provided us with personal information, please contact us and we'll remove it.</p>
+
+      <h2 id="links">Third-party links</h2>
+      <p>Articles on the Site may link to other websites. We aren't responsible for the privacy practices or content of those sites, and we encourage you to review their own privacy policies.</p>
+
+      <h2 id="changes">Changes to this policy</h2>
+      <p>We may update this Privacy Policy from time to time to reflect changes in our practices or for legal reasons. We'll update the "Last updated" date at the top of this page when we do. Continued use of the Site after changes take effect means you accept the revised policy.</p>
+
+      <h2 id="contact">Contact us</h2>
+      <p>Questions about this policy or how your data is handled? Reach us at <a href="mailto:hello@beingtechy.org">hello@beingtechy.org</a>, or by post at:</p>
+      <p>Being Techy<br>Building No. 46, Gardens Metro Station<br>Dubai, United Arab Emirates</p>
+      <p>You can also use our <a href="contact.html">Contact page</a>.</p>
+    </div>
+
+    <div class="ad-slot">
+      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6780480728242580" data-ad-slot="0000000006" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    </div>
+  </article>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>© <span id="year"></span> beingtechy.org</div>
+    <div class="foot-links">
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="privacy.html">Privacy Policy</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+document.getElementById('year').textContent = new Date().getFullYear();
+try{ (window.adsbygoogle = window.adsbygoogle || []).push({}); }catch(e){}
+</script>
+
+</body>
+</html>
