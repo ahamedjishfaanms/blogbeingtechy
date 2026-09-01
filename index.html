@@ -6,6 +6,33 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BeingTechy — Signal from the tech world</title>
 <meta name="description" content="BeingTechy covers software, hardware, and the people building both. Straight signal, no noise.">
+<link rel="canonical" href="https://www.beingtechy.org/">
+
+<!-- Open Graph / Twitter Card -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="BeingTechy">
+<meta property="og:title" content="BeingTechy — Signal from the tech world">
+<meta property="og:description" content="BeingTechy covers software, hardware, and the people building both. Straight signal, no noise.">
+<meta property="og:url" content="https://www.beingtechy.org/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="BeingTechy — Signal from the tech world">
+<meta name="twitter:description" content="BeingTechy covers software, hardware, and the people building both. Straight signal, no noise.">
+
+<!-- Structured data: identifies this as a real, ongoing publication -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "BeingTechy",
+  "url": "https://www.beingtechy.org/",
+  "description": "BeingTechy covers software, hardware, and the people building both.",
+  "publisher": {
+    "@type": "Organization",
+    "name": "BeingTechy",
+    "url": "https://www.beingtechy.org/"
+  }
+}
+</script>
 
 <!-- ============================================================
      FAVICON — inline SVG, no external file needed
@@ -439,6 +466,7 @@
         <a href="#grid" data-filter="hardware">Hardware</a>
         <a href="#grid" data-filter="dev">Dev</a>
         <a href="#grid" data-filter="security">Security</a>
+        <a href="#grid" data-filter="general">General</a>
       </nav>
       <div class="social-icons">
         <a href="https://x.com/beingtechy" aria-label="X (Twitter)" target="_blank" rel="noopener">
@@ -460,7 +488,8 @@
       <a class="mobile-link" data-filter="ai" href="#grid">AI</a>
       <a class="mobile-link" data-filter="hardware" href="#grid">Hardware</a>
       <a class="mobile-link" data-filter="dev" href="#grid">Dev</a>
-      <a class="mobile-link" data-filter="security" href="#grid" style="border-bottom:none;">Security</a>
+      <a class="mobile-link" data-filter="security" href="#grid">Security</a>
+      <a class="mobile-link" data-filter="general" href="#grid" style="border-bottom:none;">General</a>
       <div class="social-icons">
         <a href="https://x.com/beingtechy" aria-label="X (Twitter)" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4l16 16M20 4L4 20"/></svg>
@@ -483,6 +512,16 @@
     <h1>Signal from the tech world, no noise.</h1>
     <p class="sub">BeingTechy tracks the tools, chips, and code shaping what's next — written for people who build things, not just read about them.</p>
   </section>
+
+  <noscript>
+    <div style="padding:24px 0; color:var(--text-muted); font-size:14px; max-width:60ch;">
+      BeingTechy is an independent technology publication covering AI, hardware, developer tools, and security.
+      Enable JavaScript to browse the latest articles, or visit our
+      <a href="about.html" style="color:var(--accent); text-decoration:underline;">About</a>,
+      <a href="contact.html" style="color:var(--accent); text-decoration:underline;">Contact</a>, or
+      <a href="privacy.html" style="color:var(--accent); text-decoration:underline;">Privacy Policy</a> pages.
+    </div>
+  </noscript>
 
   <!-- Featured stories slideshow — populated from the same posts data below -->
   <section class="feature-slider" id="featureSlider" aria-roledescription="carousel" aria-label="Featured stories" style="display:none;">
@@ -519,6 +558,7 @@
       <button class="filter-btn" data-filter="hardware">Hardware</button>
       <button class="filter-btn" data-filter="dev">Dev</button>
       <button class="filter-btn" data-filter="security">Security</button>
+      <button class="filter-btn" data-filter="general">General</button>
     </div>
 
     <div class="grid" id="postGrid">
@@ -577,6 +617,7 @@
           <a href="#grid" data-filter="hardware">Hardware</a>
           <a href="#grid" data-filter="dev">Dev</a>
           <a href="#grid" data-filter="security">Security</a>
+          <a href="#grid" data-filter="general">General</a>
         </div>
         <div>
           <h5>Site</h5>

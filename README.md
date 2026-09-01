@@ -9,7 +9,9 @@ A two-page tech blog template (`index.html` list + `post.html` article view), wi
 | `index.html` | Homepage — hero, category filters, post grid, newsletter strip |
 | `post.html` | Single article view — fetched by `?slug=` from Supabase |
 | `supabase-setup.sql` | Creates the `posts` table, security policies, and 3 sample posts |
-| `ads.txt` | AdSense domain verification file — must sit at your site root |
+| `ads.txt` | AdSense domain verification file — must sit at your site root (`https://yourdomain.com/ads.txt`, not renamed) |
+| `robots.txt` | Allows crawlers, blocks `/admin.html`, points to `sitemap.xml` |
+| `sitemap.xml` | Static list of every page + post URL. **Update this by hand whenever you publish a new post** — add a `<url>` block with the post's `post.html?slug=...` URL. There's no build step, so nothing regenerates it automatically. |
 
 Until Supabase is connected, both pages show **demo content** automatically so you can see the design working right away.
 
@@ -50,9 +52,18 @@ Both pages already include:
 - Three ad slots on the homepage (top banner, in-feed) and two in every article (below the header, mid-article) — each marked with a dashed border and "ADVERTISEMENT" label so they're clearly disclosed, which keeps things AdSense-policy-friendly.
 
 **Before ads actually serve**, you need to:
-1. Upload `ads.txt` to your domain root so it's reachable at `https://beingtechy.org/ads.txt` — it already contains your line: `google.com, pub-6780480728242580, DIRECT, f08c47fec0942fa0`.
+1. Upload `ads.txt` to your domain root so it's reachable at `https://beingtechy.org/ads.txt` — it already contains your line: `google.com, pub-6780480728242580, DIRECT, f08c47fec0942fa0`. (Double-check after every deploy — some hosts have served this as `ads_1.txt` or under a subfolder in the past, which AdSense will not recognize.)
 2. In your AdSense account, create real ad units and swap the placeholder `data-ad-slot="0000000000"` etc. values in the HTML for your actual slot IDs.
 3. Get the site approved in AdSense (Sites → Add site → beingtechy.org) — this can take a few days.
+
+### If AdSense rejects the site for "Low value content"
+
+This is almost never about a missing file — it means the reviewer (human or automated) judged the actual articles too thin, generic, or unoriginal. Before resubmitting:
+- Aim for 20-30+ published posts, each 600+ words, with specific facts, named sources, and a point of view — not a one-paragraph rehash of a headline.
+- Link out to the primary source you're reporting on (official announcement, original outlet). Uncited "news" reads as scraped content to both readers and Google.
+- Keep every post inside the site's stated focus (AI, hardware, dev, security). Off-topic posts (gaming, unrelated lifestyle news) dilute the site's topical authority.
+- Use a consistent author name per post (e.g. "BeingTechy Staff" or a real byline) — avoid placeholder-looking values like "ADMIN" or "STAFF" in all caps.
+- Keep `sitemap.xml` current so every published post is discoverable, and give it a week or two of consistent publishing before requesting another review.
 
 ## 4. Deploy
 

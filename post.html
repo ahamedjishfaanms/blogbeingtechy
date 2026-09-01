@@ -6,6 +6,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title id="pageTitle">BeingTechy — Article</title>
 <meta name="description" id="pageDesc" content="An article from BeingTechy.">
+<meta name="robots" id="pageRobots" content="index, follow">
+<link rel="canonical" id="pageCanonical" href="https://www.beingtechy.org/post.html">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="BeingTechy">
+<meta property="og:title" id="ogTitle" content="BeingTechy — Article">
+<meta property="og:description" id="ogDesc" content="An article from BeingTechy.">
+<meta property="og:url" id="ogUrl" content="https://www.beingtechy.org/post.html">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" id="twTitle" content="BeingTechy — Article">
+<meta name="twitter:description" id="twDesc" content="An article from BeingTechy.">
+
+<script type="application/ld+json" id="articleSchema">{}</script>
 
 <meta name="google-adsense-account" content="ca-pub-6780480728242580">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6780480728242580" crossorigin="anonymous"></script>
@@ -240,8 +253,32 @@ window.copyShareLink = function(btn, url){
 };
 
 function renderPost(post, related){
-  document.getElementById('pageTitle').textContent = post.title + ' — BeingTechy';
-  document.getElementById('pageDesc').setAttribute('content', post.excerpt || '');
+  const fullTitle = post.title + ' — BeingTechy';
+  const desc = post.excerpt || '';
+  const url = 'https://www.beingtechy.org/post.html?slug=' + encodeURIComponent(post.slug);
+
+  document.getElementById('pageTitle').textContent = fullTitle;
+  document.getElementById('pageDesc').setAttribute('content', desc);
+  document.getElementById('pageCanonical').setAttribute('href', url);
+  document.getElementById('ogTitle').setAttribute('content', fullTitle);
+  document.getElementById('ogDesc').setAttribute('content', desc);
+  document.getElementById('ogUrl').setAttribute('content', url);
+  document.getElementById('twTitle').setAttribute('content', fullTitle);
+  document.getElementById('twDesc').setAttribute('content', desc);
+
+  const schema = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    'headline': post.title,
+    'description': desc,
+    'datePublished': post.created_at,
+    'dateModified': post.updated_at || post.created_at,
+    'mainEntityOfPage': { '@type': 'WebPage', '@id': url },
+    'author': { '@type': 'Person', 'name': post.author || 'BeingTechy Staff' },
+    'publisher': { '@type': 'Organization', 'name': 'BeingTechy', 'url': 'https://www.beingtechy.org/' }
+  };
+  if (post.cover_image) schema.image = post.cover_image;
+  document.getElementById('articleSchema').textContent = JSON.stringify(schema);
 
   main.innerHTML = `
     <article>
@@ -286,6 +323,8 @@ function renderPost(post, related){
 }
 
 function renderMissing(message){
+  document.getElementById('pageTitle').textContent = 'Post not found — BeingTechy';
+  document.getElementById('pageRobots').setAttribute('content', 'noindex, follow');
   main.innerHTML = `<div class="state"><h4>Post not found</h4><p>${message}</p><p style="margin-top:18px;"><a href="index.html" style="color:var(--accent);">← Back to all posts</a></p></div>`;
 }
 
