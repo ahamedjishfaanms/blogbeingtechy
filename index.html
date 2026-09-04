@@ -624,6 +624,7 @@
           <a href="about.html">About</a>
           <a href="contact.html">Contact</a>
           <a href="privacy.html">Privacy policy</a>
+          <a href="terms.html">Terms of service</a>
         </div>
       </div>
     </div>
@@ -698,7 +699,7 @@ function renderPosts(posts){
     return;
   }
   postGrid.innerHTML = posts.map(post => `
-    <a class="card" href="post.html?slug=${encodeURIComponent(post.slug)}">
+    <a class="card" href="posts/${encodeURIComponent(post.slug)}.html">
       <div class="thumb">
         ${post.cover_image ? `<img src="${post.cover_image}" alt="" loading="lazy">` : ''}
       </div>
@@ -749,7 +750,7 @@ function renderFeatureSlider(posts){
   fsSection.style.display = '';
 
   const slidesHtml = fsPosts.map((post, i) => `
-    <a class="fs-slide ${i === 0 ? 'active' : ''}" href="post.html?slug=${encodeURIComponent(post.slug)}" data-index="${i}">
+    <a class="fs-slide ${i === 0 ? 'active' : ''}" href="posts/${encodeURIComponent(post.slug)}.html" data-index="${i}">
       <div class="fs-media">
         ${post.cover_image ? `<img src="${post.cover_image}" alt="" loading="${i === 0 ? 'eager' : 'lazy'}">` : `<div class="fs-placeholder"></div>`}
       </div>

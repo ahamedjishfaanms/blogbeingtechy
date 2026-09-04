@@ -1,0 +1,51 @@
+name: Rebuild article pages
+
+# Keeps posts/*.html and sitemap.xml in sync with the "posts" table in
+# Supabase. Runs on a schedule, whenever this workflow or the build script
+# changes, and on demand from the Actions tab (Run workflow) — use that
+# last one right after publishing a new post if you don't want to wait
+# for the next scheduled run.
+
+on:
+  schedule:
+    - cron: '0 */3 * * *'   # every 3 hours
+  workflow_dispatch: {}
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/build-posts.mjs'
+      - '.github/workflows/build-posts.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-posts
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Generate static article pages + sitemap
+        run: node scripts/build-posts.mjs
+
+      - name: Commit changes, if any
+        run: |
+          git config user.name "beingtechy-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add posts sitemap.xml
+          if git diff --cached --quiet; then
+            echo "Nothing changed — posts/ and sitemap.xml already up to date."
+          else
+            git commit -m "chore: rebuild article pages [automated]"
+            git push
+          fi

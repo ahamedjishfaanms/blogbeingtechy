@@ -1,19 +1,31 @@
 # BeingTechy — blog template
 
-A two-page tech blog template (`index.html` list + `post.html` article view), wired for Supabase and AdSense. No build step — open the files directly or host them as static files.
+A tech blog wired for Supabase and AdSense: `index.html` (list), `post.html` (live/preview article view), and pre-rendered pages under `posts/` that are what actually get indexed and shared.
+
+## Why `posts/` exists
+
+`post.html?slug=...` renders everything client-side after fetching from Supabase — great for instant previews, bad for SEO and AdSense review, because the raw HTML any crawler (or non-JS tool) sees is just a "Loading article…" shell with a generic, identical title/description on every article. That reads as duplicate/thin content and is one of the most common reasons AdSense applications get rejected.
+
+`scripts/build-posts.mjs` fixes this by generating one real, pre-rendered HTML file per published post (`posts/<slug>.html`) with the actual headline, byline, body text, canonical URL, Open Graph tags, and `Article` structured data baked in — no JavaScript required to read it. `post.html?slug=...` still works (handy for previewing a post right after writing it, before the next rebuild), but its canonical tag and all share links now point at the pre-rendered `posts/<slug>.html` version, so Google only ever indexes one, real, unique page per article.
+
+A GitHub Action (`.github/workflows/build-posts.yml`) runs this script automatically every 3 hours and after any push that touches the script, and commits the regenerated `posts/*.html` + `sitemap.xml` back to `main`. You can also trigger it on demand from the **Actions** tab → **Rebuild article pages** → **Run workflow** — do that right after publishing something if you don't want to wait.
 
 ## Files
 
 | File | Purpose |
 |---|---|
-| `index.html` | Homepage — hero, category filters, post grid, newsletter strip |
-| `post.html` | Single article view — fetched by `?slug=` from Supabase |
+| `index.html` | Homepage — hero, category filters, post grid, newsletter strip. Links to `posts/<slug>.html`. |
+| `post.html` | Live article view fetched by `?slug=` from Supabase — used for instant previews; not what's indexed. |
+| `posts/*.html` | **Generated.** One pre-rendered, crawlable page per published post. Don't hand-edit — edit the post in Supabase (via `admin.html`) and rebuild. |
+| `scripts/build-posts.mjs` | Generates everything in `posts/` and regenerates `sitemap.xml` from the live `posts` table in Supabase. Run with `node scripts/build-posts.mjs`. |
+| `.github/workflows/build-posts.yml` | Runs the script above on a schedule / on demand and commits the result. |
 | `supabase-setup.sql` | Creates the `posts` table, security policies, and 3 sample posts |
 | `ads.txt` | AdSense domain verification file — must sit at your site root (`https://yourdomain.com/ads.txt`, not renamed) |
 | `robots.txt` | Allows crawlers, blocks `/admin.html`, points to `sitemap.xml` |
-| `sitemap.xml` | Static list of every page + post URL. **Update this by hand whenever you publish a new post** — add a `<url>` block with the post's `post.html?slug=...` URL. There's no build step, so nothing regenerates it automatically. |
+| `sitemap.xml` | **Generated** by `scripts/build-posts.mjs` — lists every static page plus every `posts/<slug>.html` URL with a real `lastmod`. Don't hand-edit; it gets overwritten on the next rebuild. |
+| `terms.html` | Terms of Service — linked from every page footer alongside About/Contact/Privacy. |
 
-Until Supabase is connected, both pages show **demo content** automatically so you can see the design working right away.
+Until Supabase is connected, `index.html`/`post.html` show **demo content** automatically so you can see the design working right away.
 
 ## 1. Connect Supabase
 
@@ -42,7 +54,9 @@ Fields that matter:
 - `cover_image` — a public image URL (Supabase Storage, or any hosted image)
 - `published` — must be `true` to appear on the site
 
-Want a real editor instead of the Table Editor? Point a small admin form or a tool like [Supabase Studio](https://supabase.com/docs) writes at the same table using your **service_role** key from a trusted backend — never put the service_role key in the frontend HTML.
+Want a real editor instead of the Table Editor? Point a small admin form or a tool like [Supabase Studio](https://supabase.com/docs) writes at the same table using your **service_role** key from a trusted backend — never put the service_role key in the frontend HTML. (`admin.html` in this repo is exactly that admin form.)
+
+After publishing (or editing) a post, either wait for the next scheduled run of **Rebuild article pages** (every 3 hours) or trigger it manually from the **Actions** tab so `posts/<new-slug>.html` and `sitemap.xml` exist before you tell anyone about it / resubmit to AdSense.
 
 ## 3. AdSense — already wired in
 
@@ -58,7 +72,7 @@ Both pages already include:
 
 ### If AdSense rejects the site for "Low value content"
 
-This is almost never about a missing file — it means the reviewer (human or automated) judged the actual articles too thin, generic, or unoriginal. Before resubmitting:
+Check `posts/` exists and is up to date first — if a reviewer's crawler can't see real article text (see "Why `posts/` exists" above), everything else on this list is moot. Beyond that, it means the reviewer (human or automated) judged the actual articles too thin, generic, or unoriginal. Before resubmitting:
 - Aim for 20-30+ published posts, each 600+ words, with specific facts, named sources, and a point of view — not a one-paragraph rehash of a headline.
 - Link out to the primary source you're reporting on (official announcement, original outlet). Uncited "news" reads as scraped content to both readers and Google.
 - Keep every post inside the site's stated focus (AI, hardware, dev, security). Off-topic posts (gaming, unrelated lifestyle news) dilute the site's topical authority.
@@ -67,9 +81,10 @@ This is almost never about a missing file — it means the reviewer (human or au
 
 ## 4. Deploy
 
-Any static host works since there's no build step — Vercel, Netlify, GitHub Pages, Cloudflare Pages, or your own server. Just make sure:
+Any static host works — Vercel, Netlify, GitHub Pages, Cloudflare Pages, or your own server — as long as it serves whatever's on `main` (or wherever it deploys from). The GitHub Action commits straight to `main`, so as long as your host auto-deploys from that branch (GitHub Pages does by default; Netlify/Vercel need "Deploy on push" pointed at `main`), new posts go live on their own after a rebuild. Just make sure:
 - `ads.txt` is served from the domain root, not a subfolder
-- Both `.html` files and `ads.txt` are uploaded together
+- The `posts/` folder gets uploaded/deployed along with everything else — it's what carries the actual article pages
+- `www` vs. non-`www` (and `http` vs `https`) resolves to a single version of the domain — every page here canonicalizes to `https://www.beingtechy.org/...`, so make sure your host/DNS 301-redirects the other variants there instead of serving duplicate copies
 
 ## 5. Customize
 

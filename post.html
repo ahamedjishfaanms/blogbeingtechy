@@ -189,6 +189,7 @@
       <a href="about.html" style="color:var(--text-muted);">About</a>
       <a href="contact.html" style="color:var(--text-muted);">Contact</a>
       <a href="privacy.html" style="color:var(--text-muted);">Privacy Policy</a>
+      <a href="terms.html" style="color:var(--text-muted);">Terms of Service</a>
     </div>
   </div>
 </footer>
@@ -218,7 +219,7 @@ function timeAgo(dateStr){
 }
 
 function shareRowHtml(post, variant){
-  const url = window.location.origin + window.location.pathname + '?slug=' + encodeURIComponent(post.slug);
+  const url = 'https://www.beingtechy.org/posts/' + encodeURIComponent(post.slug) + '.html';
   const text = post.title;
   const u = encodeURIComponent(url);
   const t = encodeURIComponent(text);
@@ -255,7 +256,9 @@ window.copyShareLink = function(btn, url){
 function renderPost(post, related){
   const fullTitle = post.title + ' — BeingTechy';
   const desc = post.excerpt || '';
-  const url = 'https://www.beingtechy.org/post.html?slug=' + encodeURIComponent(post.slug);
+  // Points at the pre-rendered static page (see scripts/build-posts.mjs), not this
+  // dynamic shell — that's the version we want Google to index and people to share.
+  const url = 'https://www.beingtechy.org/posts/' + encodeURIComponent(post.slug) + '.html';
 
   document.getElementById('pageTitle').textContent = fullTitle;
   document.getElementById('pageDesc').setAttribute('content', desc);
@@ -309,7 +312,7 @@ function renderPost(post, related){
     <div class="related">
       <h4>More from BeingTechy</h4>
       ${related.map(r => `
-        <a class="related-item" href="post.html?slug=${encodeURIComponent(r.slug)}">
+        <a class="related-item" href="posts/${encodeURIComponent(r.slug)}.html">
           <div class="rtitle">${r.title}</div>
           <div class="rmeta">${(r.category || 'general')} · ${timeAgo(r.created_at)}</div>
         </a>
