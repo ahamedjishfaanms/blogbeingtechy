@@ -4,21 +4,21 @@
 <meta charset="UTF-8">
 <script>(function(){try{if(localStorage.getItem('bt-theme')==='light'){document.documentElement.setAttribute('data-theme','light');}}catch(e){}})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>A field guide to Row Level Security in Postgres — BeingTechy</title>
-<meta name="description" content="RLS turns &quot;trust the client&quot; into &quot;trust the database.&quot; Here&#39;s how to reason about it without getting stuck.">
+<title>Identity Is the New Perimeter: How AI Agents Are Reshaping Cybersecurity in 2026 — BeingTechy</title>
+<meta name="description" content="Machine identities now outnumber human ones in most enterprises, and AI agents are becoming the newest attack surface — here&#39;s how identity-first security is replacing the old perimeter model in 2026.">
 <meta name="robots" content="index, follow">
-<link rel="canonical" href="https://www.beingtechy.org/posts/field-guide-row-level-security.html">
+<link rel="canonical" href="https://www.beingtechy.org/posts/identity-first-cybersecurity-ai-agents-2026.html">
 
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="BeingTechy">
-<meta property="og:title" content="A field guide to Row Level Security in Postgres — BeingTechy">
-<meta property="og:description" content="RLS turns &quot;trust the client&quot; into &quot;trust the database.&quot; Here&#39;s how to reason about it without getting stuck.">
-<meta property="og:url" content="https://www.beingtechy.org/posts/field-guide-row-level-security.html">
+<meta property="og:title" content="Identity Is the New Perimeter: How AI Agents Are Reshaping Cybersecurity in 2026 — BeingTechy">
+<meta property="og:description" content="Machine identities now outnumber human ones in most enterprises, and AI agents are becoming the newest attack surface — here&#39;s how identity-first security is replacing the old perimeter model in 2026.">
+<meta property="og:url" content="https://www.beingtechy.org/posts/identity-first-cybersecurity-ai-agents-2026.html">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="A field guide to Row Level Security in Postgres — BeingTechy">
-<meta name="twitter:description" content="RLS turns &quot;trust the client&quot; into &quot;trust the database.&quot; Here&#39;s how to reason about it without getting stuck.">
+<meta name="twitter:title" content="Identity Is the New Perimeter: How AI Agents Are Reshaping Cybersecurity in 2026 — BeingTechy">
+<meta name="twitter:description" content="Machine identities now outnumber human ones in most enterprises, and AI agents are becoming the newest attack surface — here&#39;s how identity-first security is replacing the old perimeter model in 2026.">
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"A field guide to Row Level Security in Postgres","description":"RLS turns \"trust the client\" into \"trust the database.\" Here's how to reason about it without getting stuck.","datePublished":"2026-07-15T16:14:18.734554+00:00","dateModified":"2026-07-15T16:14:18.734554+00:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://www.beingtechy.org/posts/field-guide-row-level-security.html"},"author":{"@type":"Person","name":"BeingTechy Staff"},"publisher":{"@type":"Organization","name":"BeingTechy","url":"https://www.beingtechy.org/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Identity Is the New Perimeter: How AI Agents Are Reshaping Cybersecurity in 2026","description":"Machine identities now outnumber human ones in most enterprises, and AI agents are becoming the newest attack surface — here's how identity-first security is replacing the old perimeter model in 2026.","datePublished":"2026-09-11T19:05:22.177319+00:00","dateModified":"2026-09-11T19:05:22.177319+00:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://www.beingtechy.org/posts/identity-first-cybersecurity-ai-agents-2026.html"},"author":{"@type":"Person","name":"Ahamed Jishfaan"},"publisher":{"@type":"Organization","name":"BeingTechy","url":"https://www.beingtechy.org/"}}</script>
 
 <meta name="google-adsense-account" content="ca-pub-6780480728242580">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6780480728242580" crossorigin="anonymous"></script>
@@ -105,28 +105,28 @@
 
 <main id="main">
   <article>
-    <div class="meta"><span class="tag">dev</span><span>·</span><span>Jul 15, 2026</span></div>
-    <h1>A field guide to Row Level Security in Postgres</h1>
+    <div class="meta"><span class="tag">security</span><span>·</span><span>Sep 11, 2026</span></div>
+    <h1>Identity Is the New Perimeter: How AI Agents Are Reshaping Cybersecurity in 2026</h1>
     <div class="byline">
-      <span>By BeingTechy Staff</span>
+      <span>By Ahamed Jishfaan</span>
       <span>6 min read</span>
     </div>
     
     <div class="share-row ">
       <span class="share-label">Share</span>
-      <a class="share-btn" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.beingtechy.org%2Fposts%2Ffield-guide-row-level-security.html&text=A%20field%20guide%20to%20Row%20Level%20Security%20in%20Postgres" target="_blank" rel="noopener" aria-label="Share on X">
+      <a class="share-btn" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.beingtechy.org%2Fposts%2Fidentity-first-cybersecurity-ai-agents-2026.html&text=Identity%20Is%20the%20New%20Perimeter%3A%20How%20AI%20Agents%20Are%20Reshaping%20Cybersecurity%20in%202026" target="_blank" rel="noopener" aria-label="Share on X">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-7.6 8.7L23.3 22h-7l-5.5-7.2L4.5 22H1.4l8.1-9.3L1 2h7.2l5 6.6L18.9 2zm-1.2 18h1.7L7.4 4H5.6l12.1 16z"/></svg>
       </a>
-      <a class="share-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fwww.beingtechy.org%2Fposts%2Ffield-guide-row-level-security.html" target="_blank" rel="noopener" aria-label="Share on LinkedIn">
+      <a class="share-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fwww.beingtechy.org%2Fposts%2Fidentity-first-cybersecurity-ai-agents-2026.html" target="_blank" rel="noopener" aria-label="Share on LinkedIn">
         <svg viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="9" width="4" height="11"/><circle cx="5" cy="4.5" r="1.5"/><path d="M11 20v-7a3 3 0 0 1 6 0v7M11 9v11"/></svg>
       </a>
-      <a class="share-btn" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.beingtechy.org%2Fposts%2Ffield-guide-row-level-security.html" target="_blank" rel="noopener" aria-label="Share on Facebook">
+      <a class="share-btn" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.beingtechy.org%2Fposts%2Fidentity-first-cybersecurity-ai-agents-2026.html" target="_blank" rel="noopener" aria-label="Share on Facebook">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-8h2.7l.4-3.2h-3.1V7.7c0-.9.3-1.6 1.6-1.6h1.7V3.2c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.4H7.4V13H10v8h3.5z"/></svg>
       </a>
-      <a class="share-btn" href="https://wa.me/?text=A%20field%20guide%20to%20Row%20Level%20Security%20in%20Postgres%20https%3A%2F%2Fwww.beingtechy.org%2Fposts%2Ffield-guide-row-level-security.html" target="_blank" rel="noopener" aria-label="Share on WhatsApp">
+      <a class="share-btn" href="https://wa.me/?text=Identity%20Is%20the%20New%20Perimeter%3A%20How%20AI%20Agents%20Are%20Reshaping%20Cybersecurity%20in%202026%20https%3A%2F%2Fwww.beingtechy.org%2Fposts%2Fidentity-first-cybersecurity-ai-agents-2026.html" target="_blank" rel="noopener" aria-label="Share on WhatsApp">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3.1.8.8-3-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1-.2.2-.7.8-.8 1-.2.2-.3.2-.5.1-.2-.1-1-.4-1.9-1.2-.7-.6-1.2-1.4-1.3-1.6-.2-.2 0-.4.1-.5l.4-.5c.1-.1.2-.3.2-.4.1-.2 0-.3 0-.4-.1-.1-.6-1.4-.8-1.9-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.6.3-.2.2-.8.8-.8 1.9s.8 2.2.9 2.4c.1.2 1.6 2.5 4 3.4.6.2 1 .4 1.3.5.6.2 1.1.1 1.5.1.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.1-1.2-.1-.1-.2-.2-.4-.3z"/></svg>
       </a>
-      <button class="share-btn" type="button" data-copy="https://www.beingtechy.org/posts/field-guide-row-level-security.html" aria-label="Copy link">
+      <button class="share-btn" type="button" data-copy="https://www.beingtechy.org/posts/identity-first-cybersecurity-ai-agents-2026.html" aria-label="Copy link">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.5.5l2-2a5 5 0 0 0-7-7l-1.5 1.5"/><path d="M14 11a5 5 0 0 0-7.5-.5l-2 2a5 5 0 0 0 7 7l1.5-1.5"/></svg>
         <span class="copied-tip">Copied!</span>
       </button>
@@ -137,24 +137,49 @@
       <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6780480728242580" data-ad-slot="0000000002" data-ad-format="auto" data-full-width-responsive="true"></ins>
     </div>
 
-    <div class="content"><p>Row Level Security policies live next to your data, not your app code — which means they hold even if a request skips your API entirely.</p><h2>Start with a single rule</h2><p>Most tables need just one honest question answered: who is allowed to see this row? Write that as a policy before you write anything cleverer.</p></div>
+    <div class="content"><p>For two decades, cybersecurity strategy revolved around a fairly simple mental model: build a strong perimeter, control who gets inside it, and monitor what happens once they're in. In 2026, that model is breaking down for a reason most security teams didn't see coming a few years ago — the "who" trying to get access is now, in a growing number of cases, not a person at all. It's an AI agent, and most organizations have no clear picture of how many of them are running inside their own systems.</p>
+
+<h2>Machine Identities Have Quietly Outnumbered Human Ones</h2>
+<p>As enterprises deploy AI agents to handle everything from customer support to cloud provisioning, each of those agents needs credentials, permissions, and a way to authenticate to the systems it touches. The result is an explosion of what security researchers call non-human identities: service accounts, API keys, and now autonomous agents that can request access, make decisions, and take action largely on their own.</p>
+<p>Several 2026 industry reports converge on the same warning: machine identities have already surpassed human identities in most large organizations, and most operate with far more privilege than they actually need. Unlike a human employee whose access can be reviewed during onboarding, offboarding, or an annual audit, machine identities tend to be provisioned quickly, rarely reviewed, and easy to forget once the project that created them is finished.</p>
+
+<h2>Why Attackers Are Targeting Agents Specifically</h2>
+<p>Security researchers this year have flagged a new category of risk: attackers manipulating AI agents into becoming unwitting insider threats. Techniques like prompt injection — feeding an agent malicious instructions disguised as normal data — can trick an otherwise well-behaved agent into taking harmful actions using its own legitimate credentials. Because the agent's access is real and authorized, these attacks can be far harder to detect than a traditional external breach; the traffic looks like normal automated activity right up until the outcome doesn't.</p>
+<p>Agent-to-agent communication, increasingly built on protocols that let one AI system call another and pass along real authority to act, adds another layer of exposure. When those connections aren't tightly governed, a single compromised link can let an attacker move between systems at machine speed, with far less opportunity for a human to notice something is wrong before damage is done.</p>
+
+<h2>The Shift From Rules to Adaptive Risk</h2>
+<p>Traditional security relied heavily on static rules: if a login comes from an unfamiliar location, block it; if a file transfer exceeds a certain size, flag it. In an environment where AI agents generate enormous volumes of legitimate-looking automated activity, those rigid rules increasingly produce more noise than useful signal.</p>
+<p>The response taking shape in 2026 is a move toward adaptive, identity-first risk models that evaluate behavior and context in real time — for humans and machines alike — rather than relying on static thresholds. Instead of just asking "is this login unusual," these systems try to understand what an identity is actually trying to do, how that compares to its normal pattern of behavior, and how sensitive the data or system involved actually is.</p>
+
+<h2>What Security Teams Are Actually Doing About It</h2>
+<p>A few practical shifts are showing up across organizations that are ahead of the curve:</p>
+<ul>
+<li><strong>Treating every AI agent as an identity that needs a lifecycle</strong>, complete with provisioning, regular access reviews, and clear deprovisioning when an agent or its underlying workflow is retired.</li>
+<li><strong>Issuing agents their own verifiable credentials</strong> — cryptographic identities enforced through certificates — so that one agent can prove to another which system or workload it's actually acting on behalf of.</li>
+<li><strong>Applying just-in-time access</strong>, granting an agent elevated permissions only for the specific window it needs them, rather than leaving standing privileges active indefinitely.</li>
+<li><strong>Building visibility dashboards specifically for machine identities</strong>, since most existing identity tools were designed around human employees and struggle to represent the volume and behavior patterns of autonomous systems.</li>
+</ul>
+
+<h2>The Bigger Picture</h2>
+<p>The uncomfortable reality for 2026 is that the same agentic AI systems delivering measurable productivity gains for businesses are simultaneously expanding the attack surface those businesses have to defend. Identity teams that used to focus almost entirely on employees and contractors are now being asked to govern a population of digital workers that can outnumber humans ten or a hundred to one, move at machine speed, and — unlike a person — never sleep, take a lunch break, or think twice before clicking something suspicious.</p>
+<p>Organizations that get ahead of this shift are treating identity, not the network perimeter, as the primary control point for security in 2026. Those still relying on last decade's perimeter-first playbook are likely to discover the hard way that the biggest risk in their environment isn't the employee who might click a phishing link — it's the agent they forgot they deployed six months ago.</p></div>
 
     
     <div class="share-row bottom">
       <span class="share-label">Share</span>
-      <a class="share-btn" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.beingtechy.org%2Fposts%2Ffield-guide-row-level-security.html&text=A%20field%20guide%20to%20Row%20Level%20Security%20in%20Postgres" target="_blank" rel="noopener" aria-label="Share on X">
+      <a class="share-btn" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.beingtechy.org%2Fposts%2Fidentity-first-cybersecurity-ai-agents-2026.html&text=Identity%20Is%20the%20New%20Perimeter%3A%20How%20AI%20Agents%20Are%20Reshaping%20Cybersecurity%20in%202026" target="_blank" rel="noopener" aria-label="Share on X">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-7.6 8.7L23.3 22h-7l-5.5-7.2L4.5 22H1.4l8.1-9.3L1 2h7.2l5 6.6L18.9 2zm-1.2 18h1.7L7.4 4H5.6l12.1 16z"/></svg>
       </a>
-      <a class="share-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fwww.beingtechy.org%2Fposts%2Ffield-guide-row-level-security.html" target="_blank" rel="noopener" aria-label="Share on LinkedIn">
+      <a class="share-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fwww.beingtechy.org%2Fposts%2Fidentity-first-cybersecurity-ai-agents-2026.html" target="_blank" rel="noopener" aria-label="Share on LinkedIn">
         <svg viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="9" width="4" height="11"/><circle cx="5" cy="4.5" r="1.5"/><path d="M11 20v-7a3 3 0 0 1 6 0v7M11 9v11"/></svg>
       </a>
-      <a class="share-btn" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.beingtechy.org%2Fposts%2Ffield-guide-row-level-security.html" target="_blank" rel="noopener" aria-label="Share on Facebook">
+      <a class="share-btn" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.beingtechy.org%2Fposts%2Fidentity-first-cybersecurity-ai-agents-2026.html" target="_blank" rel="noopener" aria-label="Share on Facebook">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-8h2.7l.4-3.2h-3.1V7.7c0-.9.3-1.6 1.6-1.6h1.7V3.2c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.4H7.4V13H10v8h3.5z"/></svg>
       </a>
-      <a class="share-btn" href="https://wa.me/?text=A%20field%20guide%20to%20Row%20Level%20Security%20in%20Postgres%20https%3A%2F%2Fwww.beingtechy.org%2Fposts%2Ffield-guide-row-level-security.html" target="_blank" rel="noopener" aria-label="Share on WhatsApp">
+      <a class="share-btn" href="https://wa.me/?text=Identity%20Is%20the%20New%20Perimeter%3A%20How%20AI%20Agents%20Are%20Reshaping%20Cybersecurity%20in%202026%20https%3A%2F%2Fwww.beingtechy.org%2Fposts%2Fidentity-first-cybersecurity-ai-agents-2026.html" target="_blank" rel="noopener" aria-label="Share on WhatsApp">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3.1.8.8-3-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1-.2.2-.7.8-.8 1-.2.2-.3.2-.5.1-.2-.1-1-.4-1.9-1.2-.7-.6-1.2-1.4-1.3-1.6-.2-.2 0-.4.1-.5l.4-.5c.1-.1.2-.3.2-.4.1-.2 0-.3 0-.4-.1-.1-.6-1.4-.8-1.9-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.6.3-.2.2-.8.8-.8 1.9s.8 2.2.9 2.4c.1.2 1.6 2.5 4 3.4.6.2 1 .4 1.3.5.6.2 1.1.1 1.5.1.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.1-1.2-.1-.1-.2-.2-.4-.3z"/></svg>
       </a>
-      <button class="share-btn" type="button" data-copy="https://www.beingtechy.org/posts/field-guide-row-level-security.html" aria-label="Copy link">
+      <button class="share-btn" type="button" data-copy="https://www.beingtechy.org/posts/identity-first-cybersecurity-ai-agents-2026.html" aria-label="Copy link">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.5.5l2-2a5 5 0 0 0-7-7l-1.5 1.5"/><path d="M14 11a5 5 0 0 0-7.5-.5l-2 2a5 5 0 0 0 7 7l1.5-1.5"/></svg>
         <span class="copied-tip">Copied!</span>
       </button>
@@ -164,22 +189,22 @@
       <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6780480728242580" data-ad-slot="0000000003" data-ad-format="auto" data-full-width-responsive="true"></ins>
     </div>
 
-    <div class="tags"><a href="../index.html#grid">#postgres</a><a href="../index.html#grid">#supabase</a><a href="../index.html#grid">#security</a></div>
+    <div class="tags"><a href="../index.html#grid">#cybersecurity</a><a href="../index.html#grid">#identity security</a><a href="../index.html#grid">#AI agents</a><a href="../index.html#grid">#non-human identities</a><a href="../index.html#grid">#IAM</a><a href="../index.html#grid">#zero trust</a></div>
   </article>
 
   <div class="related">
     <h4>More from BeingTechy</h4>
     
-        <a class="related-item" href="open-source-app-unlocks-pixel-11-pro-hilight.html">
-          <div class="rtitle">How an Open-Source App Unlocks the Google Pixel 11 Pro&#39;s Hidden HiLight Feature</div>
-          <div class="rmeta">dev · Aug 20, 2026</div>
-        </a>
-        <a class="related-item" href="cloudflare-monetization-gateway-ai.html">
-          <div class="rtitle">Cloudflare Introduces Monetization Gateway for AI Agents</div>
-          <div class="rmeta">dev · Jul 14, 2026</div>
-        </a>
         <a class="related-item" href="tsmc-record-revenue-ai-chip-boom-2026.html">
           <div class="rtitle">TSMC&#39;s Record Revenue Shows the AI Chip Boom Still Has No Ceiling</div>
+          <div class="rmeta">ai · Sep 11, 2026</div>
+        </a>
+        <a class="related-item" href="quantum-computing-enterprise-readiness-2026.html">
+          <div class="rtitle">Quantum Computing in 2026: From Lab Curiosity to Boardroom Line Item</div>
+          <div class="rmeta">hardware · Sep 11, 2026</div>
+        </a>
+        <a class="related-item" href="agentic-ai-enterprise-adoption-2026.html">
+          <div class="rtitle">Agentic AI in 2026: Why &quot;AI Agents&quot; Stopped Being a Buzzword and Became a Budget Line</div>
           <div class="rmeta">ai · Sep 11, 2026</div>
         </a>
   </div>
@@ -222,7 +247,7 @@ try{ document.querySelectorAll('.adsbygoogle').forEach(() => (window.adsbygoogle
   fetch(SUPABASE_URL + '/rest/v1/page_views', {
     method: 'POST',
     headers: { apikey: SUPABASE_ANON_KEY, Authorization: 'Bearer ' + SUPABASE_ANON_KEY, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
-    body: JSON.stringify({ path: 'post', slug: "field-guide-row-level-security" })
+    body: JSON.stringify({ path: 'post', slug: "identity-first-cybersecurity-ai-agents-2026" })
   }).catch(function(){});
 })();
 </script>

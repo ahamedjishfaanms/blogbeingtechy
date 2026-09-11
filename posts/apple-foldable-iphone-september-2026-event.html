@@ -4,21 +4,22 @@
 <meta charset="UTF-8">
 <script>(function(){try{if(localStorage.getItem('bt-theme')==='light'){document.documentElement.setAttribute('data-theme','light');}}catch(e){}})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>A field guide to Row Level Security in Postgres — BeingTechy</title>
-<meta name="description" content="RLS turns &quot;trust the client&quot; into &quot;trust the database.&quot; Here&#39;s how to reason about it without getting stuck.">
+<title>Apple Finally Ships a Foldable iPhone: What the September 2026 Event Really Changed — BeingTechy</title>
+<meta name="description" content="Apple&#39;s September 2026 keynote finally delivered a folding iPhone alongside an iPhone 18 Pro refresh, AI-focused Apple Watches, and cheaper AirPods — here&#39;s what actually changed and why it matters.">
 <meta name="robots" content="index, follow">
-<link rel="canonical" href="https://www.beingtechy.org/posts/field-guide-row-level-security.html">
+<link rel="canonical" href="https://www.beingtechy.org/posts/apple-foldable-iphone-september-2026-event.html">
 
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="BeingTechy">
-<meta property="og:title" content="A field guide to Row Level Security in Postgres — BeingTechy">
-<meta property="og:description" content="RLS turns &quot;trust the client&quot; into &quot;trust the database.&quot; Here&#39;s how to reason about it without getting stuck.">
-<meta property="og:url" content="https://www.beingtechy.org/posts/field-guide-row-level-security.html">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="A field guide to Row Level Security in Postgres — BeingTechy">
-<meta name="twitter:description" content="RLS turns &quot;trust the client&quot; into &quot;trust the database.&quot; Here&#39;s how to reason about it without getting stuck.">
+<meta property="og:title" content="Apple Finally Ships a Foldable iPhone: What the September 2026 Event Really Changed — BeingTechy">
+<meta property="og:description" content="Apple&#39;s September 2026 keynote finally delivered a folding iPhone alongside an iPhone 18 Pro refresh, AI-focused Apple Watches, and cheaper AirPods — here&#39;s what actually changed and why it matters.">
+<meta property="og:url" content="https://www.beingtechy.org/posts/apple-foldable-iphone-september-2026-event.html">
+<meta property="og:image" content="https://i.ibb.co/CKYQ514b/images-1.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Apple Finally Ships a Foldable iPhone: What the September 2026 Event Really Changed — BeingTechy">
+<meta name="twitter:description" content="Apple&#39;s September 2026 keynote finally delivered a folding iPhone alongside an iPhone 18 Pro refresh, AI-focused Apple Watches, and cheaper AirPods — here&#39;s what actually changed and why it matters.">
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"A field guide to Row Level Security in Postgres","description":"RLS turns \"trust the client\" into \"trust the database.\" Here's how to reason about it without getting stuck.","datePublished":"2026-07-15T16:14:18.734554+00:00","dateModified":"2026-07-15T16:14:18.734554+00:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://www.beingtechy.org/posts/field-guide-row-level-security.html"},"author":{"@type":"Person","name":"BeingTechy Staff"},"publisher":{"@type":"Organization","name":"BeingTechy","url":"https://www.beingtechy.org/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Apple Finally Ships a Foldable iPhone: What the September 2026 Event Really Changed","description":"Apple's September 2026 keynote finally delivered a folding iPhone alongside an iPhone 18 Pro refresh, AI-focused Apple Watches, and cheaper AirPods — here's what actually changed and why it matters.","datePublished":"2026-09-11T18:58:45.743323+00:00","dateModified":"2026-09-11T18:58:45.743323+00:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://www.beingtechy.org/posts/apple-foldable-iphone-september-2026-event.html"},"author":{"@type":"Person","name":"Ahamed Jishfaan"},"publisher":{"@type":"Organization","name":"BeingTechy","url":"https://www.beingtechy.org/"},"image":"https://i.ibb.co/CKYQ514b/images-1.jpg"}</script>
 
 <meta name="google-adsense-account" content="ca-pub-6780480728242580">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6780480728242580" crossorigin="anonymous"></script>
@@ -105,56 +106,82 @@
 
 <main id="main">
   <article>
-    <div class="meta"><span class="tag">dev</span><span>·</span><span>Jul 15, 2026</span></div>
-    <h1>A field guide to Row Level Security in Postgres</h1>
+    <div class="meta"><span class="tag">hardware</span><span>·</span><span>Sep 11, 2026</span></div>
+    <h1>Apple Finally Ships a Foldable iPhone: What the September 2026 Event Really Changed</h1>
     <div class="byline">
-      <span>By BeingTechy Staff</span>
-      <span>6 min read</span>
+      <span>By Ahamed Jishfaan</span>
+      <span>3 min read</span>
     </div>
     
     <div class="share-row ">
       <span class="share-label">Share</span>
-      <a class="share-btn" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.beingtechy.org%2Fposts%2Ffield-guide-row-level-security.html&text=A%20field%20guide%20to%20Row%20Level%20Security%20in%20Postgres" target="_blank" rel="noopener" aria-label="Share on X">
+      <a class="share-btn" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.beingtechy.org%2Fposts%2Fapple-foldable-iphone-september-2026-event.html&text=Apple%20Finally%20Ships%20a%20Foldable%20iPhone%3A%20What%20the%20September%202026%20Event%20Really%20Changed" target="_blank" rel="noopener" aria-label="Share on X">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-7.6 8.7L23.3 22h-7l-5.5-7.2L4.5 22H1.4l8.1-9.3L1 2h7.2l5 6.6L18.9 2zm-1.2 18h1.7L7.4 4H5.6l12.1 16z"/></svg>
       </a>
-      <a class="share-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fwww.beingtechy.org%2Fposts%2Ffield-guide-row-level-security.html" target="_blank" rel="noopener" aria-label="Share on LinkedIn">
+      <a class="share-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fwww.beingtechy.org%2Fposts%2Fapple-foldable-iphone-september-2026-event.html" target="_blank" rel="noopener" aria-label="Share on LinkedIn">
         <svg viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="9" width="4" height="11"/><circle cx="5" cy="4.5" r="1.5"/><path d="M11 20v-7a3 3 0 0 1 6 0v7M11 9v11"/></svg>
       </a>
-      <a class="share-btn" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.beingtechy.org%2Fposts%2Ffield-guide-row-level-security.html" target="_blank" rel="noopener" aria-label="Share on Facebook">
+      <a class="share-btn" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.beingtechy.org%2Fposts%2Fapple-foldable-iphone-september-2026-event.html" target="_blank" rel="noopener" aria-label="Share on Facebook">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-8h2.7l.4-3.2h-3.1V7.7c0-.9.3-1.6 1.6-1.6h1.7V3.2c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.4H7.4V13H10v8h3.5z"/></svg>
       </a>
-      <a class="share-btn" href="https://wa.me/?text=A%20field%20guide%20to%20Row%20Level%20Security%20in%20Postgres%20https%3A%2F%2Fwww.beingtechy.org%2Fposts%2Ffield-guide-row-level-security.html" target="_blank" rel="noopener" aria-label="Share on WhatsApp">
+      <a class="share-btn" href="https://wa.me/?text=Apple%20Finally%20Ships%20a%20Foldable%20iPhone%3A%20What%20the%20September%202026%20Event%20Really%20Changed%20https%3A%2F%2Fwww.beingtechy.org%2Fposts%2Fapple-foldable-iphone-september-2026-event.html" target="_blank" rel="noopener" aria-label="Share on WhatsApp">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3.1.8.8-3-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1-.2.2-.7.8-.8 1-.2.2-.3.2-.5.1-.2-.1-1-.4-1.9-1.2-.7-.6-1.2-1.4-1.3-1.6-.2-.2 0-.4.1-.5l.4-.5c.1-.1.2-.3.2-.4.1-.2 0-.3 0-.4-.1-.1-.6-1.4-.8-1.9-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.6.3-.2.2-.8.8-.8 1.9s.8 2.2.9 2.4c.1.2 1.6 2.5 4 3.4.6.2 1 .4 1.3.5.6.2 1.1.1 1.5.1.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.1-1.2-.1-.1-.2-.2-.4-.3z"/></svg>
       </a>
-      <button class="share-btn" type="button" data-copy="https://www.beingtechy.org/posts/field-guide-row-level-security.html" aria-label="Copy link">
+      <button class="share-btn" type="button" data-copy="https://www.beingtechy.org/posts/apple-foldable-iphone-september-2026-event.html" aria-label="Copy link">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.5.5l2-2a5 5 0 0 0-7-7l-1.5 1.5"/><path d="M14 11a5 5 0 0 0-7.5-.5l-2 2a5 5 0 0 0 7 7l1.5-1.5"/></svg>
         <span class="copied-tip">Copied!</span>
       </button>
     </div>
-    
+    <div class="cover"><img src="https://i.ibb.co/CKYQ514b/images-1.jpg" alt="Apple Finally Ships a Foldable iPhone: What the September 2026 Event Really Changed" width="1200" height="675" loading="eager"></div>
 
     <div class="ad-slot">
       <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6780480728242580" data-ad-slot="0000000002" data-ad-format="auto" data-full-width-responsive="true"></ins>
     </div>
 
-    <div class="content"><p>Row Level Security policies live next to your data, not your app code — which means they hold even if a request skips your API entirely.</p><h2>Start with a single rule</h2><p>Most tables need just one honest question answered: who is allowed to see this row? Write that as a policy before you write anything cleverer.</p></div>
+    <div class="content"><p>For over half a decade, "Apple foldable" was one of the most reliable rumor-mill topics in consumer tech. At its September 2026 keynote, Apple ended the speculation and unveiled its first folding phone alongside a refreshed iPhone 18 Pro lineup, updated Apple Watches, and a cheaper set of AirPods. Taken together, the announcements say less about any single gadget and more about where Apple thinks the smartphone category is heading next.</p>
+
+<h2>The Headline Act: A Foldable iPhone</h2>
+<p>Apple's new foldable device arrived as the emotional centerpiece of the event, the classic "one more thing" moment repositioned for a hardware category Apple had conspicuously avoided while Samsung, Google, and several Chinese manufacturers iterated through five or six generations of folding hardware.</p>
+<p>That patience appears to have been deliberate. Rather than rushing an early folding design with a visible crease or fragile hinge, Apple waited until it could ship a book-style device with tighter tolerances and software that treats the inner display as a genuine productivity surface rather than a stretched phone screen. Multi-app layouts, a redesigned control center for the unfolded state, and continuity features that hand off tasks between the cover screen and the main display all point to Apple trying to make the fold feel purposeful rather than novel.</p>
+<p>The trade-off, as usual with first-generation Apple hardware, is price. Reports from the event peg the foldable well above the standard Pro Max tier, positioning it closer to a specialty device for early adopters than a mainstream upgrade path.</p>
+
+<h2>iPhone 18 Pro: An Incremental Jump With One Genuinely New Trick</h2>
+<p>The iPhone 18 Pro and Pro Max didn't attempt to compete with the foldable for attention, but they picked up a notable camera capability that reviewers flagged as more than a spec-sheet bump. Camera hardware and computational photography have long been the annual battleground for the Pro line, and this year's refinement leans into smarter scene detection and processing rather than a simple megapixel increase — consistent with a broader industry shift toward software-driven image quality gains as sensor hardware matures.</p>
+
+<h2>Apple Watch Leans Hard Into AI and Wellness</h2>
+<p>The Apple Watch lineup picked up expanded AI assistant functionality, reflecting Apple's push to make Siri and on-device intelligence more central to the wearable experience rather than treating the Watch as a notification mirror for the phone. Paired with continued investment in health sensors, the Watch update signals Apple's wellness ecosystem strategy is maturing into a genuine differentiator against Wear OS competitors.</p>
+
+<h2>The Quiet Win: Cheaper AirPods</h2>
+<p>Amid a lineup where nearly every other product got more expensive, Apple's new AirPods with active noise cancellation bucked the trend with a lower price point. It's a small detail, but it matters: Apple rarely cuts prices on flagship accessories, and doing so signals either manufacturing efficiencies Apple wants to pass along or a strategic move to widen the entry point into its audio ecosystem ahead of stiffer competition from budget ANC earbuds.</p>
+
+<h2>Why This Event Matters Beyond the Spec Sheet</h2>
+<p>Three things stand out when you zoom out from the individual products:</p>
+<ol>
+<li><strong>Apple is comfortable being late if it means being right.</strong> The foldable arrives years after competitors, but Apple's traditional advantage — tight hardware-software integration — plays directly into making a fold genuinely useful rather than a screen gimmick.</li>
+<li><strong>AI is now a hardware differentiator, not just a software feature.</strong> From the Watch's assistant capabilities to computational photography, Apple is folding machine learning into the value proposition of nearly every device category it sells.</li>
+<li><strong>Pricing strategy is diverging by product line.</strong> Premium tiers are getting more expensive as Apple pushes into new form factors, while entry-level accessories are getting cheaper to protect volume and ecosystem lock-in.</li>
+</ol>
+
+<h2>What to Watch Next</h2>
+<p>The real test for Apple's foldable won't be the September launch buzz — it will be whether third-party developers build software that actually takes advantage of the larger inner display, and whether Apple can bring the price down in a second or third generation the way it eventually did with AirPods and the Apple Watch. If history is any guide, the first year of a new Apple category is more about establishing the hardware platform than winning on value, with the real mainstream push arriving once yields improve and competitors force Apple's hand on pricing.</p>
+<p>For now, the September 2026 event confirms that Apple sees the smartphone form factor as still worth reinventing — and that it's willing to let its usual "wait and perfect it" philosophy dictate the timeline, price tag included.</p></div>
 
     
     <div class="share-row bottom">
       <span class="share-label">Share</span>
-      <a class="share-btn" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.beingtechy.org%2Fposts%2Ffield-guide-row-level-security.html&text=A%20field%20guide%20to%20Row%20Level%20Security%20in%20Postgres" target="_blank" rel="noopener" aria-label="Share on X">
+      <a class="share-btn" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.beingtechy.org%2Fposts%2Fapple-foldable-iphone-september-2026-event.html&text=Apple%20Finally%20Ships%20a%20Foldable%20iPhone%3A%20What%20the%20September%202026%20Event%20Really%20Changed" target="_blank" rel="noopener" aria-label="Share on X">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-7.6 8.7L23.3 22h-7l-5.5-7.2L4.5 22H1.4l8.1-9.3L1 2h7.2l5 6.6L18.9 2zm-1.2 18h1.7L7.4 4H5.6l12.1 16z"/></svg>
       </a>
-      <a class="share-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fwww.beingtechy.org%2Fposts%2Ffield-guide-row-level-security.html" target="_blank" rel="noopener" aria-label="Share on LinkedIn">
+      <a class="share-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fwww.beingtechy.org%2Fposts%2Fapple-foldable-iphone-september-2026-event.html" target="_blank" rel="noopener" aria-label="Share on LinkedIn">
         <svg viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="9" width="4" height="11"/><circle cx="5" cy="4.5" r="1.5"/><path d="M11 20v-7a3 3 0 0 1 6 0v7M11 9v11"/></svg>
       </a>
-      <a class="share-btn" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.beingtechy.org%2Fposts%2Ffield-guide-row-level-security.html" target="_blank" rel="noopener" aria-label="Share on Facebook">
+      <a class="share-btn" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.beingtechy.org%2Fposts%2Fapple-foldable-iphone-september-2026-event.html" target="_blank" rel="noopener" aria-label="Share on Facebook">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-8h2.7l.4-3.2h-3.1V7.7c0-.9.3-1.6 1.6-1.6h1.7V3.2c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.4H7.4V13H10v8h3.5z"/></svg>
       </a>
-      <a class="share-btn" href="https://wa.me/?text=A%20field%20guide%20to%20Row%20Level%20Security%20in%20Postgres%20https%3A%2F%2Fwww.beingtechy.org%2Fposts%2Ffield-guide-row-level-security.html" target="_blank" rel="noopener" aria-label="Share on WhatsApp">
+      <a class="share-btn" href="https://wa.me/?text=Apple%20Finally%20Ships%20a%20Foldable%20iPhone%3A%20What%20the%20September%202026%20Event%20Really%20Changed%20https%3A%2F%2Fwww.beingtechy.org%2Fposts%2Fapple-foldable-iphone-september-2026-event.html" target="_blank" rel="noopener" aria-label="Share on WhatsApp">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3.1.8.8-3-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1-.2.2-.7.8-.8 1-.2.2-.3.2-.5.1-.2-.1-1-.4-1.9-1.2-.7-.6-1.2-1.4-1.3-1.6-.2-.2 0-.4.1-.5l.4-.5c.1-.1.2-.3.2-.4.1-.2 0-.3 0-.4-.1-.1-.6-1.4-.8-1.9-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.6.3-.2.2-.8.8-.8 1.9s.8 2.2.9 2.4c.1.2 1.6 2.5 4 3.4.6.2 1 .4 1.3.5.6.2 1.1.1 1.5.1.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.1-1.2-.1-.1-.2-.2-.4-.3z"/></svg>
       </a>
-      <button class="share-btn" type="button" data-copy="https://www.beingtechy.org/posts/field-guide-row-level-security.html" aria-label="Copy link">
+      <button class="share-btn" type="button" data-copy="https://www.beingtechy.org/posts/apple-foldable-iphone-september-2026-event.html" aria-label="Copy link">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.5.5l2-2a5 5 0 0 0-7-7l-1.5 1.5"/><path d="M14 11a5 5 0 0 0-7.5-.5l-2 2a5 5 0 0 0 7 7l1.5-1.5"/></svg>
         <span class="copied-tip">Copied!</span>
       </button>
@@ -164,23 +191,23 @@
       <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6780480728242580" data-ad-slot="0000000003" data-ad-format="auto" data-full-width-responsive="true"></ins>
     </div>
 
-    <div class="tags"><a href="../index.html#grid">#postgres</a><a href="../index.html#grid">#supabase</a><a href="../index.html#grid">#security</a></div>
+    <div class="tags"><a href="../index.html#grid">#Apple</a><a href="../index.html#grid">#foldable phones</a><a href="../index.html#grid">#iPhone 18 Pro</a><a href="../index.html#grid">#Apple Watch</a><a href="../index.html#grid">#AirPods</a><a href="../index.html#grid">#consumer tech</a></div>
   </article>
 
   <div class="related">
     <h4>More from BeingTechy</h4>
     
-        <a class="related-item" href="open-source-app-unlocks-pixel-11-pro-hilight.html">
-          <div class="rtitle">How an Open-Source App Unlocks the Google Pixel 11 Pro&#39;s Hidden HiLight Feature</div>
-          <div class="rmeta">dev · Aug 20, 2026</div>
+        <a class="related-item" href="quantum-computing-enterprise-readiness-2026.html">
+          <div class="rtitle">Quantum Computing in 2026: From Lab Curiosity to Boardroom Line Item</div>
+          <div class="rmeta">hardware · Sep 11, 2026</div>
         </a>
-        <a class="related-item" href="cloudflare-monetization-gateway-ai.html">
-          <div class="rtitle">Cloudflare Introduces Monetization Gateway for AI Agents</div>
-          <div class="rmeta">dev · Jul 14, 2026</div>
+        <a class="related-item" href="apple-iphone-18-pro-september-launch-features.html">
+          <div class="rtitle">Apple’s September Event: iPhone 18 Pro Launch, 2nm Silicon, and Major Upgrades</div>
+          <div class="rmeta">hardware · Aug 10, 2026</div>
         </a>
-        <a class="related-item" href="tsmc-record-revenue-ai-chip-boom-2026.html">
-          <div class="rtitle">TSMC&#39;s Record Revenue Shows the AI Chip Boom Still Has No Ceiling</div>
-          <div class="rmeta">ai · Sep 11, 2026</div>
+        <a class="related-item" href="usb-c-quiet-redesign.html">
+          <div class="rtitle">The quiet redesign of the USB-C port</div>
+          <div class="rmeta">hardware · Jul 15, 2026</div>
         </a>
   </div>
 </main>
@@ -222,7 +249,7 @@ try{ document.querySelectorAll('.adsbygoogle').forEach(() => (window.adsbygoogle
   fetch(SUPABASE_URL + '/rest/v1/page_views', {
     method: 'POST',
     headers: { apikey: SUPABASE_ANON_KEY, Authorization: 'Bearer ' + SUPABASE_ANON_KEY, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
-    body: JSON.stringify({ path: 'post', slug: "field-guide-row-level-security" })
+    body: JSON.stringify({ path: 'post', slug: "apple-foldable-iphone-september-2026-event" })
   }).catch(function(){});
 })();
 </script>

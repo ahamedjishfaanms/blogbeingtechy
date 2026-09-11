@@ -4,21 +4,21 @@
 <meta charset="UTF-8">
 <script>(function(){try{if(localStorage.getItem('bt-theme')==='light'){document.documentElement.setAttribute('data-theme','light');}}catch(e){}})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>A field guide to Row Level Security in Postgres — BeingTechy</title>
-<meta name="description" content="RLS turns &quot;trust the client&quot; into &quot;trust the database.&quot; Here&#39;s how to reason about it without getting stuck.">
+<title>TSMC&#39;s Record Revenue Shows the AI Chip Boom Still Has No Ceiling — BeingTechy</title>
+<meta name="description" content="TSMC just posted its highest monthly revenue ever, up 53% year-over-year, as AI chip demand keeps its most advanced nodes fully booked — here&#39;s what that record month reveals about the AI infrastructure buildout.">
 <meta name="robots" content="index, follow">
-<link rel="canonical" href="https://www.beingtechy.org/posts/field-guide-row-level-security.html">
+<link rel="canonical" href="https://www.beingtechy.org/posts/tsmc-record-revenue-ai-chip-boom-2026.html">
 
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="BeingTechy">
-<meta property="og:title" content="A field guide to Row Level Security in Postgres — BeingTechy">
-<meta property="og:description" content="RLS turns &quot;trust the client&quot; into &quot;trust the database.&quot; Here&#39;s how to reason about it without getting stuck.">
-<meta property="og:url" content="https://www.beingtechy.org/posts/field-guide-row-level-security.html">
+<meta property="og:title" content="TSMC&#39;s Record Revenue Shows the AI Chip Boom Still Has No Ceiling — BeingTechy">
+<meta property="og:description" content="TSMC just posted its highest monthly revenue ever, up 53% year-over-year, as AI chip demand keeps its most advanced nodes fully booked — here&#39;s what that record month reveals about the AI infrastructure buildout.">
+<meta property="og:url" content="https://www.beingtechy.org/posts/tsmc-record-revenue-ai-chip-boom-2026.html">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="A field guide to Row Level Security in Postgres — BeingTechy">
-<meta name="twitter:description" content="RLS turns &quot;trust the client&quot; into &quot;trust the database.&quot; Here&#39;s how to reason about it without getting stuck.">
+<meta name="twitter:title" content="TSMC&#39;s Record Revenue Shows the AI Chip Boom Still Has No Ceiling — BeingTechy">
+<meta name="twitter:description" content="TSMC just posted its highest monthly revenue ever, up 53% year-over-year, as AI chip demand keeps its most advanced nodes fully booked — here&#39;s what that record month reveals about the AI infrastructure buildout.">
 
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"A field guide to Row Level Security in Postgres","description":"RLS turns \"trust the client\" into \"trust the database.\" Here's how to reason about it without getting stuck.","datePublished":"2026-07-15T16:14:18.734554+00:00","dateModified":"2026-07-15T16:14:18.734554+00:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://www.beingtechy.org/posts/field-guide-row-level-security.html"},"author":{"@type":"Person","name":"BeingTechy Staff"},"publisher":{"@type":"Organization","name":"BeingTechy","url":"https://www.beingtechy.org/"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"TSMC's Record Revenue Shows the AI Chip Boom Still Has No Ceiling","description":"TSMC just posted its highest monthly revenue ever, up 53% year-over-year, as AI chip demand keeps its most advanced nodes fully booked — here's what that record month reveals about the AI infrastructure buildout.","datePublished":"2026-09-11T19:18:43.137139+00:00","dateModified":"2026-09-11T19:18:43.137139+00:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://www.beingtechy.org/posts/tsmc-record-revenue-ai-chip-boom-2026.html"},"author":{"@type":"Person","name":"Ahamed Jishfaan"},"publisher":{"@type":"Organization","name":"BeingTechy","url":"https://www.beingtechy.org/"}}</script>
 
 <meta name="google-adsense-account" content="ca-pub-6780480728242580">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6780480728242580" crossorigin="anonymous"></script>
@@ -105,28 +105,28 @@
 
 <main id="main">
   <article>
-    <div class="meta"><span class="tag">dev</span><span>·</span><span>Jul 15, 2026</span></div>
-    <h1>A field guide to Row Level Security in Postgres</h1>
+    <div class="meta"><span class="tag">ai</span><span>·</span><span>Sep 11, 2026</span></div>
+    <h1>TSMC&#39;s Record Revenue Shows the AI Chip Boom Still Has No Ceiling</h1>
     <div class="byline">
-      <span>By BeingTechy Staff</span>
+      <span>By Ahamed Jishfaan</span>
       <span>6 min read</span>
     </div>
     
     <div class="share-row ">
       <span class="share-label">Share</span>
-      <a class="share-btn" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.beingtechy.org%2Fposts%2Ffield-guide-row-level-security.html&text=A%20field%20guide%20to%20Row%20Level%20Security%20in%20Postgres" target="_blank" rel="noopener" aria-label="Share on X">
+      <a class="share-btn" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.beingtechy.org%2Fposts%2Ftsmc-record-revenue-ai-chip-boom-2026.html&text=TSMC's%20Record%20Revenue%20Shows%20the%20AI%20Chip%20Boom%20Still%20Has%20No%20Ceiling" target="_blank" rel="noopener" aria-label="Share on X">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-7.6 8.7L23.3 22h-7l-5.5-7.2L4.5 22H1.4l8.1-9.3L1 2h7.2l5 6.6L18.9 2zm-1.2 18h1.7L7.4 4H5.6l12.1 16z"/></svg>
       </a>
-      <a class="share-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fwww.beingtechy.org%2Fposts%2Ffield-guide-row-level-security.html" target="_blank" rel="noopener" aria-label="Share on LinkedIn">
+      <a class="share-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fwww.beingtechy.org%2Fposts%2Ftsmc-record-revenue-ai-chip-boom-2026.html" target="_blank" rel="noopener" aria-label="Share on LinkedIn">
         <svg viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="9" width="4" height="11"/><circle cx="5" cy="4.5" r="1.5"/><path d="M11 20v-7a3 3 0 0 1 6 0v7M11 9v11"/></svg>
       </a>
-      <a class="share-btn" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.beingtechy.org%2Fposts%2Ffield-guide-row-level-security.html" target="_blank" rel="noopener" aria-label="Share on Facebook">
+      <a class="share-btn" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.beingtechy.org%2Fposts%2Ftsmc-record-revenue-ai-chip-boom-2026.html" target="_blank" rel="noopener" aria-label="Share on Facebook">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-8h2.7l.4-3.2h-3.1V7.7c0-.9.3-1.6 1.6-1.6h1.7V3.2c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.4H7.4V13H10v8h3.5z"/></svg>
       </a>
-      <a class="share-btn" href="https://wa.me/?text=A%20field%20guide%20to%20Row%20Level%20Security%20in%20Postgres%20https%3A%2F%2Fwww.beingtechy.org%2Fposts%2Ffield-guide-row-level-security.html" target="_blank" rel="noopener" aria-label="Share on WhatsApp">
+      <a class="share-btn" href="https://wa.me/?text=TSMC's%20Record%20Revenue%20Shows%20the%20AI%20Chip%20Boom%20Still%20Has%20No%20Ceiling%20https%3A%2F%2Fwww.beingtechy.org%2Fposts%2Ftsmc-record-revenue-ai-chip-boom-2026.html" target="_blank" rel="noopener" aria-label="Share on WhatsApp">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3.1.8.8-3-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1-.2.2-.7.8-.8 1-.2.2-.3.2-.5.1-.2-.1-1-.4-1.9-1.2-.7-.6-1.2-1.4-1.3-1.6-.2-.2 0-.4.1-.5l.4-.5c.1-.1.2-.3.2-.4.1-.2 0-.3 0-.4-.1-.1-.6-1.4-.8-1.9-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.6.3-.2.2-.8.8-.8 1.9s.8 2.2.9 2.4c.1.2 1.6 2.5 4 3.4.6.2 1 .4 1.3.5.6.2 1.1.1 1.5.1.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.1-1.2-.1-.1-.2-.2-.4-.3z"/></svg>
       </a>
-      <button class="share-btn" type="button" data-copy="https://www.beingtechy.org/posts/field-guide-row-level-security.html" aria-label="Copy link">
+      <button class="share-btn" type="button" data-copy="https://www.beingtechy.org/posts/tsmc-record-revenue-ai-chip-boom-2026.html" aria-label="Copy link">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.5.5l2-2a5 5 0 0 0-7-7l-1.5 1.5"/><path d="M14 11a5 5 0 0 0-7.5-.5l-2 2a5 5 0 0 0 7 7l1.5-1.5"/></svg>
         <span class="copied-tip">Copied!</span>
       </button>
@@ -137,24 +137,47 @@
       <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6780480728242580" data-ad-slot="0000000002" data-ad-format="auto" data-full-width-responsive="true"></ins>
     </div>
 
-    <div class="content"><p>Row Level Security policies live next to your data, not your app code — which means they hold even if a request skips your API entirely.</p><h2>Start with a single rule</h2><p>Most tables need just one honest question answered: who is allowed to see this row? Write that as a policy before you write anything cleverer.</p></div>
+    <div class="content"><p>While most of the tech conversation in September 2026 has centered on Apple's new foldable iPhone, a quieter but arguably more consequential story played out in Taiwan. TSMC, the contract chipmaker that manufactures processors for nearly every major AI, mobile, and computing company on Earth, reported its highest monthly revenue ever — and the numbers suggest the AI infrastructure buildout is nowhere near slowing down.</p>
+
+<h2>The Numbers</h2>
+<p>TSMC reported consolidated August revenue of roughly NT$514.8 billion, or about $16.3 billion, breaking the NT$500 billion mark for the first time in the company's history. That figure represents a 53.3% jump compared to the same month last year and a 10.1% increase from July alone — the company's fourth consecutive month of revenue growth. Cumulative revenue for the first eight months of 2026 reached roughly NT$3.39 trillion, up nearly 40% year-over-year.</p>
+<p>To put that acceleration in context: TSMC's growth rate has been climbing steadily through the year rather than plateauing, which is unusual for a company already operating near the top of its industry. Analysts covering the stock have pointed to strong margins and sustained insider buying as signs that the market views this growth as durable rather than a short-term spike.</p>
+
+<h2>What's Actually Driving It</h2>
+<p>The short answer is AI, but the more specific answer involves a supply-demand imbalance that has been building for years. TSMC's most advanced manufacturing nodes — its 5-, 4-, and 3-nanometer process lines — have been running at full capacity, booked well in advance by customers racing to secure enough chip supply for AI servers, accelerators, and next-generation consumer devices. Research firm TrendForce put TSMC's overall foundry market share at roughly 72.5% for the second quarter, dwarfing its next-closest rivals.</p>
+<p>A large share of that advanced-node demand traces back to a single customer relationship: TSMC remains the primary manufacturing partner for Nvidia, whose AI processors continue to ship in volumes that strain global chip supply. But the demand isn't limited to one company or even one category of chip — new smartphone launches and general enterprise hardware refresh cycles have added to the load, meaning TSMC's order book reflects both the AI buildout and ordinary consumer electronics demand happening at the same time.</p>
+
+<h2>Pricing Power Is the Untold Part of the Story</h2>
+<p>One of the more revealing details in this year's results isn't the revenue figure itself but what it implies about pricing. Because TSMC's advanced packaging and leading-edge nodes are effectively irreplaceable for AI chip customers in the near term, the company has been able to raise the prices it charges for contract manufacturing while still expanding its margins. That's a notable divergence from the fabless chip designers — companies like AMD and Nvidia that design chips but rely on TSMC to manufacture them — which are left absorbing higher input costs rather than passing them upstream.</p>
+<p>In a normal semiconductor cycle, rising demand eventually triggers new capacity that cools off pricing power. In 2026, TSMC is expanding aggressively — reportedly building or fitting out around 20 fabrication plants domestically and overseas, four to five times its historical construction pace — and still can't keep up with orders. That's an unusually strong signal about how tight AI-related chip supply actually is heading into 2027.</p>
+
+<h2>What This Means Beyond TSMC's Balance Sheet</h2>
+<p>A handful of broader implications follow from this data point:</p>
+<ol>
+<li><strong>The AI infrastructure buildout is a multi-year capital cycle, not a short-term spending spree.</strong> Companies don't commit tens of billions of dollars to new fab construction unless they expect demand to remain elevated for years, not quarters.</li>
+<li><strong>Chip supply remains the binding constraint on AI expansion.</strong> Even well-funded AI companies are ultimately limited by how many advanced chips TSMC and a small number of other foundries can physically produce, which has downstream effects on everything from cloud pricing to how quickly new AI models can be trained and deployed.</li>
+<li><strong>Geopolitical concentration risk hasn't gone away.</strong> With the overwhelming majority of the world's most advanced chip manufacturing concentrated in Taiwan, any disruption to that supply — whether from natural disaster, geopolitical tension, or infrastructure strain — carries outsized consequences for the entire AI and consumer electronics industry.</li>
+</ol>
+
+<h2>The Bottom Line</h2>
+<p>TSMC's record month isn't just a good quarter for one company's shareholders; it's a real-time data point confirming that the AI hardware boom driving headlines throughout 2026 is backed by genuine, capacity-straining demand rather than speculative hype. As long as advanced chip capacity remains the bottleneck, expect the companies that control it — TSMC chief among them — to keep setting records, and expect the pricing power that comes with that scarcity to keep flowing upstream rather than down to the companies actually building AI products on top of it.</p></div>
 
     
     <div class="share-row bottom">
       <span class="share-label">Share</span>
-      <a class="share-btn" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.beingtechy.org%2Fposts%2Ffield-guide-row-level-security.html&text=A%20field%20guide%20to%20Row%20Level%20Security%20in%20Postgres" target="_blank" rel="noopener" aria-label="Share on X">
+      <a class="share-btn" href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fwww.beingtechy.org%2Fposts%2Ftsmc-record-revenue-ai-chip-boom-2026.html&text=TSMC's%20Record%20Revenue%20Shows%20the%20AI%20Chip%20Boom%20Still%20Has%20No%20Ceiling" target="_blank" rel="noopener" aria-label="Share on X">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-7.6 8.7L23.3 22h-7l-5.5-7.2L4.5 22H1.4l8.1-9.3L1 2h7.2l5 6.6L18.9 2zm-1.2 18h1.7L7.4 4H5.6l12.1 16z"/></svg>
       </a>
-      <a class="share-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fwww.beingtechy.org%2Fposts%2Ffield-guide-row-level-security.html" target="_blank" rel="noopener" aria-label="Share on LinkedIn">
+      <a class="share-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fwww.beingtechy.org%2Fposts%2Ftsmc-record-revenue-ai-chip-boom-2026.html" target="_blank" rel="noopener" aria-label="Share on LinkedIn">
         <svg viewBox="0 0 24 24" fill="currentColor"><rect x="3" y="9" width="4" height="11"/><circle cx="5" cy="4.5" r="1.5"/><path d="M11 20v-7a3 3 0 0 1 6 0v7M11 9v11"/></svg>
       </a>
-      <a class="share-btn" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.beingtechy.org%2Fposts%2Ffield-guide-row-level-security.html" target="_blank" rel="noopener" aria-label="Share on Facebook">
+      <a class="share-btn" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.beingtechy.org%2Fposts%2Ftsmc-record-revenue-ai-chip-boom-2026.html" target="_blank" rel="noopener" aria-label="Share on Facebook">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-8h2.7l.4-3.2h-3.1V7.7c0-.9.3-1.6 1.6-1.6h1.7V3.2c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.4H7.4V13H10v8h3.5z"/></svg>
       </a>
-      <a class="share-btn" href="https://wa.me/?text=A%20field%20guide%20to%20Row%20Level%20Security%20in%20Postgres%20https%3A%2F%2Fwww.beingtechy.org%2Fposts%2Ffield-guide-row-level-security.html" target="_blank" rel="noopener" aria-label="Share on WhatsApp">
+      <a class="share-btn" href="https://wa.me/?text=TSMC's%20Record%20Revenue%20Shows%20the%20AI%20Chip%20Boom%20Still%20Has%20No%20Ceiling%20https%3A%2F%2Fwww.beingtechy.org%2Fposts%2Ftsmc-record-revenue-ai-chip-boom-2026.html" target="_blank" rel="noopener" aria-label="Share on WhatsApp">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3.1.8.8-3-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1-.2.2-.7.8-.8 1-.2.2-.3.2-.5.1-.2-.1-1-.4-1.9-1.2-.7-.6-1.2-1.4-1.3-1.6-.2-.2 0-.4.1-.5l.4-.5c.1-.1.2-.3.2-.4.1-.2 0-.3 0-.4-.1-.1-.6-1.4-.8-1.9-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.6.3-.2.2-.8.8-.8 1.9s.8 2.2.9 2.4c.1.2 1.6 2.5 4 3.4.6.2 1 .4 1.3.5.6.2 1.1.1 1.5.1.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.1-1.2-.1-.1-.2-.2-.4-.3z"/></svg>
       </a>
-      <button class="share-btn" type="button" data-copy="https://www.beingtechy.org/posts/field-guide-row-level-security.html" aria-label="Copy link">
+      <button class="share-btn" type="button" data-copy="https://www.beingtechy.org/posts/tsmc-record-revenue-ai-chip-boom-2026.html" aria-label="Copy link">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.5.5l2-2a5 5 0 0 0-7-7l-1.5 1.5"/><path d="M14 11a5 5 0 0 0-7.5-.5l-2 2a5 5 0 0 0 7 7l1.5-1.5"/></svg>
         <span class="copied-tip">Copied!</span>
       </button>
@@ -164,23 +187,23 @@
       <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6780480728242580" data-ad-slot="0000000003" data-ad-format="auto" data-full-width-responsive="true"></ins>
     </div>
 
-    <div class="tags"><a href="../index.html#grid">#postgres</a><a href="../index.html#grid">#supabase</a><a href="../index.html#grid">#security</a></div>
+    <div class="tags"><a href="../index.html#grid">#TSMC</a><a href="../index.html#grid">#semiconductors</a><a href="../index.html#grid">#AI chips</a><a href="../index.html#grid">#Nvidia</a><a href="../index.html#grid">#chip manufacturing</a><a href="../index.html#grid">#supply chain</a></div>
   </article>
 
   <div class="related">
     <h4>More from BeingTechy</h4>
     
-        <a class="related-item" href="open-source-app-unlocks-pixel-11-pro-hilight.html">
-          <div class="rtitle">How an Open-Source App Unlocks the Google Pixel 11 Pro&#39;s Hidden HiLight Feature</div>
-          <div class="rmeta">dev · Aug 20, 2026</div>
-        </a>
-        <a class="related-item" href="cloudflare-monetization-gateway-ai.html">
-          <div class="rtitle">Cloudflare Introduces Monetization Gateway for AI Agents</div>
-          <div class="rmeta">dev · Jul 14, 2026</div>
-        </a>
-        <a class="related-item" href="tsmc-record-revenue-ai-chip-boom-2026.html">
-          <div class="rtitle">TSMC&#39;s Record Revenue Shows the AI Chip Boom Still Has No Ceiling</div>
+        <a class="related-item" href="agentic-ai-enterprise-adoption-2026.html">
+          <div class="rtitle">Agentic AI in 2026: Why &quot;AI Agents&quot; Stopped Being a Buzzword and Became a Budget Line</div>
           <div class="rmeta">ai · Sep 11, 2026</div>
+        </a>
+        <a class="related-item" href="qualcomm-flagship-chip-leaked-sold-online.html">
+          <div class="rtitle">Qualcomm’s Next Flagship Chip Sold Online Before It Was Even Announced</div>
+          <div class="rmeta">ai · Aug 20, 2026</div>
+        </a>
+        <a class="related-item" href="openai-upgrades-chatgpt-gpt-5-6-luna.html">
+          <div class="rtitle">OpenAI Upgrades ChatGPT to GPT-5.6 Luna: Faster, Smarter, and Better</div>
+          <div class="rmeta">ai · Aug 6, 2026</div>
         </a>
   </div>
 </main>
@@ -222,7 +245,7 @@ try{ document.querySelectorAll('.adsbygoogle').forEach(() => (window.adsbygoogle
   fetch(SUPABASE_URL + '/rest/v1/page_views', {
     method: 'POST',
     headers: { apikey: SUPABASE_ANON_KEY, Authorization: 'Bearer ' + SUPABASE_ANON_KEY, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
-    body: JSON.stringify({ path: 'post', slug: "field-guide-row-level-security" })
+    body: JSON.stringify({ path: 'post', slug: "tsmc-record-revenue-ai-chip-boom-2026" })
   }).catch(function(){});
 })();
 </script>
