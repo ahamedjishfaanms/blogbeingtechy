@@ -531,16 +531,84 @@
        the carousel stays interactive and picks up anything published since
        the last build. -->
   <!-- SSR:FEATURE:START -->
-  <section class="feature-slider" id="featureSlider" aria-roledescription="carousel" aria-label="Featured stories" style="display:none;">
+<section class="feature-slider" id="featureSlider" aria-roledescription="carousel" aria-label="Featured stories">
     <div class="fs-viewport" id="fsViewport">
-      <span class="fs-counter" id="fsCounter" aria-live="polite">01 / 01</span>
-      <!-- slides injected by JS -->
+      <span class="fs-counter" id="fsCounter" aria-live="polite">01 / 05</span>
+    <a class="fs-slide active" href="posts/tsmc-record-revenue-ai-chip-boom-2026.html" data-index="0">
+      <div class="fs-media">
+        <div class="fs-placeholder"></div>
+      </div>
+      <div class="fs-overlay">
+        <div class="fs-meta">
+          <span class="fs-tag">ai</span>
+          <span>·</span>
+          <span>1d ago</span>
+        </div>
+        <h3 class="fs-headline">TSMC&#39;s Record Revenue Shows the AI Chip Boom Still Has No Ceiling</h3>
+      </div>
+    </a>
+
+    <a class="fs-slide" href="posts/quantum-computing-enterprise-readiness-2026.html" data-index="1">
+      <div class="fs-media">
+        <div class="fs-placeholder"></div>
+      </div>
+      <div class="fs-overlay">
+        <div class="fs-meta">
+          <span class="fs-tag">hardware</span>
+          <span>·</span>
+          <span>1d ago</span>
+        </div>
+        <h3 class="fs-headline">Quantum Computing in 2026: From Lab Curiosity to Boardroom Line Item</h3>
+      </div>
+    </a>
+
+    <a class="fs-slide" href="posts/identity-first-cybersecurity-ai-agents-2026.html" data-index="2">
+      <div class="fs-media">
+        <div class="fs-placeholder"></div>
+      </div>
+      <div class="fs-overlay">
+        <div class="fs-meta">
+          <span class="fs-tag">security</span>
+          <span>·</span>
+          <span>1d ago</span>
+        </div>
+        <h3 class="fs-headline">Identity Is the New Perimeter: How AI Agents Are Reshaping Cybersecurity in 2026</h3>
+      </div>
+    </a>
+
+    <a class="fs-slide" href="posts/agentic-ai-enterprise-adoption-2026.html" data-index="3">
+      <div class="fs-media">
+        <div class="fs-placeholder"></div>
+      </div>
+      <div class="fs-overlay">
+        <div class="fs-meta">
+          <span class="fs-tag">ai</span>
+          <span>·</span>
+          <span>1d ago</span>
+        </div>
+        <h3 class="fs-headline">Agentic AI in 2026: Why &quot;AI Agents&quot; Stopped Being a Buzzword and Became a Budget Line</h3>
+      </div>
+    </a>
+
+    <a class="fs-slide" href="posts/apple-foldable-iphone-september-2026-event.html" data-index="4">
+      <div class="fs-media">
+        <img src="https://i.ibb.co/CKYQ514b/images-1.jpg" alt="" loading="lazy">
+      </div>
+      <div class="fs-overlay">
+        <div class="fs-meta">
+          <span class="fs-tag">hardware</span>
+          <span>·</span>
+          <span>1d ago</span>
+        </div>
+        <h3 class="fs-headline">Apple Finally Ships a Foldable iPhone: What the September 2026 Event Really Changed</h3>
+      </div>
+    </a>
     </div>
     <div class="fs-controls" id="fsControls">
       <button class="fs-arrow" id="fsPrev" type="button" aria-label="Previous story">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
       </button>
-      <div class="fs-dots" id="fsDots"></div>
+      <div class="fs-dots" id="fsDots"><button class="fs-dot active" data-index="0" type="button" aria-label="Go to story 1"></button><button class="fs-dot" data-index="1" type="button" aria-label="Go to story 2"></button><button class="fs-dot" data-index="2" type="button" aria-label="Go to story 3"></button><button class="fs-dot" data-index="3" type="button" aria-label="Go to story 4"></button><button class="fs-dot" data-index="4" type="button" aria-label="Go to story 5"></button></div>
       <button class="fs-arrow" id="fsNext" type="button" aria-label="Next story">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
       </button>
@@ -570,17 +638,332 @@
     </div>
 
     <!-- SSR:GRID:START -->
-    <div class="grid" id="postGrid">
-      <!-- Skeleton cards: fallback only, shown if a browser has JS disabled
-           AND this file hasn't been rebuilt yet. scripts/build-posts.mjs
-           replaces everything between the SSR:GRID markers with real,
-           server-rendered post cards read straight from Supabase, so
-           crawlers and no-JS visitors see actual headlines, not this. -->
-      <div class="card skeleton"><div class="thumb"></div><h3>Loading headline text</h3><p>Loading excerpt line one and a bit more filler text</p></div>
-      <div class="card skeleton"><div class="thumb"></div><h3>Loading headline text</h3><p>Loading excerpt line one and a bit more filler text</p></div>
-      <div class="card skeleton"><div class="thumb"></div><h3>Loading headline text</h3><p>Loading excerpt line one and a bit more filler text</p></div>
+<div class="grid" id="postGrid">
+    <a class="card" href="posts/tsmc-record-revenue-ai-chip-boom-2026.html">
+      <div class="thumb">
+        
+      </div>
+      <div class="meta">
+        <span class="dot pulse"></span>
+        <span class="tag">ai</span>
+        <span>·</span>
+        <span>1d ago</span>
+      </div>
+      <h3>TSMC&#39;s Record Revenue Shows the AI Chip Boom Still Has No Ceiling</h3>
+      <p class="excerpt">TSMC just posted its highest monthly revenue ever, up 53% year-over-year, as AI chip demand keeps its most advanced nodes fully booked — here&#39;s what that record month reveals about the AI infrastructure buildout.</p>
+      <div class="byline">
+        <span>Ahamed Jishfaan</span>
+        <span>6 min read</span>
+      </div>
+    </a>
+
+    <a class="card" href="posts/quantum-computing-enterprise-readiness-2026.html">
+      <div class="thumb">
+        
+      </div>
+      <div class="meta">
+        <span class="dot pulse"></span>
+        <span class="tag">hardware</span>
+        <span>·</span>
+        <span>1d ago</span>
+      </div>
+      <h3>Quantum Computing in 2026: From Lab Curiosity to Boardroom Line Item</h3>
+      <p class="excerpt">Enterprise engagement with quantum computing is now nearly universal, but production use remains rare — here&#39;s what&#39;s actually changed in 2026 and why the post-quantum cryptography clock matters more than the hardware race.</p>
+      <div class="byline">
+        <span>Ahamed Jishfaan</span>
+        <span>7 min read</span>
+      </div>
+    </a>
+
+    <a class="card" href="posts/identity-first-cybersecurity-ai-agents-2026.html">
+      <div class="thumb">
+        
+      </div>
+      <div class="meta">
+        <span class="dot pulse"></span>
+        <span class="tag">security</span>
+        <span>·</span>
+        <span>1d ago</span>
+      </div>
+      <h3>Identity Is the New Perimeter: How AI Agents Are Reshaping Cybersecurity in 2026</h3>
+      <p class="excerpt">Machine identities now outnumber human ones in most enterprises, and AI agents are becoming the newest attack surface — here&#39;s how identity-first security is replacing the old perimeter model in 2026.</p>
+      <div class="byline">
+        <span>Ahamed Jishfaan</span>
+        <span>6 min read</span>
+      </div>
+    </a>
+
+    <a class="card" href="posts/agentic-ai-enterprise-adoption-2026.html">
+      <div class="thumb">
+        
+      </div>
+      <div class="meta">
+        <span class="dot pulse"></span>
+        <span class="tag">ai</span>
+        <span>·</span>
+        <span>1d ago</span>
+      </div>
+      <h3>Agentic AI in 2026: Why &quot;AI Agents&quot; Stopped Being a Buzzword and Became a Budget Line</h3>
+      <p class="excerpt">Agentic AI has moved from pilot projects to production budgets in 2026 — here&#39;s what the data shows about adoption, where agents are actually delivering value, and why governance is the real bottleneck.</p>
+      <div class="byline">
+        <span>Ahamed Jishfaan</span>
+        <span>7 min read</span>
+      </div>
+    </a>
+
+    <a class="card" href="posts/apple-foldable-iphone-september-2026-event.html">
+      <div class="thumb">
+        <img src="https://i.ibb.co/CKYQ514b/images-1.jpg" alt="" loading="lazy">
+      </div>
+      <div class="meta">
+        <span class="dot pulse"></span>
+        <span class="tag">hardware</span>
+        <span>·</span>
+        <span>1d ago</span>
+      </div>
+      <h3>Apple Finally Ships a Foldable iPhone: What the September 2026 Event Really Changed</h3>
+      <p class="excerpt">Apple&#39;s September 2026 keynote finally delivered a folding iPhone alongside an iPhone 18 Pro refresh, AI-focused Apple Watches, and cheaper AirPods — here&#39;s what actually changed and why it matters.</p>
+      <div class="byline">
+        <span>Ahamed Jishfaan</span>
+        <span>3 min read</span>
+      </div>
+    </a>
+
+    <a class="card" href="posts/qualcomm-flagship-chip-leaked-sold-online.html">
+      <div class="thumb">
+        
+      </div>
+      <div class="meta">
+        
+        <span class="tag">ai</span>
+        <span>·</span>
+        <span>Aug 20</span>
+      </div>
+      <h3>Qualcomm’s Next Flagship Chip Sold Online Before It Was Even Announced</h3>
+      <p class="excerpt">In one of the wildest tech leaks of the year, Qualcomm&#39;s unannounced next-generation flagship processor has been spotted for sale on an online marketplace weeks before its official reveal.</p>
+      <div class="byline">
+        <span>Ahamed Jishfaan</span>
+        <span>3 min read</span>
+      </div>
+    </a>
+
+    <a class="card" href="posts/call-of-duty-modern-warfare-4-beta-details.html">
+      <div class="thumb">
+        
+      </div>
+      <div class="meta">
+        
+        <span class="tag">general</span>
+        <span>·</span>
+        <span>Aug 20</span>
+      </div>
+      <h3>Call of Duty: Modern Warfare 4 Beta Details Officially Announced</h3>
+      <p class="excerpt">Get ready to drop in! Activision has officially announced the dates, maps, and new modes for the highly anticipated Call of Duty: Modern Warfare 4 beta. Here is everything you need to know.</p>
+      <div class="byline">
+        <span>BeingTechy Staff</span>
+        <span>5 min read</span>
+      </div>
+    </a>
+
+    <a class="card" href="posts/open-source-app-unlocks-pixel-11-pro-hilight.html">
+      <div class="thumb">
+        
+      </div>
+      <div class="meta">
+        
+        <span class="tag">dev</span>
+        <span>·</span>
+        <span>Aug 20</span>
+      </div>
+      <h3>How an Open-Source App Unlocks the Google Pixel 11 Pro&#39;s Hidden HiLight Feature</h3>
+      <p class="excerpt">Want to get the most out of your new Pixel? A new open-source application is allowing users to bypass software locks and access the highly anticipated HiLight video feature on the Google Pixel 11 Pro.</p>
+      <div class="byline">
+        <span>BeingTechy Staff</span>
+        <span>5 min read</span>
+      </div>
+    </a>
+
+    <a class="card" href="posts/apple-iphone-18-pro-september-launch-features.html">
+      <div class="thumb">
+        <img src="https://i.postimg.cc/MZR13qh8/i-Phone-18-Pro-Deep-Red-Feature.jpg" alt="" loading="lazy">
+      </div>
+      <div class="meta">
+        
+        <span class="tag">hardware</span>
+        <span>·</span>
+        <span>Aug 10</span>
+      </div>
+      <h3>Apple’s September Event: iPhone 18 Pro Launch, 2nm Silicon, and Major Upgrades</h3>
+      <p class="excerpt">Apple is reportedly preparing to launch its highly anticipated iPhone 18 Pro models this September. Discover the latest leaks on the 2nm A20 Pro chip, variable aperture cameras, and why the standard iPhone 18 might be delayed.</p>
+      <div class="byline">
+        <span>Ahamed Jishfaan</span>
+        <span>3 min read</span>
+      </div>
+    </a>
+
+    <a class="card" href="posts/openai-upgrades-chatgpt-gpt-5-6-luna.html">
+      <div class="thumb">
+        <img src="https://images.unsplash.com/photo-1682687220742-aba13b6e50ba" alt="" loading="lazy">
+      </div>
+      <div class="meta">
+        
+        <span class="tag">ai</span>
+        <span>·</span>
+        <span>Aug 6</span>
+      </div>
+      <h3>OpenAI Upgrades ChatGPT to GPT-5.6 Luna: Faster, Smarter, and Better</h3>
+      <p class="excerpt">OpenAI has officially upgraded the default ChatGPT to the brand-new GPT-5.6 Luna model. Enjoy faster speeds, better memory, and highly accurate answers with this massive AI update.</p>
+      <div class="byline">
+        <span>Ahamed Jishfaan</span>
+        <span>3 min read</span>
+      </div>
+    </a>
+
+    <a class="card" href="posts/carplay-arrives-at-the-helm-crest-marine-balise-pontoons-savvy-navvy-industry-first.html">
+      <div class="thumb">
+        <img src="https://i.postimg.cc/NfQSp6r9/Gemini-Generated-Image-tj31yrtj31yrtj31.png" alt="" loading="lazy">
+      </div>
+      <div class="meta">
+        
+        <span class="tag">general</span>
+        <span>·</span>
+        <span>Aug 5</span>
+      </div>
+      <h3>CarPlay Arrives at the Helm: Crest Marine and Balise Pontoons Team Up With Savvy Navvy in Boating Industry First</h3>
+      <p class="excerpt">Crest Marine and Balise Pontoons have partnered with navigation platform Savvy Navy to bring Apple CarPlay integration to select boats, marking a major step forward in connected boating technology and improving navigation, convenience, and safety for boat owners.</p>
+      <div class="byline">
+        <span>BeingTechy Staff</span>
+        <span>5 min read</span>
+      </div>
+    </a>
+
+    <a class="card" href="posts/edge-inference-eating-cloud.html">
+      <div class="thumb">
+        
+      </div>
+      <div class="meta">
+        
+        <span class="tag">ai</span>
+        <span>·</span>
+        <span>Aug 4</span>
+      </div>
+      <h3>Why edge inference is quietly eating the cloud</h3>
+      <p class="excerpt">Smaller models and dedicated NPUs have made on-device AI the default for fast, private, cheap tasks — with the cloud now the fallback, not the norm.</p>
+      <div class="byline">
+        <span>BeingTechy Staff</span>
+        <span>4 min read</span>
+      </div>
+    </a>
+
+    <a class="card" href="posts/field-guide-row-level-security.html">
+      <div class="thumb">
+        
+      </div>
+      <div class="meta">
+        
+        <span class="tag">dev</span>
+        <span>·</span>
+        <span>Jul 15</span>
+      </div>
+      <h3>A field guide to Row Level Security in Postgres</h3>
+      <p class="excerpt">RLS turns &quot;trust the client&quot; into &quot;trust the database.&quot; Here&#39;s how to reason about it without getting stuck.</p>
+      <div class="byline">
+        <span>BeingTechy Staff</span>
+        <span>6 min read</span>
+      </div>
+    </a>
+
+    <a class="card" href="posts/eu-mandates-google-android-ai-search-data-access.html">
+      <div class="thumb">
+        <img src="https://i.postimg.cc/hvrGRVSg/eu.png" alt="" loading="lazy">
+      </div>
+      <div class="meta">
+        
+        <span class="tag">ai</span>
+        <span>·</span>
+        <span>Jul 15</span>
+      </div>
+      <h3>EU Mandates Google to Open Android and Search Data to AI Rivals</h3>
+      <p class="excerpt">European Union regulators are forcing Google to open its vast Android ecosystem and share anonymized search data with rival AI companies. We explore how this Digital Markets Act ruling aims to level the tech playing field, alongside Google&#39;s stark warnings about user privacy and device security.</p>
+      <div class="byline">
+        <span>BeingTechy Staff</span>
+        <span>4 min read</span>
+      </div>
+    </a>
+
+    <a class="card" href="posts/usb-c-quiet-redesign.html">
+      <div class="thumb">
+        
+      </div>
+      <div class="meta">
+        
+        <span class="tag">hardware</span>
+        <span>·</span>
+        <span>Jul 15</span>
+      </div>
+      <h3>The quiet redesign of the USB-C port</h3>
+      <p class="excerpt">Same connector, very different cable underneath — what actually determines a USB-C cable&#39;s power, speed, and video support.</p>
+      <div class="byline">
+        <span>BeingTechy Staff</span>
+        <span>3 min read</span>
+      </div>
+    </a>
+
+    <a class="card" href="posts/openai-gpt-live-voice-ai.html">
+      <div class="thumb">
+        <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&amp;fit=crop&amp;w=800" alt="" loading="lazy">
+      </div>
+      <div class="meta">
+        
+        <span class="tag">ai</span>
+        <span>·</span>
+        <span>Jul 14</span>
+      </div>
+      <h3>OpenAI Unveils GPT-Live: A Real-Time Conversational Voice AI</h3>
+      <p class="excerpt">OpenAI has launched GPT-Live, featuring a full-duplex architecture that allows the AI to listen, speak, and reason simultaneously.</p>
+      <div class="byline">
+        <span>Ahamed Jishfaan</span>
+        <span>5 min read</span>
+      </div>
+    </a>
+
+    <a class="card" href="posts/cloudflare-monetization-gateway-ai.html">
+      <div class="thumb">
+        <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&amp;fit=crop&amp;w=800" alt="" loading="lazy">
+      </div>
+      <div class="meta">
+        
+        <span class="tag">dev</span>
+        <span>·</span>
+        <span>Jul 14</span>
+      </div>
+      <h3>Cloudflare Introduces Monetization Gateway for AI Agents</h3>
+      <p class="excerpt">Cloudflare&#39;s Pay Per Crawl turns AI scraping from a free-for-all into a priced transaction — how the 402 status code and bot verification actually work.</p>
+      <div class="byline">
+        <span>BeingTechy Staff</span>
+        <span>3 min read</span>
+      </div>
+    </a>
+
+    <a class="card" href="posts/google-africa-applied-ai-lab.html">
+      <div class="thumb">
+        <img src="https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&amp;fit=crop&amp;w=800" alt="" loading="lazy">
+      </div>
+      <div class="meta">
+        
+        <span class="tag">general</span>
+        <span>·</span>
+        <span>Jul 14</span>
+      </div>
+      <h3>Google Launches Africa Applied AI Lab in Accra</h3>
+      <p class="excerpt">Google&#39;s new Accra-based AI lab gives African founders equity-free access to Gemini, Gemma, and Veo — part of a $1B+ push into the continent&#39;s AI ecosystem.</p>
+      <div class="byline">
+        <span>BeingTechy Staff</span>
+        <span>6 min read</span>
+      </div>
+    </a>
     </div>
-    <!-- SSR:GRID:END -->
+  <!-- SSR:GRID:END -->
   </div>
 
   <!-- Ad slot: in-feed, sits under the first row of posts -->
