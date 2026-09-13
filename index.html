@@ -523,7 +523,14 @@
     </div>
   </noscript>
 
-  <!-- Featured stories slideshow — populated from the same posts data below -->
+  <!-- Featured stories slideshow — populated from the same posts data below.
+       Everything between the SSR markers is regenerated at build time by
+       scripts/build-posts.mjs from the real posts table, so the very first
+       HTTP response already contains real headlines (no JS required to see
+       them). The client-side script below still re-renders this on load so
+       the carousel stays interactive and picks up anything published since
+       the last build. -->
+  <!-- SSR:FEATURE:START -->
   <section class="feature-slider" id="featureSlider" aria-roledescription="carousel" aria-label="Featured stories" style="display:none;">
     <div class="fs-viewport" id="fsViewport">
       <span class="fs-counter" id="fsCounter" aria-live="polite">01 / 01</span>
@@ -539,6 +546,7 @@
       </button>
     </div>
   </section>
+  <!-- SSR:FEATURE:END -->
 
   <!-- Ad slot: top banner, sits below the hero, above content -->
   <div class="ad-slot">
@@ -561,12 +569,18 @@
       <button class="filter-btn" data-filter="general">General</button>
     </div>
 
+    <!-- SSR:GRID:START -->
     <div class="grid" id="postGrid">
-      <!-- Skeleton cards shown while Supabase loads; JS replaces this content -->
+      <!-- Skeleton cards: fallback only, shown if a browser has JS disabled
+           AND this file hasn't been rebuilt yet. scripts/build-posts.mjs
+           replaces everything between the SSR:GRID markers with real,
+           server-rendered post cards read straight from Supabase, so
+           crawlers and no-JS visitors see actual headlines, not this. -->
       <div class="card skeleton"><div class="thumb"></div><h3>Loading headline text</h3><p>Loading excerpt line one and a bit more filler text</p></div>
       <div class="card skeleton"><div class="thumb"></div><h3>Loading headline text</h3><p>Loading excerpt line one and a bit more filler text</p></div>
       <div class="card skeleton"><div class="thumb"></div><h3>Loading headline text</h3><p>Loading excerpt line one and a bit more filler text</p></div>
     </div>
+    <!-- SSR:GRID:END -->
   </div>
 
   <!-- Ad slot: in-feed, sits under the first row of posts -->

@@ -25,13 +25,14 @@
  * ============================================================
  */
 
-import { readdir, mkdir, writeFile, unlink } from 'node:fs/promises';
+import { readdir, mkdir, readFile, writeFile, unlink } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
 const POSTS_DIR = path.join(ROOT, 'posts');
+const INDEX_PATH = path.join(ROOT, 'index.html');
 const SITE_URL = 'https://www.beingtechy.org';
 
 const SUPABASE_URL = process.env.SUPABASE_URL || 'https://exymxyranahspqddgevv.supabase.co';
@@ -344,6 +345,173 @@ ${e.lastmod ? `    <lastmod>${e.lastmod}</lastmod>\n` : ''}    <changefreq>${e.c
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</urlset>\n`;
 }
 
+/* ============================================================
+ * HOMEPAGE (index.html) SERVER-SIDE RENDERING
+ * ------------------------------------------------------------
+ * index.html used to ship three "Loading headline text" skeleton
+ * cards in its raw HTML and fill the real grid in with client-side
+ * JS after a Supabase fetch. That's fine for a browser, but a
+ * crawler (or the AdSense reviewer, or anyone with slow/blocked JS)
+ * could hit the homepage and see nothing but placeholder text and
+ * an empty carousel — which reads as thin/broken content.
+ *
+ * This mirrors the same fix already used for posts/<slug>.html:
+ * render the real markup here, at build time, and splice it into
+ * index.html between a pair of HTML comment markers. The existing
+ * client-side script is untouched and still re-renders both blocks
+ * on page load — that's what keeps filtering, the live carousel,
+ * and "N minutes ago" freshness working. This just makes sure the
+ * FIRST response already contains real content instead of a
+ * loading skeleton.
+ * ============================================================ */
+
+function timeAgoRelative(dateStr, now) {
+  const diffSeconds = (now.getTime() - new Date(dateStr).getTime()) / 1000;
+  if (diffSeconds < 3600) return Math.max(1, Math.floor(diffSeconds / 60)) + 'm ago';
+  if (diffSeconds < 86400) return Math.floor(diffSeconds / 3600) + 'h ago';
+  if (diffSeconds < 604800) return Math.floor(diffSeconds / 86400) + 'd ago';
+  return new Date(dateStr).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+}
+
+function isRecentPost(dateStr, now) {
+  return now.getTime() - new Date(dateStr).getTime() < 1000 * 60 * 60 * 24 * 3; // < 3 days
+}
+
+function renderIndexCard(post, now) {
+  const title = escapeHtml(post.title);
+  const excerpt = escapeHtml(post.excerpt || '');
+  const category = escapeHtml(post.category || 'general');
+  const author = escapeHtml(post.author || 'BeingTechy Staff');
+  const cover = post.cover_image ? escapeAttr(post.cover_image) : '';
+  return `
+    <a class="card" href="posts/${encodeURIComponent(post.slug)}.html">
+      <div class="thumb">
+        ${cover ? `<img src="${cover}" alt="" loading="lazy">` : ''}
+      </div>
+      <div class="meta">
+        ${isRecentPost(post.created_at, now) ? '<span class="dot pulse"></span>' : ''}
+        <span class="tag">${category}</span>
+        <span>·</span>
+        <span>${timeAgoRelative(post.created_at, now)}</span>
+      </div>
+      <h3>${title}</h3>
+      <p class="excerpt">${excerpt}</p>
+      <div class="byline">
+        <span>${author}</span>
+        <span>${post.read_time ? post.read_time + ' min read' : ''}</span>
+      </div>
+    </a>`;
+}
+
+function renderIndexGrid(posts, now) {
+  const inner = posts.length
+    ? posts.map((post) => renderIndexCard(post, now)).join('\n')
+    : `
+      <div class="empty-state">
+        <div class="dot pulse"></div>
+        <h4>No posts yet</h4>
+        <p>Once you add rows to the <b>posts</b> table in Supabase, they'll show up here automatically.</p>
+        <code>insert into posts (title, slug, excerpt, category, published) values (...)</code>
+      </div>`;
+  return `<div class="grid" id="postGrid">${inner}\n    </div>`;
+}
+
+function renderFeatureSlide(post, index, isActive, now) {
+  const title = escapeHtml(post.title);
+  const category = escapeHtml(post.category || 'general');
+  const cover = post.cover_image ? escapeAttr(post.cover_image) : '';
+  return `
+    <a class="fs-slide${isActive ? ' active' : ''}" href="posts/${encodeURIComponent(post.slug)}.html" data-index="${index}">
+      <div class="fs-media">
+        ${cover ? `<img src="${cover}" alt="" loading="${index === 0 ? 'eager' : 'lazy'}">` : `<div class="fs-placeholder"></div>`}
+      </div>
+      <div class="fs-overlay">
+        <div class="fs-meta">
+          <span class="fs-tag">${category}</span>
+          <span>·</span>
+          <span>${timeAgoRelative(post.created_at, now)}</span>
+        </div>
+        <h3 class="fs-headline">${title}</h3>
+      </div>
+    </a>`;
+}
+
+function renderFeatureSection(posts, now) {
+  const fsPosts = posts.slice(0, 5);
+  if (!fsPosts.length) {
+    // Matches the client's renderFeatureSlider() behavior when there are no posts.
+    return `<section class="feature-slider" id="featureSlider" aria-roledescription="carousel" aria-label="Featured stories" style="display:none;">
+    <div class="fs-viewport" id="fsViewport">
+      <span class="fs-counter" id="fsCounter" aria-live="polite">01 / 01</span>
+    </div>
+    <div class="fs-controls" id="fsControls">
+      <button class="fs-arrow" id="fsPrev" type="button" aria-label="Previous story">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div class="fs-dots" id="fsDots"></div>
+      <button class="fs-arrow" id="fsNext" type="button" aria-label="Next story">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+      </button>
+    </div>
+  </section>`;
+  }
+
+  const slidesHtml = fsPosts.map((post, i) => renderFeatureSlide(post, i, i === 0, now)).join('\n');
+  const dotsHtml = fsPosts.map((_, i) =>
+    `<button class="fs-dot${i === 0 ? ' active' : ''}" data-index="${i}" type="button" aria-label="Go to story ${i + 1}"></button>`
+  ).join('');
+  const counter = '01 / ' + String(fsPosts.length).padStart(2, '0');
+  const controlsStyle = fsPosts.length > 1 ? '' : ' style="display:none;"';
+
+  return `<section class="feature-slider" id="featureSlider" aria-roledescription="carousel" aria-label="Featured stories">
+    <div class="fs-viewport" id="fsViewport">
+      <span class="fs-counter" id="fsCounter" aria-live="polite">${counter}</span>${slidesHtml}
+    </div>
+    <div class="fs-controls" id="fsControls"${controlsStyle}>
+      <button class="fs-arrow" id="fsPrev" type="button" aria-label="Previous story">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div class="fs-dots" id="fsDots">${dotsHtml}</div>
+      <button class="fs-arrow" id="fsNext" type="button" aria-label="Next story">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+      </button>
+    </div>
+  </section>`;
+}
+
+function replaceBetweenMarkers(html, startMarker, endMarker, replacement) {
+  const startIdx = html.indexOf(startMarker);
+  const endIdx = html.indexOf(endMarker);
+  if (startIdx === -1 || endIdx === -1 || endIdx < startIdx) {
+    throw new Error(`Could not find markers ${startMarker} / ${endMarker} in index.html — has the template changed?`);
+  }
+  const before = html.slice(0, startIdx + startMarker.length);
+  const after = html.slice(endIdx);
+  return `${before}\n${replacement}\n  ${after}`;
+}
+
+async function buildIndexHtml(posts) {
+  const now = new Date();
+  let html = await readFile(INDEX_PATH, 'utf8');
+
+  html = replaceBetweenMarkers(
+    html,
+    '<!-- SSR:GRID:START -->',
+    '<!-- SSR:GRID:END -->',
+    renderIndexGrid(posts, now)
+  );
+
+  html = replaceBetweenMarkers(
+    html,
+    '<!-- SSR:FEATURE:START -->',
+    '<!-- SSR:FEATURE:END -->',
+    renderFeatureSection(posts, now)
+  );
+
+  await writeFile(INDEX_PATH, html, 'utf8');
+  console.log(`Updated index.html with ${posts.length} server-rendered post card(s)`);
+}
+
 async function main() {
   console.log(`Fetching published posts from ${SUPABASE_URL} ...`);
   const posts = await fetchPublishedPosts();
@@ -374,6 +542,8 @@ async function main() {
   const sitemap = buildSitemap(posts);
   await writeFile(path.join(ROOT, 'sitemap.xml'), sitemap, 'utf8');
   console.log('Updated sitemap.xml');
+
+  await buildIndexHtml(posts);
 }
 
 main().catch((err) => {
