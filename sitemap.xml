@@ -26,10 +26,40 @@
     <priority>0.2</priority>
   </url>
   <url>
+    <loc>https://www.beingtechy.org/posts/tsmc-record-revenue-ai-chip-boom-2026.html</loc>
+    <lastmod>2026-09-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.beingtechy.org/posts/quantum-computing-enterprise-readiness-2026.html</loc>
+    <lastmod>2026-09-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.beingtechy.org/posts/identity-first-cybersecurity-ai-agents-2026.html</loc>
+    <lastmod>2026-09-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.beingtechy.org/posts/agentic-ai-enterprise-adoption-2026.html</loc>
+    <lastmod>2026-09-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.beingtechy.org/posts/apple-foldable-iphone-september-2026-event.html</loc>
+    <lastmod>2026-09-11</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://www.beingtechy.org/posts/qualcomm-flagship-chip-leaked-sold-online.html</loc>
     <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.beingtechy.org/posts/call-of-duty-modern-warfare-4-beta-details.html</loc>
@@ -41,25 +71,25 @@
     <loc>https://www.beingtechy.org/posts/open-source-app-unlocks-pixel-11-pro-hilight.html</loc>
     <lastmod>2026-08-20</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.beingtechy.org/posts/apple-iphone-18-pro-september-launch-features.html</loc>
     <lastmod>2026-08-10</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.beingtechy.org/posts/openai-upgrades-chatgpt-gpt-5-6-luna.html</loc>
     <lastmod>2026-08-06</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.beingtechy.org/posts/carplay-arrives-at-the-helm-crest-marine-balise-pontoons-savvy-navvy-industry-first.html</loc>
     <lastmod>2026-08-05</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.beingtechy.org/posts/edge-inference-eating-cloud.html</loc>
@@ -74,13 +104,13 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.beingtechy.org/posts/usb-c-quiet-redesign.html</loc>
+    <loc>https://www.beingtechy.org/posts/eu-mandates-google-android-ai-search-data-access.html</loc>
     <lastmod>2026-07-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.beingtechy.org/posts/eu-mandates-google-android-ai-search-data-access.html</loc>
+    <loc>https://www.beingtechy.org/posts/usb-c-quiet-redesign.html</loc>
     <lastmod>2026-07-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
