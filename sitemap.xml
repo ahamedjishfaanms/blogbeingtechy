@@ -26,6 +26,12 @@
     <priority>0.2</priority>
   </url>
   <url>
+    <loc>https://www.beingtechy.org/posts/my-post-test.html</loc>
+    <lastmod>2026-09-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://www.beingtechy.org/posts/tsmc-record-revenue-ai-chip-boom-2026.html</loc>
     <lastmod>2026-09-11</lastmod>
     <changefreq>monthly</changefreq>
@@ -98,13 +104,13 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.beingtechy.org/posts/field-guide-row-level-security.html</loc>
+    <loc>https://www.beingtechy.org/posts/eu-mandates-google-android-ai-search-data-access.html</loc>
     <lastmod>2026-07-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.beingtechy.org/posts/eu-mandates-google-android-ai-search-data-access.html</loc>
+    <loc>https://www.beingtechy.org/posts/field-guide-row-level-security.html</loc>
     <lastmod>2026-07-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
