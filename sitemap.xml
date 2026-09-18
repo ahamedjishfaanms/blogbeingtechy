@@ -26,6 +26,12 @@
     <priority>0.2</priority>
   </url>
   <url>
+    <loc>https://www.beingtechy.org/posts/OpenAI-GPT-Live.html</loc>
+    <lastmod>2026-09-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://www.beingtechy.org/posts/tsmc-record-revenue-ai-chip-boom-2026.html</loc>
     <lastmod>2026-09-11</lastmod>
     <changefreq>monthly</changefreq>
@@ -98,6 +104,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://www.beingtechy.org/posts/eu-mandates-google-android-ai-search-data-access.html</loc>
+    <lastmod>2026-07-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://www.beingtechy.org/posts/usb-c-quiet-redesign.html</loc>
     <lastmod>2026-07-15</lastmod>
     <changefreq>monthly</changefreq>
@@ -110,8 +122,8 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.beingtechy.org/posts/eu-mandates-google-android-ai-search-data-access.html</loc>
-    <lastmod>2026-07-15</lastmod>
+    <loc>https://www.beingtechy.org/posts/google-africa-applied-ai-lab.html</loc>
+    <lastmod>2026-07-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -123,12 +135,6 @@
   </url>
   <url>
     <loc>https://www.beingtechy.org/posts/openai-gpt-live-voice-ai.html</loc>
-    <lastmod>2026-07-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.beingtechy.org/posts/google-africa-applied-ai-lab.html</loc>
     <lastmod>2026-07-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
