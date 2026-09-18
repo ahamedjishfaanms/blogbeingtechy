@@ -22,7 +22,8 @@
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"OpenAI Unveils GPT-Live: A Real-Time Conversational Voice AI","description":"OpenAI has launched GPT-Live, featuring a full-duplex architecture that allows the AI to listen, speak, and reason simultaneously.","datePublished":"2026-07-14T19:00:26.865749+00:00","dateModified":"2026-07-14T19:00:26.865749+00:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://www.beingtechy.org/posts/openai-gpt-live-voice-ai.html"},"author":{"@type":"Person","name":"Ahamed Jishfaan"},"publisher":{"@type":"Organization","name":"BeingTechy","url":"https://www.beingtechy.org/"},"image":"https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=800"}</script>
 
 <meta name="google-adsense-account" content="ca-pub-6780480728242580">
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6780480728242580" crossorigin="anonymous"></script>
+<!-- AdSense's script itself is NOT loaded here — it's injected only after
+     cookie consent, by the cookie-consent script near the end of <body>. -->
 
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%2314171C'/%3E%3Ccircle cx='32' cy='32' r='7' fill='%23E8A33D'/%3E%3Ccircle cx='32' cy='32' r='16' fill='none' stroke='%234FB0C6' stroke-width='3' stroke-dasharray='4 6'/%3E%3C/svg%3E">
 
@@ -93,9 +94,34 @@
   .related-item .rmeta{ font-family:var(--font-mono); font-size:11px; color:var(--text-muted); }
   footer{ padding:32px 0; border-top:1px solid var(--line); text-align:center; font-family:var(--font-mono); font-size:11px; color:var(--text-muted); }
   [data-theme="light"]{ --bg:#FFFFFF; --surface:#FAF8F3; --surface-2:#F3EFE5; --line:#ECE6D8; --text:#201C15; --text-muted:#756B58; --accent:#A6690F; --signal:#1D8DA6; }
+
+  /* ============ COOKIE CONSENT BANNER ============ */
+  .cookie-banner{
+    display:none; position:fixed; left:0; right:0; bottom:0; z-index:500;
+    background:var(--surface); border-top:1px solid var(--line);
+    padding:18px 20px; gap:16px; align-items:center; justify-content:center; flex-wrap:wrap;
+  }
+  .cookie-banner .wrap{ display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap; }
+  .cookie-banner p{ margin:0; max-width:640px; color:var(--text-muted); font-size:13.5px; line-height:1.5; }
+  .cookie-banner a{ color:var(--signal); text-decoration:underline; text-underline-offset:2px; }
+  .cookie-actions{ display:flex; gap:10px; flex:none; }
+  .cookie-actions button{ font-family:var(--font-mono); font-size:12.5px; padding:10px 18px; border-radius:var(--radius); cursor:pointer; border:1px solid var(--line); background:none; color:var(--text); }
+  .cookie-actions button:hover{ border-color:var(--text-muted); }
+  .cookie-actions button.accept{ background:var(--accent); color:#14171C; border-color:var(--accent); font-weight:600; }
+  .cookie-actions button.accept:hover{ opacity:.9; }
 </style>
 </head>
 <body>
+
+<div id="cookieBanner" class="cookie-banner" role="dialog" aria-label="Cookie notice">
+  <div class="wrap">
+    <p>We use cookies for basic analytics and to show ads via Google AdSense. See our <a href="../privacy.html">Privacy Policy</a> for details.</p>
+    <div class="cookie-actions">
+      <button type="button" id="cookieDecline">Decline</button>
+      <button type="button" class="accept" id="cookieAccept">Accept</button>
+    </div>
+  </div>
+</div>
 
 <header>
   <div class="wrap nav">
@@ -185,6 +211,10 @@
   <div class="related">
     <h4>More from BeingTechy</h4>
     
+        <a class="related-item" href="OpenAI-GPT-Live.html">
+          <div class="rtitle">OpenAI Unveils GPT-Live: A Real-Time Conversational Voice AI</div>
+          <div class="rmeta">ai · Sep 18, 2026</div>
+        </a>
         <a class="related-item" href="tsmc-record-revenue-ai-chip-boom-2026.html">
           <div class="rtitle">TSMC&#39;s Record Revenue Shows the AI Chip Boom Still Has No Ceiling</div>
           <div class="rmeta">ai · Sep 11, 2026</div>
@@ -192,10 +222,6 @@
         <a class="related-item" href="agentic-ai-enterprise-adoption-2026.html">
           <div class="rtitle">Agentic AI in 2026: Why &quot;AI Agents&quot; Stopped Being a Buzzword and Became a Budget Line</div>
           <div class="rmeta">ai · Sep 11, 2026</div>
-        </a>
-        <a class="related-item" href="qualcomm-flagship-chip-leaked-sold-online.html">
-          <div class="rtitle">Qualcomm’s Next Flagship Chip Sold Online Before It Was Even Announced</div>
-          <div class="rmeta">ai · Aug 20, 2026</div>
         </a>
   </div>
 </main>
@@ -239,6 +265,49 @@ try{ document.querySelectorAll('.adsbygoogle').forEach(() => (window.adsbygoogle
     headers: { apikey: SUPABASE_ANON_KEY, Authorization: 'Bearer ' + SUPABASE_ANON_KEY, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
     body: JSON.stringify({ path: 'post', slug: "openai-gpt-live-voice-ai" })
   }).catch(function(){});
+})();
+</script>
+
+<script>
+(function(){
+  var CONSENT_KEY = 'bt-cookie-consent';
+  function getConsent(){ try{ return localStorage.getItem(CONSENT_KEY); }catch(e){ return null; } }
+  function setConsent(v){ try{ localStorage.setItem(CONSENT_KEY, v); }catch(e){} }
+
+  function loadAdsenseScript(){
+    if (document.getElementById('adsbygoogle-js')) return;
+    var s = document.createElement('script');
+    s.id = 'adsbygoogle-js';
+    s.async = true;
+    s.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6780480728242580';
+    s.crossOrigin = 'anonymous';
+    document.head.appendChild(s);
+  }
+
+  function hideAdSlots(){
+    document.querySelectorAll('.ad-slot').forEach(function(el){ el.style.display = 'none'; });
+  }
+
+  var banner = document.getElementById('cookieBanner');
+  var consent = getConsent();
+  if (consent === 'accepted'){
+    loadAdsenseScript();
+  } else if (consent === 'declined'){
+    hideAdSlots();
+  } else if (banner){
+    banner.style.display = 'flex';
+  }
+
+  document.getElementById('cookieAccept').addEventListener('click', function(){
+    setConsent('accepted');
+    if (banner) banner.style.display = 'none';
+    loadAdsenseScript();
+  });
+  document.getElementById('cookieDecline').addEventListener('click', function(){
+    setConsent('declined');
+    if (banner) banner.style.display = 'none';
+    hideAdSlots();
+  });
 })();
 </script>
 
