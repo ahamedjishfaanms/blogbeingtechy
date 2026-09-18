@@ -137,7 +137,56 @@
       <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6780480728242580" data-ad-slot="0000000002" data-ad-format="auto" data-full-width-responsive="true"></ins>
     </div>
 
-    <div class="content"><p>Row Level Security policies live next to your data, not your app code — which means they hold even if a request skips your API entirely.</p><h2>Start with a single rule</h2><p>Most tables need just one honest question answered: who is allowed to see this row? Write that as a policy before you write anything cleverer.</p></div>
+    <div class="content"><p><em>RLS turns "trust the client" into "trust the database."</em></p>
+<p>Row Level Security policies live next to your data, not your app code — which means they hold even if a request skips your API entirely. Forget to check <code>user_id</code> in one endpoint, add a new internal script that queries the database directly, or let an intern run a one-off migration — none of it matters if the database itself refuses to hand back rows the caller isn't allowed to see. That's the whole pitch: the guarantee moves from "every code path remembers to check" to "the database checks, always."</p>
+<h2>Start with a single rule</h2>
+<p>Most tables need just one honest question answered: who is allowed to see this row? Write that as a policy before you write anything cleverer.</p>
+<pre class="sql"><code>alter table documents enable row level security;
+
+create policy "owners can read their documents"
+on documents
+for select
+using (auth.uid() = owner_id);</code></pre>
+<p>That's it — that's a working policy. Until you write at least one <code>USING</code> clause for a command, Postgres defaults to denying everything once RLS is turned on for a table, which is exactly the fail-safe behavior you want. A table with RLS enabled and zero policies isn't broken, it's locked, and that's the correct default while you figure out the rest.</p>
+<h2>USING vs. WITH CHECK — the distinction that trips people up</h2>
+<p><code>USING</code> governs which existing rows a query is allowed to see or touch. <code>WITH CHECK</code> governs which new or modified rows are allowed to be written. For <code>SELECT</code>, only <code>USING</code> applies. For <code>INSERT</code>, only <code>WITH CHECK</code> applies, because there's no existing row to filter. For <code>UPDATE</code> and <code>DELETE</code>, both apply: <code>USING</code> decides which rows you can reach to update, <code>WITH CHECK</code> decides whether the <em>result</em> of the update is still something you're allowed to have written.</p>
+<pre class="sql"><code>create policy "owners can update their documents"
+on documents
+for update
+using (auth.uid() = owner_id)
+with check (auth.uid() = owner_id);</code></pre>
+<p>Without the <code>WITH CHECK</code> clause here, a user could technically update a row they own and reassign <code>owner_id</code> to someone else — <code>USING</code> only checked the row on the way in, not the row on the way out. This is the single most common RLS bug: people write <code>USING</code> and assume it covers writes too.</p>
+<h2>One policy per operation, not one giant policy</h2>
+<p>It's tempting to write a single <code>FOR ALL</code> policy and move on, but splitting policies by command (<code>SELECT</code>, <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code>) makes the rules easier to reason about and easier to loosen selectively later — for example, letting anyone insert a support ticket but only the assigned agent update it.</p>
+<pre class="sql"><code>create policy "anyone can file a ticket"
+on tickets for insert
+with check (auth.uid() = submitted_by);
+
+create policy "agents can update assigned tickets"
+on tickets for update
+using (auth.uid() = assigned_agent_id);</code></pre>
+<h2>Multi-tenant tables: filter on the tenant, not just the user</h2>
+<p>If you're building anything multi-tenant, the policy usually needs to check organization membership, not just direct ownership:</p>
+<pre class="sql"><code>create policy "members can read their org's rows"
+on projects
+for select
+using (
+  org_id in (
+    select org_id from memberships where user_id = auth.uid()
+  )
+);</code></pre>
+<p>Watch performance here — a subquery like this runs per row unless Postgres can optimize it, so index <code>memberships(user_id, org_id)</code> and check the query plan with <code>explain analyze</code> once you have realistic data volumes. RLS policies are just SQL predicates injected into your queries, so they get exactly as slow as any other unindexed filter would.</p>
+<h2>Service roles bypass RLS — by design</h2>
+<p>Your backend's service-role or superuser connection typically bypasses RLS entirely, which is intentional: your server needs to run admin tasks, migrations, and background jobs without fighting its own policies. The tradeoff is that RLS only protects you against callers using the <em>restricted</em> connection — usually your public API or a client SDK talking directly to Postgres. If your application server itself has a bug and uses the service role for a user-facing query, RLS won't save you. Treat RLS as a second layer behind your application logic, not a replacement for checking permissions in your API.</p>
+<h2>Test policies as each role, not just as an admin</h2>
+<p>The easiest way to end up with a false sense of security is testing everything while connected as a superuser, where RLS is invisible. Test by actually assuming the roles you've written policies for:</p>
+<pre class="sql"><code>set role authenticated;
+set request.jwt.claims.sub = 'test-user-uuid';
+select * from documents; -- should only return that user's rows
+reset role;</code></pre>
+<p>Run this for each policy, for each role, including the negative case — log in as user A and confirm you genuinely cannot see user B's rows, not just that the "happy path" query returns the right thing.</p>
+<h2>The one-line takeaway</h2>
+<p>Enable RLS on every table that holds anything sensitive, write <code>USING</code> and <code>WITH CHECK</code> as separate, deliberate decisions rather than one merged assumption, index whatever your policies filter on, and test by impersonating the role — not by trusting that the policy reads correctly on paper.</p></div>
 
     
     <div class="share-row bottom">
