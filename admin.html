@@ -491,6 +491,66 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+/* ============================================================
+   AUTO-REBUILD ON PUBLISH
+   ------------------------------------------------------------
+   Every save/delete below writes straight to Supabase, but the
+   live posts/*.html files and index.html are static — they only
+   update when the "Rebuild article pages" GitHub Action runs.
+   That workflow normally fires every 3 hours on a schedule, which
+   meant edits here could sit invisible on the live site for hours.
+   This calls GitHub's workflow_dispatch API right after a
+   successful save/delete, so the rebuild kicks off within seconds
+   instead of waiting for the next scheduled run.
+
+   GITHUB_TOKEN below must be a FINE-GRAINED personal access token
+   scoped to ONLY this repository, with ONLY the "Actions: Read and
+   write" permission — nothing else. That scope means if this file
+   were ever leaked, the worst a token thief could do is trigger
+   extra rebuild runs; they could not push code, read your Supabase
+   keys, or touch anything outside this one repo's Actions.
+
+   See the setup notes sent alongside this file for how to generate
+   that token. Until GITHUB_TOKEN is filled in, this fails silently
+   and everything falls back to the normal 3-hour schedule — saving
+   and deleting posts still works fine either way.
+   ============================================================ */
+const GITHUB_OWNER = 'ahamedjishfaanms';
+const GITHUB_REPO = 'blogbeingtechy';
+const GITHUB_WORKFLOW_FILE = 'build-posts.yml';
+const GITHUB_TOKEN = ''; // paste your fine-grained PAT between these quotes
+
+async function triggerRebuild(){
+  if (!GITHUB_TOKEN){
+    console.warn('Auto-rebuild not configured — GITHUB_TOKEN is empty. Falls back to the 3-hour schedule. See setup notes.');
+    return;
+  }
+  try{
+    const res = await fetch(
+      `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/actions/workflows/${GITHUB_WORKFLOW_FILE}/dispatches`,
+      {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${GITHUB_TOKEN}`,
+          'Accept': 'application/vnd.github+json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ ref: 'main' })
+      }
+    );
+    if (!res.ok){
+      const body = await res.text().catch(() => '');
+      console.error('Rebuild trigger failed:', res.status, body);
+      return;
+    }
+    console.log('Rebuild triggered — live pages will update within about a minute.');
+  } catch(e){
+    // Never let a rebuild-trigger failure block saving/deleting a post —
+    // the scheduled run every 3 hours is still there as a fallback.
+    console.error('Rebuild trigger error:', e);
+  }
+}
+
 const loginScreen = document.getElementById('loginScreen');
 const dashboard = document.getElementById('dashboard');
 const postsBody = document.getElementById('postsBody');
@@ -788,6 +848,7 @@ document.getElementById('postForm').addEventListener('submit', async (e) => {
 
   closeEditor();
   loadPosts();
+  triggerRebuild();
 });
 
 /* ---------- DELETE ---------- */
@@ -797,6 +858,7 @@ window.deletePost = async function(id, title){
   const { error } = await supabaseClient.from('posts').delete().eq('id', id);
   if (error){ alert('Could not delete: ' + error.message); return; }
   loadPosts();
+  triggerRebuild();
 };
 
 /* ---------- TEAM ---------- */
