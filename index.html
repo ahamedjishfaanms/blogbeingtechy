@@ -43,7 +43,9 @@
      GOOGLE ADSENSE — site verification + auto ads script
      ============================================================ -->
 <meta name="google-adsense-account" content="ca-pub-6780480728242580">
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6780480728242580" crossorigin="anonymous"></script>
+<!-- AdSense's script itself is NOT loaded here — it's injected only after
+     cookie consent, by the cookie-consent script near the end of <body>. -->
+
 
 <!-- ============================================================
      SUPABASE CLIENT (CDN build — no bundler needed)
@@ -432,6 +434,31 @@
   [data-theme="light"] .tt-knob{ transform:translateX(0); background:#14171C; }
   [data-theme="light"] .tt-knob-sun{ opacity:1; }
   [data-theme="light"] .tt-knob-moon{ opacity:0; }
+
+  /* ============ COOKIE CONSENT BANNER ============ */
+  .cookie-banner{
+    display:none; position:fixed; left:0; right:0; bottom:0; z-index:500;
+    background:var(--surface); border-top:1px solid var(--line);
+    padding:18px 20px; gap:16px; align-items:center; justify-content:center;
+    flex-wrap:wrap;
+  }
+  .cookie-banner .wrap{
+    display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap;
+  }
+  .cookie-banner p{
+    margin:0; max-width:640px; color:var(--text-muted); font-size:13.5px; line-height:1.5;
+  }
+  .cookie-banner a{ color:var(--signal); text-decoration:underline; text-underline-offset:2px; }
+  .cookie-actions{ display:flex; gap:10px; flex:none; }
+  .cookie-actions button{
+    font-family:var(--font-mono); font-size:12.5px; padding:10px 18px; border-radius:var(--radius);
+    cursor:pointer; border:1px solid var(--line); background:none; color:var(--text);
+  }
+  .cookie-actions button:hover{ border-color:var(--text-muted); }
+  .cookie-actions button.accept{
+    background:var(--accent); color:#14171C; border-color:var(--accent); font-weight:600;
+  }
+  .cookie-actions button.accept:hover{ opacity:.9; }
 </style>
 </head>
 <body>
@@ -441,6 +468,20 @@
   <div class="preloader-mark">
     <div class="preloader-ring"></div>
     being<b>techy</b>
+  </div>
+</div>
+
+<!-- ============ COOKIE CONSENT BANNER ============
+     Shown until the visitor accepts or declines. Accepting is what
+     actually injects the AdSense script (see the script block near the
+     end of <body>) — nothing ad-related loads before that. -->
+<div id="cookieBanner" class="cookie-banner" role="dialog" aria-label="Cookie notice">
+  <div class="wrap">
+    <p>We use cookies for basic analytics and to show ads via Google AdSense. See our <a href="privacy.html">Privacy Policy</a> for details.</p>
+    <div class="cookie-actions">
+      <button type="button" id="cookieDecline">Decline</button>
+      <button type="button" class="accept" id="cookieAccept">Accept</button>
+    </div>
   </div>
 </div>
 
@@ -701,6 +742,10 @@ function isRecent(dateStr){
   return (Date.now() - new Date(dateStr).getTime()) < 1000*60*60*24*3; // < 3 days
 }
 
+function escapeHtml(str){
+  return (str || '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+
 function renderPosts(posts){
   if (!posts.length){
     postGrid.innerHTML = `
@@ -715,7 +760,7 @@ function renderPosts(posts){
   postGrid.innerHTML = posts.map(post => `
     <a class="card" href="posts/${encodeURIComponent(post.slug)}.html">
       <div class="thumb">
-        ${post.cover_image ? `<img src="${post.cover_image}" alt="" loading="lazy">` : ''}
+        ${post.cover_image ? `<img src="${post.cover_image}" alt="${escapeHtml(post.title)}" loading="lazy">` : ''}
       </div>
       <div class="meta">
         ${isRecent(post.created_at) ? '<span class="dot pulse"></span>' : ''}
@@ -766,7 +811,7 @@ function renderFeatureSlider(posts){
   const slidesHtml = fsPosts.map((post, i) => `
     <a class="fs-slide ${i === 0 ? 'active' : ''}" href="posts/${encodeURIComponent(post.slug)}.html" data-index="${i}">
       <div class="fs-media">
-        ${post.cover_image ? `<img src="${post.cover_image}" alt="" loading="${i === 0 ? 'eager' : 'lazy'}">` : `<div class="fs-placeholder"></div>`}
+        ${post.cover_image ? `<img src="${post.cover_image}" alt="${escapeHtml(post.title)}" loading="${i === 0 ? 'eager' : 'lazy'}">` : `<div class="fs-placeholder"></div>`}
       </div>
       <div class="fs-overlay">
         <div class="fs-meta">
@@ -941,6 +986,58 @@ try{
       try{ localStorage.setItem('bt-theme','light'); }catch(e){}
       btn.setAttribute('aria-pressed','true');
     }
+  });
+})();
+</script>
+
+<!-- ============================================================
+     COOKIE CONSENT + DEFERRED ADSENSE LOADING
+     ------------------------------------------------------------
+     The adsbygoogle.js script tag is NOT in <head> on this page — it's
+     only injected here, and only after the visitor accepts. Until then,
+     no ad-related request or cookie is set. Declining hides the ad
+     slots and never loads the script for that visit. The choice is
+     remembered in localStorage so the banner doesn't reappear.
+     ============================================================ -->
+<script>
+(function(){
+  var CONSENT_KEY = 'bt-cookie-consent';
+  function getConsent(){ try{ return localStorage.getItem(CONSENT_KEY); }catch(e){ return null; } }
+  function setConsent(v){ try{ localStorage.setItem(CONSENT_KEY, v); }catch(e){} }
+
+  function loadAdsenseScript(){
+    if (document.getElementById('adsbygoogle-js')) return;
+    var s = document.createElement('script');
+    s.id = 'adsbygoogle-js';
+    s.async = true;
+    s.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6780480728242580';
+    s.crossOrigin = 'anonymous';
+    document.head.appendChild(s);
+  }
+
+  function hideAdSlots(){
+    document.querySelectorAll('.ad-slot').forEach(function(el){ el.style.display = 'none'; });
+  }
+
+  var banner = document.getElementById('cookieBanner');
+  var consent = getConsent();
+  if (consent === 'accepted'){
+    loadAdsenseScript();
+  } else if (consent === 'declined'){
+    hideAdSlots();
+  } else if (banner){
+    banner.style.display = 'flex';
+  }
+
+  document.getElementById('cookieAccept').addEventListener('click', function(){
+    setConsent('accepted');
+    if (banner) banner.style.display = 'none';
+    loadAdsenseScript();
+  });
+  document.getElementById('cookieDecline').addEventListener('click', function(){
+    setConsent('declined');
+    if (banner) banner.style.display = 'none';
+    hideAdSlots();
   });
 })();
 </script>
