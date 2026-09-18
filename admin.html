@@ -499,45 +499,33 @@ const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_
    update when the "Rebuild article pages" GitHub Action runs.
    That workflow normally fires every 3 hours on a schedule, which
    meant edits here could sit invisible on the live site for hours.
-   This calls GitHub's workflow_dispatch API right after a
-   successful save/delete, so the rebuild kicks off within seconds
-   instead of waiting for the next scheduled run.
 
-   GITHUB_TOKEN below must be a FINE-GRAINED personal access token
-   scoped to ONLY this repository, with ONLY the "Actions: Read and
-   write" permission — nothing else. That scope means if this file
-   were ever leaked, the worst a token thief could do is trigger
-   extra rebuild runs; they could not push code, read your Supabase
-   keys, or touch anything outside this one repo's Actions.
+   Instead of calling GitHub directly from the browser (which would
+   require putting a GitHub token in this file — visible to anyone
+   who views this page's source, logged in or not), this calls a
+   Supabase Edge Function ("trigger-rebuild"). That function holds
+   the GitHub token as a server-side secret and checks the caller's
+   Supabase session before doing anything, so the token is never
+   exposed to the browser at all.
 
-   See the setup notes sent alongside this file for how to generate
-   that token. Until GITHUB_TOKEN is filled in, this fails silently
-   and everything falls back to the normal 3-hour schedule — saving
-   and deleting posts still works fine either way.
+   Until the "trigger-rebuild" Edge Function is deployed, this fails
+   silently and everything falls back to the normal 3-hour schedule —
+   saving and deleting posts still works fine either way.
    ============================================================ */
-const GITHUB_OWNER = 'ahamedjishfaanms';
-const GITHUB_REPO = 'blogbeingtechy';
-const GITHUB_WORKFLOW_FILE = 'build-posts.yml';
-const GITHUB_TOKEN = ''; // paste your fine-grained PAT between these quotes
-
 async function triggerRebuild(){
-  if (!GITHUB_TOKEN){
-    console.warn('Auto-rebuild not configured — GITHUB_TOKEN is empty. Falls back to the 3-hour schedule. See setup notes.');
-    return;
-  }
   try{
-    const res = await fetch(
-      `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/actions/workflows/${GITHUB_WORKFLOW_FILE}/dispatches`,
-      {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${GITHUB_TOKEN}`,
-          'Accept': 'application/vnd.github+json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ ref: 'main' })
+    const { data: { session } } = await supabaseClient.auth.getSession();
+    if (!session){
+      console.warn('No active session — skipping rebuild trigger. Falls back to the 3-hour schedule.');
+      return;
+    }
+    const res = await fetch(`${SUPABASE_URL}/functions/v1/trigger-rebuild`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${session.access_token}`,
+        'Content-Type': 'application/json'
       }
-    );
+    });
     if (!res.ok){
       const body = await res.text().catch(() => '');
       console.error('Rebuild trigger failed:', res.status, body);
