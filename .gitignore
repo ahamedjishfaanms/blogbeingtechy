@@ -1,0 +1,8 @@
+# Supabase CLI local state (project link/version info, regenerated per machine)
+supabase/.temp/
+
+# Scratch/reference notes from working with Claude — not site source
+Claude outputs/
+
+# Corrupted leftover file from a broken terminal/pager session
+n-publish trigger to admin.html*
