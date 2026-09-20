@@ -248,6 +248,20 @@ ${cover ? `<meta property="og:image" content="${cover}">\n` : ''}<meta name="twi
   .cookie-actions button.accept{ background:var(--accent); color:#14171C; border-color:var(--accent); font-weight:600; }
   .cookie-actions button.accept:hover{ opacity:.9; }
 </style>
+
+<!-- Google News Showcase / Subscribe with Google (SWG basic) -->
+<script async type="application/javascript"
+        src="https://news.google.com/swg/js/v1/swg-basic.js"></script>
+<script>
+  (self.SWG_BASIC = self.SWG_BASIC || []).push( basicSubscriptions => {
+    basicSubscriptions.init({
+      type: "NewsArticle",
+      isPartOfType: ["Product"],
+      isPartOfProductId: "CAow1K3NDA:openaccess",
+      clientOptions: { theme: "light", lang: "en-GB" },
+    });
+  });
+</script>
 </head>
 <body>
 

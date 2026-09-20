@@ -3,3 +3,4 @@ Allow: /
 Disallow: /admin.html
 
 Sitemap: https://www.beingtechy.org/sitemap.xml
+Sitemap: https://www.beingtechy.org/news-sitemap.xml
