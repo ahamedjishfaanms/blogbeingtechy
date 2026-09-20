@@ -26,6 +26,12 @@
     <priority>0.2</priority>
   </url>
   <url>
+    <loc>https://www.beingtechy.org/posts/apple-ai-server-m8-ultra-2029.html</loc>
+    <lastmod>2026-09-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://www.beingtechy.org/posts/OpenAI-GPT-Live.html</loc>
     <lastmod>2026-09-18</lastmod>
     <changefreq>monthly</changefreq>
@@ -104,7 +110,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.beingtechy.org/posts/eu-mandates-google-android-ai-search-data-access.html</loc>
+    <loc>https://www.beingtechy.org/posts/field-guide-row-level-security.html</loc>
     <lastmod>2026-07-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -116,14 +122,8 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.beingtechy.org/posts/field-guide-row-level-security.html</loc>
+    <loc>https://www.beingtechy.org/posts/eu-mandates-google-android-ai-search-data-access.html</loc>
     <lastmod>2026-07-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.beingtechy.org/posts/google-africa-applied-ai-lab.html</loc>
-    <lastmod>2026-07-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -135,6 +135,12 @@
   </url>
   <url>
     <loc>https://www.beingtechy.org/posts/openai-gpt-live-voice-ai.html</loc>
+    <lastmod>2026-07-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.beingtechy.org/posts/google-africa-applied-ai-lab.html</loc>
     <lastmod>2026-07-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
