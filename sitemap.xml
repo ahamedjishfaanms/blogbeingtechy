@@ -26,6 +26,12 @@
     <priority>0.2</priority>
   </url>
   <url>
+    <loc>https://www.beingtechy.org/posts/cisa-kev-seven-flaws-reverse-shells-cryptominers.html</loc>
+    <lastmod>2026-09-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://www.beingtechy.org/posts/apple-ai-server-m8-ultra-2029.html</loc>
     <lastmod>2026-09-20</lastmod>
     <changefreq>monthly</changefreq>
@@ -128,12 +134,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.beingtechy.org/posts/cloudflare-monetization-gateway-ai.html</loc>
-    <lastmod>2026-07-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://www.beingtechy.org/posts/openai-gpt-live-voice-ai.html</loc>
     <lastmod>2026-07-14</lastmod>
     <changefreq>monthly</changefreq>
@@ -141,6 +141,12 @@
   </url>
   <url>
     <loc>https://www.beingtechy.org/posts/google-africa-applied-ai-lab.html</loc>
+    <lastmod>2026-07-14</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.beingtechy.org/posts/cloudflare-monetization-gateway-ai.html</loc>
     <lastmod>2026-07-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
